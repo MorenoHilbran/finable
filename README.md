@@ -1,23 +1,173 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💡 FINABLE — Platform Edukasi Investasi Inklusif untuk Penyandang Disabilitas
 
-## Getting Started
+Finable adalah platform edukasi investasi berbasis web yang dirancang untuk memberikan akses literasi keuangan yang setara bagi penyandang disabilitas. Platform ini menghadirkan pengalaman belajar yang adaptif dengan memanfaatkan AI Assistant bernama **OWI** (Open Wisdom Intelligence), sehingga informasi investasi dapat dipahami dengan lebih mudah, jelas, dan sesuai kebutuhan setiap pengguna.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🎯 Tujuan Platform
+- Menyederhanakan konsep dan istilah investasi yang kompleks
+- Memastikan akses edukasi dapat dinikmati oleh berbagai jenis disabilitas
+- Menjadi pendamping belajar finansial yang aman, adaptif, dan bebas hambatan
+- Mengurangi ketimpangan literasi keuangan pada kelompok rentan
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📌 Latar Belakang
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Survei Nasional Literasi dan Inklusi Keuangan (SNLIK) yang diselenggarakan oleh OJK dan BPS menunjukkan bahwa indeks literasi keuangan nasional masih berada pada tingkat yang lebih rendah dibandingkan indeks inklusi keuangan, terutama pada sektor non-perbankan seperti pasar modal dan instrumen investasi. Kondisi ini mengindikasikan bahwa banyak masyarakat, termasuk kelompok penyandang disabilitas, telah memiliki akses terhadap layanan keuangan namun belum dibarengi dengan pemahaman yang memadai untuk memanfaatkannya secara bijak dan mandiri. Kesenjangan pemahaman ini berpotensi menyebabkan kesalahan dalam pengambilan keputusan finansial, rendahnya partisipasi dalam instrumen investasi, serta memperlebar kesenjangan kesejahteraan.
 
-# finable
+Penyandang disabilitas merupakan kelompok yang masih menghadapi hambatan akses informasi finansial karena keterbatasan layanan pendukung seperti screen reader, bahasa isyarat, serta materi edukasi yang mudah dipahami sesuai kebutuhan mereka. Oleh karena itu, dibutuhkan sebuah platform edukasi keuangan yang inklusif, adaptif, serta memfasilitasi pembelajaran investasi bagi penyandang disabilitas secara mandiri dan aman.
+
+---
+
+## 👥 Pengguna Utama
+| Tipe Disabilitas | Dukungan Fitur |
+|-----------------|----------------|
+| Tunanetra | Text-to-Speech, ARIA Labels, Screen Reader Support |
+| Tunarungu | Captionable Content, Visual-first Learning UI |
+| Disabilitas Daksa | Full Keyboard Navigation, Large Click Area |
+| Disabilitas Kognitif Ringan | Plain Language Content, Micro-Learning |
+
+---
+
+## ⭐ Fitur Utama Finable (MVP)
+
+### 1️⃣ Adaptive Accessibility Profiling
+Platform menyesuaikan UI dan konten sesuai profil aksesibilitas pengguna:
+- High Contrast Mode
+- Ukuran font dinamis
+- State management preferensi
+- Struktur semantik untuk screen reader
+
+---
+
+### 2️⃣ AI Assistant — **OWI (Open Wisdom Intelligence)**
+Asisten konsultan investasi berbasis **RAG**:
+- Bahasa sederhana & edukatif
+- Voice Input & Text-to-Speech Output
+- Chat history per sesi pembelajaran
+- Referensi valid dari regulasi OJK & materi literasi resmi
+
+> ❗ Fokus edukasi → **bukan** platform transaksi investasi
+
+---
+
+### 3️⃣ Micro-Learning Adaptif
+Modul singkat berbasis multi-modal:
+- Fundamental keuangan & investasi pemula
+- Audio Learning Support
+- Progress tracking
+
+---
+
+### 4️⃣ Simulasi Investasi Sederhana
+- Kalkulator pertumbuhan aset jangka panjang
+- Grafik kontras tinggi
+- Alt-text deskriptif otomatis
+- Tidak mengandung aksi jual-beli
+
+---
+
+## 🔐 Prinsip Aksesibilitas — Mengacu WCAG 2.2
+
+| Pilar Aksesibilitas | Implementasi |
+|---|---|
+| Perceivable | Audio, kontras warna tinggi, caption |
+| Operable | Full keyboard navigation |
+| Understandable | Plain language + icon clarity |
+| Robust | ARIA support & screen reader friendly |
+
+---
+
+## 🎨 System Design — Inclusive UI/UX
+
+### 🎨 Palet Warna Aksesibel
+
+| Warna | Hex | Peran UI | Aksesibilitas |
+|------|-----|----------|--------------|
+| Finable Deep Blue | `#003366` | Primary | AAA ✔ |
+| Emerald Green | `#009B72` | Akzent edukasi keuangan | AA ✔ |
+| Soft White | `#F5F5F5` | Background | High contrast ✔ |
+| Dark Charcoal | `#1A1A1A` | Teks utama | AAA ✔ |
+| Golden Yellow | `#FFC845` | OWI Identity Highlight | Aksen visual |
+
+> Prinsip: Warna **tidak menjadi indikator tunggal** dalam penyampaian informasi
+
+---
+
+### ✍️ Tipografi
+
+| Kebutuhan | Font | Keunggulan |
+|----------|------|------------|
+| Heading | **Atkinson Hyperlegible** | Dibuat khusus untuk low-vision & disleksia |
+| Body | **Roboto / Source Sans Pro** | Keterbacaan tinggi |
+| Data Keuangan | **Inter** | Angka mudah dibaca |
+
+Standar akses UX:
+- Body font minimum **16px**
+- Line-height **1.5–1.7**
+- Hindari italic panjang & tight spacing
+
+---
+
+### 🧭 Navigasi & Layout
+✔ Focus indicator jelas  
+✔ ARIA role & label lengkap  
+✔ Button minimum **44×44 px**  
+✔ Breadcrumb onboarding  
+✔ Ikon disertai label teks  
+✔ Bentuk komponen rounded (tidak menusuk visual)
+
+---
+
+### ♿ Mode Aksesibilitas Opsional
+| Mode | Deskripsi Implementasi |
+|------|-----------------------|
+| High Contrast | Untuk low vision |
+| Screen Reader Mode | Alt-text + ARIA lengkap |
+| Dyslexic-Friendly Mode | Hyperlegible spacing |
+| Audio Learning Mode | Materi otomatis menjadi audio |
+| Sign Language Support | BISINDO untuk konten video |
+| Reduced Motion | Animasi direduksi |
+
+---
+
+## 🦉 Filosofi Maskot — **OWI (Owl Investment Assistant)**
+| Elemen | Makna |
+|--------|------|
+| Burung Hantu (Owl) | Kebijaksanaan & kemampuan melihat dalam gelap (tantangan finansial) |
+| Mata besar | Analisis dan perhatian pada detail |
+| AI Asisten | Pemandu investasi yang sabar, inklusif & adaptif |
+| Ability & Vision | Semua orang mampu merencanakan masa depan finansial |
+
+> **OWI membantu pengguna "melihat" peluang investasi yang sebelumnya tidak terlihat.**
+
+---
+
+## 💻 Teknologi Pendukung
+- **Next.js 14+** (App Router)
+- **Tailwind CSS**
+- **Supabase** — autentikasi & data
+- **Google GenAI / OpenAI SDK**
+- **RAG Architecture**
+- Deployment: **Vercel**
+
+---
+
+## 🚧 Batasan Produk (MVP)
+- Tidak menyelenggarakan transaksi jual-beli instrumen investasi
+- Tidak memberikan jaminan keuntungan
+- Fitur audio memerlukan koneksi internet dan izin mikrofon
+
+---
+
+## 🌱 Dampak Sosial
+Finable mendorong:
+- Kemandirian finansial bagi penyandang disabilitas
+- Inklusi keuangan nasional
+- Pencegahan misinformasi finansial
+- Kontribusi terhadap **SDGs: Reduced Inequalities**
+
+---
+
+> **Finable hadir bukan untuk keuntungan semata — tetapi untuk memperjuangkan kesetaraan dalam akses literasi investasi. Karena setiap orang berhak cerdas secara finansial.** 🟦🟩🤝
