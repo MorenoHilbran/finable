@@ -136,7 +136,7 @@ Standar akses UX:
 Finable menggunakan relational database (PostgreSQL) yang dikelola melalui Supabase untuk memastikan data pengguna, pembelajaran, dan interaksi AI tersimpan secara aman, terstruktur, dan mudah dikembangkan.
 
 ### 📘 Entity Relationship Diagram (ERD)
-<img width="750" alt="Financial Literacy Learning-2025-12-21-172307" src="https://github.com/user-attachments/assets/19c0c07a-882a-4135-9c7c-45d684428af4" />
+<img width="900" alt="Financial Literacy Learning-2025-12-21-172307" src="https://github.com/user-attachments/assets/19c0c07a-882a-4135-9c7c-45d684428af4" />
 
 ### 🧩 Penjelasan Entitas
 👤 USERS
@@ -149,6 +149,7 @@ Finable menggunakan relational database (PostgreSQL) yang dikelola melalui Supab
 | disability_type       | string   |     | Jenis disabilitas pengguna                         |
 | accessibility_profile | string   |     | Preferensi aksesibilitas (TTS, high contrast, dll) |
 | created_at            | datetime |     | Waktu pembuatan akun                               |
+
 Menyimpan data inti pengguna dan profil aksesibilitas, yang menjadi dasar adaptasi UI, konten, dan interaksi OWI.
 
 📊 FINANCIAL_ASSESSMENT
@@ -160,6 +161,7 @@ Menyimpan data inti pengguna dan profil aksesibilitas, yang menjadi dasar adapta
 | risk_profile    | string   |     | Profil risiko investasi   |
 | readiness_score | int      |     | Skor kesiapan investasi   |
 | created_at      | datetime |     | Waktu asesmen dilakukan   |
+
 Menyimpan hasil asesmen kesiapan finansial pengguna (literasi, risiko, dan readiness score).
 Digunakan untuk:
 - Menentukan jalur pembelajaran
@@ -173,6 +175,7 @@ Digunakan untuk:
 | difficulty_level | string |     | Level kesulitan (basic, intermediate, advanced) |
 | content_type     | string |     | Tipe konten (text, audio, visual)               |
 | description      | text   |     | Deskripsi materi modul                          |
+
 Berisi modul micro-learning investasi inklusif (teks, audio, visual).
 
 📈 USER_PROGRESS
@@ -184,6 +187,7 @@ Berisi modul micro-learning investasi inklusif (teks, audio, visual).
 | completed           | boolean  |     | Status penyelesaian modul            |
 | progress_percentage | int      |     | Persentase progres belajar           |
 | updated_at          | datetime |     | Terakhir update progres              |
+
 Tabel penghubung (many-to-many) antara pengguna dan modul:
 - Tracking progres belajar
 - Adaptive learning path
@@ -196,6 +200,7 @@ Tabel penghubung (many-to-many) antara pengguna dan modul:
 | user_message | text     |     | Pesan dari pengguna     |
 | owi_response | text     |     | Respons AI OWI          |
 | created_at   | datetime |     | Waktu interaksi         |
+
 Menyimpan riwayat interaksi pengguna dengan OWI AI Assistant:
 - Personalisasi pembelajaran
 - Evaluasi kualitas respons AI
@@ -211,6 +216,7 @@ Menyimpan riwayat interaksi pengguna dengan OWI AI Assistant:
 | duration_month   | int      |     | Durasi simulasi (bulan)    |
 | estimated_return | float    |     | Estimasi hasil investasi   |
 | created_at       | datetime |     | Waktu simulasi dibuat      |
+
 Menyimpan simulasi edukatif (non-transaksional):
 - Perhitungan pertumbuhan aset
 - Visualisasi risiko & return
