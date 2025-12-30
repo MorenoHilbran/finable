@@ -140,30 +140,78 @@ Finable menggunakan relational database (PostgreSQL) yang dikelola melalui Supab
 
 ### 🧩 Penjelasan Entitas
 👤 USERS
-- Menyimpan data inti pengguna dan profil aksesibilitas, yang menjadi dasar adaptasi UI, konten, dan interaksi OWI.
+| Field                 | Type     | Key | Description                                        |
+| --------------------- | -------- | --- | -------------------------------------------------- |
+| user_id               | int      | PK  | Unique identifier pengguna                         |
+| full_name             | string   |     | Nama lengkap pengguna                              |
+| email                 | string   |     | Email pengguna (unique)                            |
+| password_hash         | string   |     | Hash password pengguna                             |
+| disability_type       | string   |     | Jenis disabilitas pengguna                         |
+| accessibility_profile | string   |     | Preferensi aksesibilitas (TTS, high contrast, dll) |
+| created_at            | datetime |     | Waktu pembuatan akun                               |
+Menyimpan data inti pengguna dan profil aksesibilitas, yang menjadi dasar adaptasi UI, konten, dan interaksi OWI.
 
 📊 FINANCIAL_ASSESSMENT
-- Menyimpan hasil asesmen kesiapan finansial pengguna (literasi, risiko, dan readiness score).
-- Digunakan untuk:
+| Field           | Type     | Key | Description               |
+| --------------- | -------- | --- | ------------------------- |
+| assessment_id   | int      | PK  | ID asesmen finansial      |
+| user_id         | int      | FK  | Relasi ke USERS.user_id   |
+| financial_level | string   |     | Tingkat literasi keuangan |
+| risk_profile    | string   |     | Profil risiko investasi   |
+| readiness_score | int      |     | Skor kesiapan investasi   |
+| created_at      | datetime |     | Waktu asesmen dilakukan   |
+Menyimpan hasil asesmen kesiapan finansial pengguna (literasi, risiko, dan readiness score).
+Digunakan untuk:
 - Menentukan jalur pembelajaran
 - Menyesuaikan bahasa & kompleksitas AI
 
 📚 LEARNING_MODULES
-- Berisi modul micro-learning investasi inklusif (teks, audio, visual).
+| Field            | Type   | Key | Description                                     |
+| ---------------- | ------ | --- | ----------------------------------------------- |
+| module_id        | int    | PK  | ID modul pembelajaran                           |
+| title            | string |     | Judul modul                                     |
+| difficulty_level | string |     | Level kesulitan (basic, intermediate, advanced) |
+| content_type     | string |     | Tipe konten (text, audio, visual)               |
+| description      | text   |     | Deskripsi materi modul                          |
+Berisi modul micro-learning investasi inklusif (teks, audio, visual).
 
 📈 USER_PROGRESS
-- Tabel penghubung (many-to-many) antara pengguna dan modul:
+| Field               | Type     | Key | Description                          |
+| ------------------- | -------- | --- | ------------------------------------ |
+| progress_id         | int      | PK  | ID progres pembelajaran              |
+| user_id             | int      | FK  | Relasi ke USERS.user_id              |
+| module_id           | int      | FK  | Relasi ke LEARNING_MODULES.module_id |
+| completed           | boolean  |     | Status penyelesaian modul            |
+| progress_percentage | int      |     | Persentase progres belajar           |
+| updated_at          | datetime |     | Terakhir update progres              |
+Tabel penghubung (many-to-many) antara pengguna dan modul:
 - Tracking progres belajar
 - Adaptive learning path
 
 🦉 OWI_CHAT_HISTORY
-- Menyimpan riwayat interaksi pengguna dengan OWI AI Assistant:
+| Field        | Type     | Key | Description             |
+| ------------ | -------- | --- | ----------------------- |
+| chat_id      | int      | PK  | ID percakapan           |
+| user_id      | int      | FK  | Relasi ke USERS.user_id |
+| user_message | text     |     | Pesan dari pengguna     |
+| owi_response | text     |     | Respons AI OWI          |
+| created_at   | datetime |     | Waktu interaksi         |
+Menyimpan riwayat interaksi pengguna dengan OWI AI Assistant:
 - Personalisasi pembelajaran
 - Evaluasi kualitas respons AI
 - Context memory untuk RAG
 
 💰 INVESTMENT_SIMULATION
-- Menyimpan simulasi edukatif (non-transaksional):
+| Field            | Type     | Key | Description                |
+| ---------------- | -------- | --- | -------------------------- |
+| simulation_id    | int      | PK  | ID simulasi investasi      |
+| user_id          | int      | FK  | Relasi ke USERS.user_id    |
+| investment_type  | string   |     | Jenis investasi (edukatif) |
+| monthly_amount   | float    |     | Nominal investasi bulanan  |
+| duration_month   | int      |     | Durasi simulasi (bulan)    |
+| estimated_return | float    |     | Estimasi hasil investasi   |
+| created_at       | datetime |     | Waktu simulasi dibuat      |
+Menyimpan simulasi edukatif (non-transaksional):
 - Perhitungan pertumbuhan aset
 - Visualisasi risiko & return
 
