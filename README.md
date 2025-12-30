@@ -85,11 +85,22 @@ Modul singkat berbasis multi-modal:
 
 | Warna | Hex | Peran UI | Aksesibilitas |
 |------|-----|----------|--------------|
-| Finable Deep Blue | `#003366` | Primary | AAA ✔ |
-| Emerald Green | `#009B72` | Akzent edukasi keuangan | AA ✔ |
-| Soft White | `#F5F5F5` | Background | High contrast ✔ |
-| Dark Charcoal | `#1A1A1A` | Teks utama | AAA ✔ |
-| Golden Yellow | `#FFC845` | OWI Identity Highlight | Aksen visual |
+| **Blue & Purple Group** | | | |
+| Brand Dark Blue | `#0D2861` | Primary Brand, Headings | AAA ✔ |
+| Brand Cyan | `#48BDD0` | Accent, Links, Highlights | AA ✔ |
+| Brand Plum | `#4D1143` | Secondary Gradient | AA ✔ |
+| **Pink/Magenta Group** | | | |
+| Brand Magenta | `#B8308B` | Interactive Elements | AA ✔ |
+| Brand Pink Dark | `#C0166B` | Emphasis | AA ✔ |
+| Brand Pink Light | `#FF84D2` | Soft Highlights | AA ✔ |
+| **Red & Orange Group** | | | |
+| Brand Red | `#B0183E` | Alerts, Call-to-Action | AAA ✔ |
+| Brand Yellow | `#F2B20C` | Warning, Highlights | AA ✔ |
+| Brand Orange | `#FC6A19` | Gradient Accent | AA ✔ |
+| **Green Group** | | | |
+| Brand Green Dark | `#1F4A2E` | Success, Financial Growth | AAA ✔ |
+| Brand Green | `#46B983` | Positive Actions | AA ✔ |
+| Brand Green Light | `#B0EAA7` | Subtle Backgrounds | High contrast ✔ |
 
 > Prinsip: Warna **tidak menjadi indikator tunggal** dalam penyampaian informasi
 
