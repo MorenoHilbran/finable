@@ -110,9 +110,9 @@ Modul singkat berbasis multi-modal:
 
 | Kebutuhan | Font | Keunggulan |
 |----------|------|------------|
-| Heading | **Atkinson Hyperlegible** | Dibuat khusus untuk low-vision & disleksia |
-| Body | **Roboto / Source Sans Pro** | Keterbacaan tinggi |
-| Data Keuangan | **Inter** | Angka mudah dibaca |
+| Heading | **Poppins** | Dibuat khusus untuk low-vision & disleksia |
+| Body | **Poppins** | Keterbacaan tinggi |
+| Data Keuangan | **Poppins** | Angka mudah dibaca |
 
 Standar akses UX:
 - Body font minimum **16px**
