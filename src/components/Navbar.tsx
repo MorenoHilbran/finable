@@ -7,16 +7,16 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { href: "#features", label: "Fitur" },
-    { href: "#users", label: "Pengguna" },
-    { href: "#accessibility", label: "Aksesibilitas" },
+    { href: "#beranda", label: "Beranda" },
+    { href: "#learning", label: "Belajar" },
+    { href: "#investment", label: "Investasi" },
     { href: "#owi", label: "OWI" },
     { href: "#technology", label: "Teknologi" },
   ];
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm"
+      className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm mt-0"
       role="navigation"
       aria-label="Navigasi utama"
     >

@@ -46,7 +46,7 @@ export default function RootLayout({
     <html lang="id">
       <body className={`${poppins.variable} antialiased`}>
         <a href="#main-content" className="skip-link">
-          Langsung ke konten utama
+          Main Content
         </a>
         {children}
       </body>

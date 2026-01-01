@@ -17,10 +17,10 @@ export default function FeatureCard({
     <article className="card group h-full">
       {/* Icon */}
       <div
-        className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl mb-4 transition-transform group-hover:scale-110"
+        className="w-14 h-14 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
         style={{ background: `${accentColor}20` }}
       >
-        {icon}
+        <img src={icon} alt="" className="w-8 h-8" />
       </div>
 
       {/* Content */}
