@@ -40,27 +40,27 @@ export interface Database {
       users: {
         Row: {
           user_id: number;
+          auth_id: string;
           full_name: string;
           email: string;
-          password_hash: string;
           disability_type: DisabilityType | null;
           accessibility_profile: AccessibilityProfile[] | null;
           created_at: string;
         };
         Insert: {
           user_id?: number;
+          auth_id: string;
           full_name: string;
           email: string;
-          password_hash: string;
           disability_type?: DisabilityType | null;
           accessibility_profile?: AccessibilityProfile[] | null;
           created_at?: string;
         };
         Update: {
           user_id?: number;
+          auth_id?: string;
           full_name?: string;
           email?: string;
-          password_hash?: string;
           disability_type?: DisabilityType | null;
           accessibility_profile?: AccessibilityProfile[] | null;
           created_at?: string;

@@ -45,7 +45,7 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="#cta"
+              href="/login"
               className="btn btn-primary text-sm"
             >
               Mulai Belajar
@@ -105,7 +105,7 @@ export default function Navbar() {
                 </Link>
               ))}
               <Link
-                href="#cta"
+                href="/login"
                 className="btn btn-primary mt-2"
                 onClick={() => setIsMenuOpen(false)}
               >
