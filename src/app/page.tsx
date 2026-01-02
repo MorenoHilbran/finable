@@ -1,15 +1,18 @@
+"use client";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FeatureCard from "@/components/FeatureCard";
 import UserCard from "@/components/UserCard";
-import AccessibilityCard from "@/components/AccessibilityCard";
+import LearningModuleCard from "@/components/LearningModuleCard";
+import Squares from "@/components/Squares";
 import Link from "next/link";
 
 export default function Home() {
   // Feature data from README
   const features = [
     {
-      icon: "🎨",
+      icon: "/icons/adaptive.svg",
       title: "Adaptive Accessibility Profiling",
       description:
         "Platform menyesuaikan UI dan konten sesuai profil aksesibilitas pengguna secara otomatis.",
@@ -22,7 +25,7 @@ export default function Home() {
       accentColor: "var(--brand-cyan)",
     },
     {
-      icon: "🦉",
+      icon: "/icons/owi.svg",
       title: "AI Assistant — OWI",
       description:
         "Asisten konsultan investasi berbasis RAG dengan bahasa sederhana dan edukatif.",
@@ -35,7 +38,7 @@ export default function Home() {
       accentColor: "var(--brand-magenta)",
     },
     {
-      icon: "📚",
+      icon: "/icons/learn.svg",
       title: "Micro-Learning Adaptif",
       description:
         "Modul singkat berbasis multi-modal untuk pembelajaran investasi yang efektif.",
@@ -47,7 +50,7 @@ export default function Home() {
       accentColor: "var(--brand-green)",
     },
     {
-      icon: "📊",
+      icon: "/icons/invest.svg",
       title: "Simulasi Investasi Sederhana",
       description:
         "Kalkulator pertumbuhan aset jangka panjang tanpa aksi jual-beli.",
@@ -63,22 +66,22 @@ export default function Home() {
   // User types from README
   const userTypes = [
     {
-      icon: "👁️",
+      icon: "/icons/tunanetra.svg",
       title: "Tunanetra",
       features: ["Text-to-Speech", "ARIA Labels", "Screen Reader Support"],
     },
     {
-      icon: "👂",
+      icon: "/icons/tunarungu.svg",
       title: "Tunarungu",
       features: ["Captionable Content", "Visual-first Learning UI"],
     },
     {
-      icon: "🦾",
+      icon: "/icons/daksa.svg",
       title: "Disabilitas Daksa",
       features: ["Full Keyboard Navigation", "Large Click Area"],
     },
     {
-      icon: "🧠",
+      icon: "/icons/kognitif.svg",
       title: "Disabilitas Kognitif",
       features: ["Plain Language Content", "Micro-Learning"],
     },
@@ -128,6 +131,46 @@ export default function Home() {
     },
   ];
 
+  // Learning Modules
+  const learningModules = [
+    {
+      category: "Cryptocurrency",
+      title: "Bitcoin & Blockchain Fundamentals",
+      image: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=400&h=300&fit=crop",
+      accentColor: "var(--gradient-red-orange)",
+    },
+    {
+      category: "Saham",
+      title: "Analisis Saham Indonesia untuk Pemula",
+      image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=300&fit=crop",
+      accentColor: "var(--gradient-blue-blue)",
+    },
+    {
+      category: "Emas",
+      title: "Investasi Emas & Logam Mulia",
+      image: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=400&h=300&fit=crop",
+      accentColor: "var(--gradient-green)",
+    },
+    {
+      category: "Reksa Dana",
+      title: "Strategi Reksa Dana Jangka Panjang",
+      image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=300&fit=crop",
+      accentColor: "var(--gradient-pink-magenta)",
+    },
+    {
+      category: "Obligasi",
+      title: "Obligasi & Surat Utang Negara",
+      image: "https://images.unsplash.com/photo-1554224311-beee460ae6fb?w=400&h=300&fit=crop",
+      accentColor: "var(--gradient-cta)",
+    },
+    {
+      category: "Properti",
+      title: "Real Estate Investment Trust (REIT)",
+      image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop",
+      accentColor: "var(--gradient-green)",
+    },
+  ];
+
   // OWI philosophy from README
   const owiPhilosophy = [
     {
@@ -164,18 +207,29 @@ export default function Home() {
 
   return (
     <>
+      {/* Background Squares */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <Squares
+          direction="down"
+          speed={0.5}
+          squareSize={40}
+          borderColor="rgba(13, 40, 97, 0.1)"
+          hoverFillColor="rgba(72, 189, 208, 0.05)"
+        />
+      </div>
+      
       <Navbar />
       <main id="main-content">
         {/* Hero Section */}
         <section
-          className="min-h-screen flex items-center pt-20"
-          style={{ background: "var(--gradient-hero)" }}
+          className="flex items-center pt-5 pb-32 bg-cover bg-center bg-no-repeat bg-white"
+          style={{ backgroundImage: "url(/hero.svg)", minHeight: "125vh" }}
         >
           <div className="container mx-auto px-6">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="text-white">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-sm mb-6">
-                  <span>♿</span>
+                  <span></span>
                   <span>Platform Edukasi Inklusif untuk Semua</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white">
@@ -185,24 +239,24 @@ export default function Home() {
                 <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-xl">
                   Finable adalah platform edukasi investasi yang dirancang khusus
                   untuk penyandang disabilitas. Dengan AI Assistant{" "}
-                  <strong className="text-[var(--brand-pink-light)]">OWI</strong>,
+                  <strong className="bg-gradient-to-r from-[var(--brand-magenta)] to-[var(--brand-pink-light)] bg-clip-text text-transparent font-bold">OWI</strong>,
                   informasi investasi dapat dipahami dengan lebih mudah dan inklusif.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <Link href="#features" className="btn btn-light">
-                    <span>🚀</span>
+                    <span></span>
                     Jelajahi Fitur
                   </Link>
                   <Link
                     href="#owi"
-                    className="btn"
+                    className="btn btn-light"
                     style={{
                       background: "rgba(255,255,255,0.1)",
                       color: "white",
                       border: "2px solid rgba(255,255,255,0.3)",
                     }}
                   >
-                    <span>🦉</span>
+                    <span></span>
                     Kenali OWI
                   </Link>
                 </div>
@@ -255,7 +309,7 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="section bg-gradient-light">
+        <section id="features" className="section bg-gradient-light drop-shadow-xl">
           <div className="container mx-auto px-6">
             <h2 className="section-title">Fitur Utama Finable</h2>
             <p className="section-subtitle">
@@ -298,36 +352,87 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Accessibility Section */}
+        {/* Learning Modules Section */}
         <section
-          id="accessibility"
+          id="learning"
           className="section"
-          style={{ background: "var(--brand-dark-blue)" }}
         >
           <div className="container mx-auto px-6">
-            <h2 className="section-title text-white">
-              Prinsip Aksesibilitas — WCAG 2.2
-            </h2>
-            <p className="section-subtitle text-gray-300">
-              Finable mengimplementasikan standar aksesibilitas web internasional
-              untuk memastikan akses yang setara bagi semua pengguna.
-            </p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {accessibilityPilars.map((pilar, index) => (
-                <AccessibilityCard
-                  key={index}
-                  pilar={pilar.pilar}
-                  title={pilar.title}
-                  implementations={pilar.implementations}
-                  color={pilar.color}
-                />
-              ))}
+            <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold mb-2">
+                  Take your <span style={{ color: "#FF6B4A" }}>knowledge</span>
+                </h2>
+                <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: "var(--brand-dark-blue)" }}>
+                  a degree further
+                </h2>
+                <p className="text-gray-600 max-w-md">
+                  Make education work for you with flexible online courses from leading schools.
+                </p>
+              </div>
+              
+              {/* Navigation Controls */}
+              <div className="flex items-center gap-4">
+                {/* Filter Buttons */}
+                <div className="flex gap-2">
+                  <button className="px-4 py-2 rounded-full text-sm font-medium bg-[var(--brand-dark-blue)] text-white">
+                    New courses (12)
+                  </button>
+                  <button className="px-4 py-2 rounded-full text-sm font-medium border-2 border-[var(--brand-dark-blue)]  text-gray-700 hover:bg-gray-50">
+                    Recommended (8)
+                  </button>
+                  <button className="px-4 py-2 rounded-full text-sm font-medium border-2 border-[var(--brand-dark-blue)]  text-gray-700 hover:bg-gray-50">
+                    Most popular (22)
+                  </button>
+                </div>
+                
+                {/* Slider Navigation */}
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => {
+                      const slider = document.getElementById('learning-slider');
+                      const cardWidth = 360; // 320px card + 24px gap + 16px padding
+                      if (slider) slider.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+                    }}
+                    className="w-10 h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
+                  >
+                    <img src="/icons/Left circle.svg" alt="Previous" className="w-10 h-10" />
+                  </button>
+                  <span className="text-sm text-gray-600 min-w-[40px] text-center">1/6</span>
+                  <button
+                    onClick={() => {
+                      const slider = document.getElementById('learning-slider');
+                      const cardWidth = 360; // 320px card + 24px gap + 16px padding
+                      if (slider) slider.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                    }}
+                    className="w-10 h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
+                  >
+                    <img src="/icons/Right circle.svg" alt="Next" className="w-10 h-10" />
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            {/* Slider Container */}
+            <div className="relative overflow-hidden py-10">
+              <div id="learning-slider" className="flex gap-6 overflow-x-scroll pb-4 snap-x snap-mandatory scrollbar-hide">
+                {learningModules.map((module, index) => (
+                  <div key={index} className="mt-5 flex-none w-[calc(33.333%-16px)] min-w-[320px] snap-start ">
+                    <LearningModuleCard
+                      category={module.category}
+                      title={module.title}
+                      image={module.image}
+                      accentColor={module.accentColor}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
         {/* OWI Section */}
-        <section id="owi" className="section bg-gradient-light">
+        <section id="owi" className="section bg-gradient-light drop-shadow-xl">
           <div className="container mx-auto px-6">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
@@ -402,38 +507,6 @@ export default function Home() {
                   >
                     {tech.name}
                   </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Impact Section */}
-        <section
-          id="impact"
-          className="section"
-          style={{ background: "linear-gradient(135deg, #1F4A2E 0%, #46B983 100%)" }}
-        >
-          <div className="container mx-auto px-6 text-center">
-            <h2 className="section-title text-white">Dampak Sosial</h2>
-            <p className="section-subtitle text-gray-200">
-              Finable berkontribusi pada SDGs: Reduced Inequalities
-            </p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-              {[
-                { icon: "💪", title: "Kemandirian Finansial", desc: "Bagi penyandang disabilitas" },
-                { icon: "🌍", title: "Inklusi Keuangan", desc: "Nasional yang merata" },
-                { icon: "🛡️", title: "Pencegahan", desc: "Misinformasi finansial" },
-                { icon: "🎯", title: "SDGs Goal 10", desc: "Reduced Inequalities" },
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="p-6 rounded-xl text-center"
-                  style={{ background: "rgba(255,255,255,0.1)" }}
-                >
-                  <div className="text-4xl mb-3">{item.icon}</div>
-                  <h3 className="text-white font-semibold mb-1">{item.title}</h3>
-                  <p className="text-gray-200 text-sm">{item.desc}</p>
                 </div>
               ))}
             </div>

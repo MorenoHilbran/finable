@@ -8,7 +8,9 @@ export default function UserCard({ icon, title, features }: UserCardProps) {
   return (
     <article className="card text-center h-full">
       {/* Icon */}
-      <div className="text-4xl mb-4">{icon}</div>
+      <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+        <img src={icon} alt="" className="w-12 h-12" />
+      </div>
 
       {/* Title */}
       <h3
@@ -25,7 +27,7 @@ export default function UserCard({ icon, title, features }: UserCardProps) {
             key={index}
             className="px-3 py-1 text-xs font-medium rounded-full"
             style={{
-              background: "var(--brand-cyan)",
+              background: "var(--brand-green)",
               color: "white",
             }}
           >
