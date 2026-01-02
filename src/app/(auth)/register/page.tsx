@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { signup } from "../actions";
+import Squares from "@/components/Squares";
 
 const disabilityOptions = [
   { value: "", label: "Pilih tipe disabilitas (opsional)" },
@@ -13,12 +14,12 @@ const disabilityOptions = [
 ];
 
 const accessibilityOptions = [
-  { value: "high_contrast", label: "🎨 High Contrast Mode" },
-  { value: "screen_reader", label: "🔊 Screen Reader" },
-  { value: "dyslexic_friendly", label: "📖 Dyslexic Friendly" },
-  { value: "audio_learning", label: "🎧 Audio Learning" },
-  { value: "sign_language", label: "🤟 Sign Language" },
-  { value: "reduced_motion", label: "🚫 Reduced Motion" },
+  { value: "high_contrast", label: "🎨 High Contrast", icon: "🎨" },
+  { value: "screen_reader", label: "🔊 Screen Reader", icon: "🔊" },
+  { value: "dyslexic_friendly", label: "📖 Dyslexic Friendly", icon: "📖" },
+  { value: "audio_learning", label: "🎧 Audio Learning", icon: "🎧" },
+  { value: "sign_language", label: "🤟 Sign Language", icon: "🤟" },
+  { value: "reduced_motion", label: "🚫 Reduced Motion", icon: "🚫" },
 ];
 
 export default function RegisterPage() {
@@ -69,42 +70,60 @@ export default function RegisterPage() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-6 py-12"
-      style={{ background: "var(--gradient-hero)" }}
+      className="min-h-screen flex items-center justify-center px-6 py-12 relative overflow-hidden bg-white"
     >
-      <div className="w-full max-w-md">
+      {/* Animated Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <Squares
+          direction="diagonal"
+          speed={0.4}
+          squareSize={45}
+          borderColor="rgba(13, 40, 97, 0.06)"
+          hoverFillColor="rgba(72, 189, 208, 0.08)"
+        />
+      </div>
+
+      <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center justify-center gap-2 text-2xl font-bold text-white mb-8"
+          className="flex items-center justify-center gap-2 text-2xl font-bold mb-6 group"
+          style={{ color: "var(--brand-dark-blue)" }}
         >
-          <span className="text-3xl">💡</span>
+          <span className="text-3xl group-hover:scale-110 transition-transform">💡</span>
           <span>FINABLE</span>
         </Link>
 
         {/* Register Card */}
-        <div className="card max-h-[80vh] overflow-y-auto">
-          <h1
-            className="text-2xl font-bold text-center mb-2"
-            style={{ color: "var(--brand-dark-blue)" }}
-          >
-            Buat Akun Baru
-          </h1>
-          <p className="text-center text-gray-600 mb-6">
-            Mulai perjalanan literasi investasi Anda
-          </p>
+        <div className="card bg-white/95 backdrop-blur-md shadow-2xl max-h-[85vh] overflow-y-auto">
+          {/* Header with Mascot */}
+          <div className="text-center mb-6">
+            <div className="inline-block relative mb-3">
+              <div className="text-5xl animate-float" style={{ animationDuration: "3s" }}>🦉</div>
+            </div>
+            <h1
+              className="text-2xl font-bold mb-2"
+              style={{ color: "var(--brand-dark-blue)" }}
+            >
+              Buat Akun Baru
+            </h1>
+            <p className="text-gray-600">
+              Mulai perjalanan literasi investasi Anda
+            </p>
+          </div>
 
           {/* Error Message */}
           {error && (
             <div
-              className="p-4 rounded-xl mb-6 text-center"
+              className="p-4 rounded-xl mb-6 text-center flex items-center justify-center gap-2"
               style={{
-                background: "rgba(176, 24, 62, 0.1)",
+                background: "linear-gradient(135deg, rgba(176, 24, 62, 0.1) 0%, rgba(252, 106, 25, 0.05) 100%)",
                 color: "var(--brand-red)",
+                border: "1px solid rgba(176, 24, 62, 0.2)",
               }}
             >
-              <span className="text-lg mr-2">⚠️</span>
-              {error}
+              <span className="text-lg">⚠️</span>
+              <span>{error}</span>
             </div>
           )}
 
@@ -124,7 +143,7 @@ export default function RegisterPage() {
                 type="text"
                 required
                 placeholder="Masukkan nama lengkap"
-                className="w-full px-4 py-3 rounded-xl border-2 transition-colors focus:outline-none"
+                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20"
                 style={{
                   borderColor: "var(--border)",
                   color: "var(--brand-dark-blue)",
@@ -147,7 +166,7 @@ export default function RegisterPage() {
                 type="email"
                 required
                 placeholder="nama@email.com"
-                className="w-full px-4 py-3 rounded-xl border-2 transition-colors focus:outline-none"
+                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20"
                 style={{
                   borderColor: "var(--border)",
                   color: "var(--brand-dark-blue)",
@@ -167,7 +186,7 @@ export default function RegisterPage() {
               <select
                 id="disabilityType"
                 name="disabilityType"
-                className="w-full px-4 py-3 rounded-xl border-2 transition-colors focus:outline-none bg-white"
+                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20 bg-white"
                 style={{
                   borderColor: "var(--border)",
                   color: "var(--brand-dark-blue)",
@@ -184,7 +203,7 @@ export default function RegisterPage() {
             {/* Accessibility Profile */}
             <div>
               <label
-                className="block text-sm font-medium mb-2"
+                className="block text-sm font-medium mb-3"
                 style={{ color: "var(--brand-dark-blue)" }}
               >
                 Preferensi Aksesibilitas (opsional)
@@ -195,15 +214,20 @@ export default function RegisterPage() {
                     key={option.value}
                     type="button"
                     onClick={() => toggleAccessibility(option.value)}
-                    className="p-3 rounded-xl border-2 text-left text-sm transition-all"
+                    className="p-3 rounded-xl border-2 text-left text-sm transition-all hover:scale-[1.02]"
                     style={{
                       borderColor: selectedAccessibility.includes(option.value)
                         ? "var(--brand-cyan)"
                         : "var(--border)",
                       background: selectedAccessibility.includes(option.value)
-                        ? "rgba(72, 189, 208, 0.1)"
+                        ? "linear-gradient(135deg, rgba(72, 189, 208, 0.15) 0%, rgba(70, 185, 131, 0.1) 100%)"
                         : "white",
-                      color: "var(--brand-dark-blue)",
+                      color: selectedAccessibility.includes(option.value)
+                        ? "var(--brand-cyan)"
+                        : "var(--brand-dark-blue)",
+                      boxShadow: selectedAccessibility.includes(option.value)
+                        ? "0 4px 12px rgba(72, 189, 208, 0.15)"
+                        : "none",
                     }}
                   >
                     {option.label}
@@ -227,7 +251,7 @@ export default function RegisterPage() {
                 type="password"
                 required
                 placeholder="Minimal 6 karakter"
-                className="w-full px-4 py-3 rounded-xl border-2 transition-colors focus:outline-none"
+                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20"
                 style={{
                   borderColor: "var(--border)",
                   color: "var(--brand-dark-blue)",
@@ -250,7 +274,7 @@ export default function RegisterPage() {
                 type="password"
                 required
                 placeholder="Ulangi password"
-                className="w-full px-4 py-3 rounded-xl border-2 transition-colors focus:outline-none"
+                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20"
                 style={{
                   borderColor: "var(--border)",
                   color: "var(--brand-dark-blue)",
@@ -262,7 +286,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="btn btn-primary w-full mt-6"
+              className="btn btn-primary w-full mt-6 hover:scale-[1.02] transition-all"
               style={{ opacity: isLoading ? 0.7 : 1 }}
             >
               {isLoading ? (
@@ -284,7 +308,7 @@ export default function RegisterPage() {
             Sudah punya akun?{" "}
             <Link
               href="/login"
-              className="font-semibold transition-colors hover:underline"
+              className="font-semibold transition-all hover:underline"
               style={{ color: "var(--brand-cyan)" }}
             >
               Masuk di sini
@@ -296,9 +320,11 @@ export default function RegisterPage() {
         <p className="text-center mt-6">
           <Link
             href="/"
-            className="text-white/80 hover:text-white transition-colors text-sm"
+            className="transition-colors text-sm inline-flex items-center gap-2 hover:gap-3"
+            style={{ color: "var(--brand-cyan)" }}
           >
-            ← Kembali ke Beranda
+            <span>←</span>
+            <span>Kembali ke Beranda</span>
           </Link>
         </p>
       </div>

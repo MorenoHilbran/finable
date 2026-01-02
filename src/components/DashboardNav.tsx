@@ -54,8 +54,8 @@ export default function DashboardNav() {
     <>
       {/* Sidebar */}
       <aside
-        className="fixed left-0 top-16 bottom-0 w-64 bg-white shadow-sm overflow-y-auto hidden md:block"
-        style={{ borderRight: "1px solid var(--border)" }}
+        className="fixed left-0 top-16 bottom-0 w-64 bg-white/80 backdrop-blur-md shadow-lg overflow-y-auto hidden md:block"
+        style={{ borderRight: "1px solid rgba(226, 232, 240, 0.8)" }}
       >
         <nav className="p-4">
           <ul className="space-y-2">
@@ -169,8 +169,8 @@ export default function DashboardNav() {
 
       {/* Mobile Bottom Navigation */}
       <nav
-        className="fixed bottom-0 left-0 right-0 bg-white shadow-lg md:hidden z-50"
-        style={{ borderTop: "1px solid var(--border)" }}
+        className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow-lg md:hidden z-50"
+        style={{ borderTop: "1px solid rgba(226, 232, 240, 0.8)" }}
       >
         <div className="flex justify-around items-center h-16">
           {sidebarLinks.slice(0, 3).map((link) => {

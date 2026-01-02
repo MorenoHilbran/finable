@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { login } from "../actions";
+import Squares from "@/components/Squares";
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
@@ -25,21 +26,40 @@ export default function LoginPage() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-6 py-12"
-      style={{ background: "var(--gradient-hero)" }}
+      className="min-h-screen flex items-center justify-center px-6 py-12 relative overflow-hidden bg-white"
     >
-      <div className="w-full max-w-md">
+      {/* Animated Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <Squares
+          direction="diagonal"
+          speed={0.4}
+          squareSize={45}
+          borderColor="rgba(13, 40, 97, 0.06)"
+          hoverFillColor="rgba(72, 189, 208, 0.08)"
+        />
+      </div>
+
+      <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center justify-center gap-2 text-2xl font-bold text-white mb-8"
+          className="flex items-center justify-center gap-2 text-2xl font-bold mb-8 group"
+          style={{ color: "var(--brand-dark-blue)" }}
         >
-          <span className="text-3xl">💡</span>
-          <span>FINABLE</span>
+          <span className="text-3xl group-hover:scale-110 transition-transform">💡</span>
+          <span className="bg-clip-text">FINABLE</span>
         </Link>
 
+        {/* Mascot */}
+        <div className="flex justify-center mb-6">
+          <div className="relative">
+            <div className="text-6xl animate-float" style={{ animationDuration: "3s" }}>🦉</div>
+            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-12 h-3 bg-black/20 rounded-full blur-sm" />
+          </div>
+        </div>
+
         {/* Login Card */}
-        <div className="card">
+        <div className="card bg-white/95 backdrop-blur-md shadow-2xl">
           <h1
             className="text-2xl font-bold text-center mb-2"
             style={{ color: "var(--brand-dark-blue)" }}
@@ -53,28 +73,30 @@ export default function LoginPage() {
           {/* Success Message */}
           {registered && (
             <div
-              className="p-4 rounded-xl mb-6 text-center"
+              className="p-4 rounded-xl mb-6 text-center flex items-center justify-center gap-2"
               style={{
-                background: "rgba(70, 185, 131, 0.1)",
+                background: "linear-gradient(135deg, rgba(70, 185, 131, 0.15) 0%, rgba(72, 189, 208, 0.1) 100%)",
                 color: "var(--brand-green)",
+                border: "1px solid rgba(70, 185, 131, 0.3)",
               }}
             >
-              <span className="text-lg mr-2">✅</span>
-              Registrasi berhasil! Silakan masuk dengan akun Anda.
+              <span className="text-lg">✅</span>
+              <span>Registrasi berhasil! Silakan masuk.</span>
             </div>
           )}
 
           {/* Error Message */}
           {error && (
             <div
-              className="p-4 rounded-xl mb-6 text-center"
+              className="p-4 rounded-xl mb-6 text-center flex items-center justify-center gap-2"
               style={{
-                background: "rgba(176, 24, 62, 0.1)",
+                background: "linear-gradient(135deg, rgba(176, 24, 62, 0.1) 0%, rgba(252, 106, 25, 0.05) 100%)",
                 color: "var(--brand-red)",
+                border: "1px solid rgba(176, 24, 62, 0.2)",
               }}
             >
-              <span className="text-lg mr-2">⚠️</span>
-              {error}
+              <span className="text-lg">⚠️</span>
+              <span>{error}</span>
             </div>
           )}
 
@@ -94,7 +116,7 @@ export default function LoginPage() {
                 type="email"
                 required
                 placeholder="nama@email.com"
-                className="w-full px-4 py-3 rounded-xl border-2 transition-colors focus:outline-none"
+                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20"
                 style={{
                   borderColor: "var(--border)",
                   color: "var(--brand-dark-blue)",
@@ -117,7 +139,7 @@ export default function LoginPage() {
                 type="password"
                 required
                 placeholder="••••••••"
-                className="w-full px-4 py-3 rounded-xl border-2 transition-colors focus:outline-none"
+                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20"
                 style={{
                   borderColor: "var(--border)",
                   color: "var(--brand-dark-blue)",
@@ -129,7 +151,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="btn btn-primary w-full mt-6"
+              className="btn btn-primary w-full mt-6 hover:scale-[1.02] transition-all"
               style={{ opacity: isLoading ? 0.7 : 1 }}
             >
               {isLoading ? (
@@ -151,7 +173,7 @@ export default function LoginPage() {
             Belum punya akun?{" "}
             <Link
               href="/register"
-              className="font-semibold transition-colors hover:underline"
+              className="font-semibold transition-all hover:underline"
               style={{ color: "var(--brand-cyan)" }}
             >
               Daftar sekarang
@@ -163,9 +185,11 @@ export default function LoginPage() {
         <p className="text-center mt-6">
           <Link
             href="/"
-            className="text-white/80 hover:text-white transition-colors text-sm"
+            className="transition-colors text-sm inline-flex items-center gap-2 hover:gap-3"
+            style={{ color: "var(--brand-cyan)" }}
           >
-            ← Kembali ke Beranda
+            <span>←</span>
+            <span>Kembali ke Beranda</span>
           </Link>
         </p>
       </div>
