@@ -234,12 +234,12 @@ export default function Home() {
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white">
                   Literasi Investasi{" "}
-                  <span className="text-[var(--brand-cyan)]">Tanpa Batas</span>
+                  <span className="text-(--brand-cyan)">Tanpa Batas</span>
                 </h1>
                 <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-xl">
                   Finable adalah platform edukasi investasi yang dirancang khusus
                   untuk penyandang disabilitas. Dengan AI Assistant{" "}
-                  <strong className="bg-gradient-to-r from-[var(--brand-magenta)] to-[var(--brand-pink-light)] bg-clip-text text-transparent font-bold">OWI</strong>,
+                  <strong className="bg-linear-to-r from-(--brand-magenta) to-(--brand-pink-light) bg-clip-text text-transparent font-bold">OWI</strong>,
                   informasi investasi dapat dipahami dengan lebih mudah dan inklusif.
                 </p>
                 <div className="flex flex-wrap gap-4">
@@ -264,19 +264,19 @@ export default function Home() {
                 {/* Stats */}
                 <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-white/20">
                   <div>
-                    <div className="text-3xl font-bold text-[var(--brand-cyan)]">
+                    <div className="text-3xl font-bold text-(--brand-cyan)">
                       4+
                     </div>
                     <div className="text-sm text-gray-300">Tipe Disabilitas</div>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold text-[var(--brand-green-light)]">
+                    <div className="text-3xl font-bold text-(--brand-green-light)">
                       WCAG
                     </div>
                     <div className="text-sm text-gray-300">2.2 Compliant</div>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold text-[var(--brand-pink-light)]">
+                    <div className="text-3xl font-bold text-(--brand-pink-light)">
                       AI
                     </div>
                     <div className="text-sm text-gray-300">Powered by OWI</div>
@@ -375,13 +375,13 @@ export default function Home() {
               <div className="flex items-center gap-4">
                 {/* Filter Buttons */}
                 <div className="flex gap-2">
-                  <button className="px-4 py-2 rounded-full text-sm font-medium bg-[var(--brand-dark-blue)] text-white">
+                  <button className="px-4 py-2 rounded-full text-sm font-medium bg-(--brand-dark-blue) text-white">
                     New courses (12)
                   </button>
-                  <button className="px-4 py-2 rounded-full text-sm font-medium border-2 border-[var(--brand-dark-blue)]  text-gray-700 hover:bg-gray-50">
+                  <button className="px-4 py-2 rounded-full text-sm font-medium border-2 border-(--brand-dark-blue)  text-gray-700 hover:bg-gray-50">
                     Recommended (8)
                   </button>
-                  <button className="px-4 py-2 rounded-full text-sm font-medium border-2 border-[var(--brand-dark-blue)]  text-gray-700 hover:bg-gray-50">
+                  <button className="px-4 py-2 rounded-full text-sm font-medium border-2 border-(--brand-dark-blue)  text-gray-700 hover:bg-gray-50">
                     Most popular (22)
                   </button>
                 </div>
@@ -398,7 +398,7 @@ export default function Home() {
                   >
                     <img src="/icons/Left circle.svg" alt="Previous" className="w-10 h-10" />
                   </button>
-                  <span className="text-sm text-gray-600 min-w-[40px] text-center">1/6</span>
+                  <span className="text-sm text-gray-600 min-w-10 text-center">1/6</span>
                   <button
                     onClick={() => {
                       const slider = document.getElementById('learning-slider');
@@ -440,7 +440,7 @@ export default function Home() {
                   className="text-3xl md:text-4xl font-bold mb-6"
                   style={{ color: "var(--brand-dark-blue)" }}
                 >
-                  Filosofi Maskot — <span className="text-[var(--brand-magenta)]">OWI</span>
+                  Filosofi Maskot — <span className="text-(--brand-magenta)">OWI</span>
                 </h2>
                 <p className="text-gray-600 mb-8 leading-relaxed">
                   OWI (Open Wisdom Intelligence) adalah AI Assistant yang menjadi

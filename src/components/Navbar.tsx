@@ -7,11 +7,10 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { href: "#beranda", label: "Beranda" },
-    { href: "#learning", label: "Belajar" },
-    { href: "#investment", label: "Investasi" },
-    { href: "#owi", label: "OWI" },
-    { href: "#technology", label: "Teknologi" },
+    { href: "/", label: "Beranda" },
+    { href: "/belajar", label: "Belajar" },
+    { href: "/investasi", label: "Simulasi" },
+    { href: "/owi", label: "OWI" },
   ];
 
   return (
@@ -38,14 +37,14 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium transition-colors hover:text-[var(--brand-cyan)]"
+                className="text-sm font-medium transition-colors hover:text-(--brand-cyan)"
                 style={{ color: "var(--brand-dark-blue)" }}
               >
                 {link.label}
               </Link>
             ))}
             <Link
-              href="/login"
+              href="/belajar"
               className="btn btn-primary text-sm"
             >
               Mulai Belajar
@@ -97,7 +96,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-base font-medium py-2 transition-colors hover:text-[var(--brand-cyan)]"
+                  className="text-base font-medium py-2 transition-colors hover:text-(--brand-cyan)"
                   style={{ color: "var(--brand-dark-blue)" }}
                   onClick={() => setIsMenuOpen(false)}
                 >
