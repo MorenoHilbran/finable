@@ -19,7 +19,7 @@ export default function BelajarPage() {
       category: "Cryptocurrency",
       title: "Bitcoin & Blockchain Fundamentals",
       image: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-red-orange)",
+      accentColor: "var(--brand-blue)",
       level: "Pemula",
       duration: "4 minggu",
       enrolled: true,
@@ -29,7 +29,7 @@ export default function BelajarPage() {
       category: "Saham",
       title: "Analisis Saham Indonesia untuk Pemula",
       image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-blue-blue)",
+      accentColor: "var(--brand-blue)",
       level: "Pemula",
       duration: "6 minggu",
       enrolled: true,
@@ -39,7 +39,7 @@ export default function BelajarPage() {
       category: "Emas",
       title: "Investasi Emas & Logam Mulia",
       image: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-green)",
+      accentColor: "var(--brand-blue)",
       level: "Menengah",
       duration: "3 minggu",
       enrolled: false,
@@ -49,7 +49,7 @@ export default function BelajarPage() {
       category: "Reksa Dana",
       title: "Strategi Reksa Dana Jangka Panjang",
       image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-pink-magenta)",
+      accentColor: "var(--brand-blue)",
       level: "Menengah",
       duration: "5 minggu",
       enrolled: false,
@@ -59,7 +59,7 @@ export default function BelajarPage() {
       category: "Obligasi",
       title: "Obligasi & Surat Utang Negara",
       image: "https://images.unsplash.com/photo-1554224311-beee460ae6fb?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-cta)",
+      accentColor: "var(--brand-blue)",
       level: "Lanjutan",
       duration: "4 minggu",
       enrolled: false,
@@ -69,7 +69,7 @@ export default function BelajarPage() {
       category: "Properti",
       title: "Real Estate Investment Trust (REIT)",
       image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-green)",
+      accentColor: "var(--brand-blue)",
       level: "Lanjutan",
       duration: "6 minggu",
       enrolled: true,
@@ -79,7 +79,7 @@ export default function BelajarPage() {
       category: "Saham",
       title: "Analisis Teknikal Trading Saham",
       image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-blue-blue)",
+      accentColor: "var(--brand-blue)",
       level: "Lanjutan",
       duration: "8 minggu",
       enrolled: false,
@@ -89,7 +89,7 @@ export default function BelajarPage() {
       category: "Cryptocurrency",
       title: "DeFi & NFT Investment Guide",
       image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-red-orange)",
+      accentColor: "var(--brand-blue)",
       level: "Lanjutan",
       duration: "5 minggu",
       enrolled: false,
@@ -143,10 +143,11 @@ export default function BelajarPage() {
         {/* Hero Section */}
         <section
           className="py-16 text-white text-center"
-          style={{ background: "var(--brand-dark-blue)" }}
+          style={{ backgroundColor: "var(--brand-black)" }}
         >
           <div className="container px-6">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4"
+            style={{color: "var(--brand-sage)"}}>
               Modul Pembelajaran Investasi
             </h1>
             <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-8">
@@ -167,7 +168,7 @@ export default function BelajarPage() {
                 />
                 <button
                   className="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-xl transition-all hover:scale-105"
-                  style={{ background: "var(--brand-cyan)", color: "white" }}
+                  style={{ backgroundColor: "var(--brand-sage)", color: "white" }}
                   aria-label="Cari"
                 >
                   <svg
@@ -200,7 +201,7 @@ export default function BelajarPage() {
                   <div className="bg-white rounded-2xl p-6 shadow-sm">
                     <h3
                       className="font-bold text-lg mb-4"
-                      style={{ color: "var(--brand-dark-blue)" }}
+                      style={{ color: "var(--brand-black)" }}
                     >
                       Kelas Saya
                     </h3>
@@ -212,10 +213,10 @@ export default function BelajarPage() {
                           : "bg-gray-100 hover:bg-gray-200"
                       }`}
                       style={{
-                        background: showMyClasses
-                          ? "var(--brand-cyan)"
+                        backgroundColor: showMyClasses
+                          ? "var(--brand-sage)"
                           : undefined,
-                        color: showMyClasses ? "white" : "var(--brand-dark-blue)",
+                        color: showMyClasses ? "white" : "var(--brand-black)",
                       }}
                     >
                       Kelas Diambil ({myClassesCount})
@@ -226,7 +227,7 @@ export default function BelajarPage() {
                   <div className="bg-white rounded-2xl p-6 shadow-sm">
                     <h3
                       className="font-bold text-lg mb-4"
-                      style={{ color: "var(--brand-dark-blue)" }}
+                      style={{ color: "var(--brand-black)" }}
                     >
                       Kategori
                     </h3>
@@ -252,7 +253,7 @@ export default function BelajarPage() {
                   <div className="bg-white rounded-2xl p-6 shadow-sm">
                     <h3
                       className="font-bold text-lg mb-4"
-                      style={{ color: "var(--brand-dark-blue)" }}
+                      style={{ color: "var(--brand-black)" }}
                     >
                       Tingkat Kesulitan
                     </h3>
@@ -286,8 +287,8 @@ export default function BelajarPage() {
                       }}
                       className="w-full px-4 py-3 rounded-xl font-medium border-2 transition-colors"
                       style={{
-                        borderColor: "var(--brand-dark-blue)",
-                        color: "var(--brand-dark-blue)",
+                        borderColor: "var(--brand-black)",
+                        color: "var(--brand-black)",
                       }}
                     >
                       Reset Filter
@@ -303,7 +304,7 @@ export default function BelajarPage() {
                   <div>
                     <h2
                       className="text-2xl font-bold"
-                      style={{ color: "var(--brand-dark-blue)" }}
+                      style={{ color: "var(--brand-black)" }}
                     >
                       {showMyClasses ? "Kelas yang Diambil" : "Semua Kelas"}
                     </h2>
@@ -339,7 +340,7 @@ export default function BelajarPage() {
                         {module.enrolled && (
                           <div
                             className="absolute top-4 right-4 z-10 px-3 py-1 rounded-full text-xs font-semibold text-white"
-                            style={{ background: "var(--brand-green)" }}
+                            style={{ backgroundColor: "var(--brand-sage)" }}
                           >
                             ✓ Terdaftar
                           </div>
@@ -360,7 +361,7 @@ export default function BelajarPage() {
                     <div className="text-6xl mb-4">🔍</div>
                     <h3
                       className="text-xl font-bold mb-2"
-                      style={{ color: "var(--brand-dark-blue)" }}
+                      style={{ color: "var(--brand-black)" }}
                     >
                       Tidak ada modul ditemukan
                     </h3>

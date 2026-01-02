@@ -4,39 +4,12 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Brand Colors - Blue & Purple Group */
-  --brand-dark-blue: #0D2861;
-  --brand-cyan: #48BDD0;
-  
-  /* Brand Colors - Pink/Magenta Group */
-  --brand-plum: #4D1143;
-  --brand-magenta: #B8308B;
-  --brand-pink-light: #FF84D2;
+  /* Pallet terbaru */
+  --brand-white: #f0fffc;
+  --brand-sage: #50d990;
+  --brand-blue: #4e99cc;
+  --brand-black: #212121;
 
-  /* Brand Colors - Red & Orange Group */
-  --brand-red: #B0183E;
-  --brand-yellow: #F2B20C;
-  --brand-orange: #FC6A19;
-
-  /* Brand Colors - Green Group */
-  --brand-green-dark: #1F4A2E;
-  --brand-green: #46B983;
-  --brand-green-light: #B0EAA7;
-
-  /* UI Colors */
-  --text-muted: #64748b;
-  --border: oklch(0.922 0 0);
-
-  /* Gradients */
-  --gradient-hero: linear-gradient(135deg, #0D2861 0%, #4D1143 50%, #B8308B 100%);
-  --gradient-cta: linear-gradient(135deg, #48BDD0 0%, #46B983 100%);
-  --gradient-accent: linear-gradient(135deg, #FC6A19 0%, #F2B20C 100%);
-  
-  /* Gradients by Color Group */
-  --gradient-blue-blue: linear-gradient(135deg, var(--brand-dark-blue) 0%, var(--brand-cyan) 100%);
-  --gradient-pink-purple: linear-gradient(135deg, var(--brand-plum) 0%, var(--brand-magenta) 50%, var(--brand-pink-light) 100%);
-  --gradient-red-red: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-orange) 50%, var(--brand-yellow) 100%);
-  --gradient-green: linear-gradient(135deg, var(--brand-green-dark) 0%, var(--brand-green) 50%, var(--brand-green-light) 100%);
 
   --radius: 0.625rem;
   --background: oklch(1 0 0);

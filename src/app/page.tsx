@@ -22,7 +22,7 @@ export default function Home() {
         "State management preferensi",
         "Struktur semantik screen reader",
       ],
-      accentColor: "var(--brand-cyan)",
+      accentColor: "var(--brand-sage)",
     },
     {
       icon: "/icons/owi.svg",
@@ -35,7 +35,7 @@ export default function Home() {
         "Referensi valid OJK",
         "Fokus edukasi, bukan transaksi",
       ],
-      accentColor: "var(--brand-magenta)",
+      accentColor: "var(--brand-blue)",
     },
     {
       icon: "/icons/learn.svg",
@@ -47,7 +47,7 @@ export default function Home() {
         "Audio Learning Support",
         "Progress tracking",
       ],
-      accentColor: "var(--brand-green)",
+      accentColor: "var(--brand-sage)",
     },
     {
       icon: "/icons/invest.svg",
@@ -59,7 +59,7 @@ export default function Home() {
         "Alt-text deskriptif otomatis",
         "Visualisasi risiko & return",
       ],
-      accentColor: "var(--brand-orange)",
+      accentColor: "var(--brand-blue)",
     },
   ];
 
@@ -97,7 +97,7 @@ export default function Home() {
         "Kontras warna tinggi",
         "Caption untuk multimedia",
       ],
-      color: "var(--brand-cyan)",
+      color: "var(--brand-sage)",
     },
     {
       pilar: "Operable",
@@ -107,7 +107,7 @@ export default function Home() {
         "Focus indicator jelas",
         "Button minimum 44×44 px",
       ],
-      color: "var(--brand-green)",
+      color: "var(--brand-sage)",
     },
     {
       pilar: "Understandable",
@@ -117,7 +117,7 @@ export default function Home() {
         "Icon clarity dengan label",
         "Breadcrumb onboarding",
       ],
-      color: "var(--brand-orange)",
+      color: "var(--brand-blue)",
     },
     {
       pilar: "Robust",
@@ -127,7 +127,7 @@ export default function Home() {
         "Screen reader friendly",
         "Struktur semantik HTML5",
       ],
-      color: "var(--brand-magenta)",
+      color: "var(--brand-blue)",
     },
   ];
 
@@ -137,37 +137,37 @@ export default function Home() {
       category: "Cryptocurrency",
       title: "Bitcoin & Blockchain Fundamentals",
       image: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-red-orange)",
+      accentColor: "var(--brand-blue)",
     },
     {
       category: "Saham",
       title: "Analisis Saham Indonesia untuk Pemula",
       image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-blue-blue)",
+      accentColor: "var(--brand-blue)",
     },
     {
       category: "Emas",
       title: "Investasi Emas & Logam Mulia",
       image: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-green)",
+      accentColor: "var(--brand-blue)",
     },
     {
       category: "Reksa Dana",
       title: "Strategi Reksa Dana Jangka Panjang",
       image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-pink-magenta)",
+      accentColor: "var(--brand-blue)",
     },
     {
       category: "Obligasi",
       title: "Obligasi & Surat Utang Negara",
       image: "https://images.unsplash.com/photo-1554224311-beee460ae6fb?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-cta)",
+      accentColor: "var(--brand-blue)",
     },
     {
       category: "Properti",
       title: "Real Estate Investment Trust (REIT)",
       image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop",
-      accentColor: "var(--gradient-green)",
+      accentColor: "var(--brand-blue)",
     },
   ];
 
@@ -195,15 +195,6 @@ export default function Home() {
     },
   ];
 
-  // Technology stack
-  const technologies = [
-    { name: "Next.js 14+", icon: "⚡" },
-    { name: "Tailwind CSS", icon: "🎨" },
-    { name: "Supabase", icon: "💾" },
-    { name: "Google GenAI", icon: "🧠" },
-    { name: "RAG Architecture", icon: "🔗" },
-    { name: "Vercel", icon: "▲" },
-  ];
 
   return (
     <>
@@ -213,8 +204,8 @@ export default function Home() {
           direction="down"
           speed={0.5}
           squareSize={40}
-          borderColor="rgba(13, 40, 97, 0.1)"
-          hoverFillColor="rgba(72, 189, 208, 0.05)"
+          borderColor="rgba(33, 33, 33, 0.1)"
+          hoverFillColor="rgba(80, 217, 144, 0.05)"
         />
       </div>
       
@@ -234,16 +225,17 @@ export default function Home() {
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white">
                   Literasi Investasi{" "}
-                  <span className="text-(--brand-cyan)">Tanpa Batas</span>
+                  <span style={{ color: "var(--brand-sage)" }}>Tanpa Batas</span>
                 </h1>
                 <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-xl">
                   Finable adalah platform edukasi investasi yang dirancang khusus
                   untuk penyandang disabilitas. Dengan AI Assistant{" "}
-                  <strong className="bg-linear-to-r from-(--brand-magenta) to-(--brand-pink-light) bg-clip-text text-transparent font-bold">OWI</strong>,
+                  <strong style={{ color: "var(--brand-blue)" }}>OWI</strong>,
                   informasi investasi dapat dipahami dengan lebih mudah dan inklusif.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Link href="#features" className="btn btn-light">
+                  <Link href="#features" className="btn btn-light"
+                  style={{ color: "var(--brand-black)" }}>
                     <span></span>
                     Jelajahi Fitur
                   </Link>
@@ -264,19 +256,19 @@ export default function Home() {
                 {/* Stats */}
                 <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-white/20">
                   <div>
-                    <div className="text-3xl font-bold text-(--brand-cyan)">
+                    <div className="text-3xl font-bold" style={{ color: "var(--brand-sage)" }}>
                       4+
                     </div>
                     <div className="text-sm text-gray-300">Tipe Disabilitas</div>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold text-(--brand-green-light)">
+                    <div className="text-3xl font-bold" style={{ color: "var(--brand-blue)" }}>
                       WCAG
                     </div>
                     <div className="text-sm text-gray-300">2.2 Compliant</div>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold text-(--brand-pink-light)">
+                    <div className="text-3xl font-bold" style={{ color: "var(--brand-sage)" }}>
                       AI
                     </div>
                     <div className="text-sm text-gray-300">Powered by OWI</div>
@@ -361,9 +353,9 @@ export default function Home() {
             <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold mb-2">
-                  Take your <span style={{ color: "#FF6B4A" }}>knowledge</span>
+                  Take your <span style={{ color: "var(--brand-blue)" }}>knowledge</span>
                 </h2>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: "var(--brand-dark-blue)" }}>
+                <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: "var(--brand-black)" }}>
                   a degree further
                 </h2>
                 <p className="text-gray-600 max-w-md">
@@ -375,13 +367,13 @@ export default function Home() {
               <div className="flex items-center gap-4">
                 {/* Filter Buttons */}
                 <div className="flex gap-2">
-                  <button className="px-4 py-2 rounded-full text-sm font-medium bg-(--brand-dark-blue) text-white">
+                  <button className="px-4 py-2 rounded-full text-sm font-medium text-white" style={{ backgroundColor: "var(--brand-black)" }}>
                     New courses (12)
                   </button>
-                  <button className="px-4 py-2 rounded-full text-sm font-medium border-2 border-(--brand-dark-blue)  text-gray-700 hover:bg-gray-50">
+                  <button className="px-4 py-2 rounded-full text-sm font-medium border-2 text-gray-700 hover:bg-gray-50" style={{ borderColor: "var(--brand-black)" }}>
                     Recommended (8)
                   </button>
-                  <button className="px-4 py-2 rounded-full text-sm font-medium border-2 border-(--brand-dark-blue)  text-gray-700 hover:bg-gray-50">
+                  <button className="px-4 py-2 rounded-full text-sm font-medium border-2 text-gray-700 hover:bg-gray-50" style={{ borderColor: "var(--brand-black)" }}>
                     Most popular (22)
                   </button>
                 </div>
@@ -438,9 +430,9 @@ export default function Home() {
               <div>
                 <h2
                   className="text-3xl md:text-4xl font-bold mb-6"
-                  style={{ color: "var(--brand-dark-blue)" }}
+                  style={{ color: "var(--brand-black)" }}
                 >
-                  Filosofi Maskot — <span className="text-(--brand-magenta)">OWI</span>
+                  Filosofi Maskot — <span style={{ color: "var(--brand-blue)" }}>OWI</span>
                 </h2>
                 <p className="text-gray-600 mb-8 leading-relaxed">
                   OWI (Open Wisdom Intelligence) adalah AI Assistant yang menjadi
@@ -458,7 +450,7 @@ export default function Home() {
                       <div>
                         <h4
                           className="font-semibold text-sm"
-                          style={{ color: "var(--brand-dark-blue)" }}
+                          style={{ color: "var(--brand-black)" }}
                         >
                           {item.title}
                         </h4>
@@ -471,7 +463,7 @@ export default function Home() {
               <div className="flex justify-center">
                 <div
                   className="relative w-72 h-72 rounded-3xl flex items-center justify-center"
-                  style={{ background: "var(--gradient-hero)" }}
+                  style={{ backgroundColor: "var(--brand-sage)" }}
                 >
                   <div className="text-center text-white">
                     <div className="text-7xl mb-4 animate-float">🦉</div>
@@ -486,35 +478,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Technology Section */}
-        <section id="technology" className="section">
-          <div className="container mx-auto px-6">
-            <h2 className="section-title">Teknologi Pendukung</h2>
-            <p className="section-subtitle">
-              Dibangun dengan teknologi modern untuk performa dan aksesibilitas
-              terbaik.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-              {technologies.map((tech, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-3 px-6 py-4 rounded-xl bg-white shadow-md hover:shadow-lg transition-shadow"
-                >
-                  <span className="text-2xl">{tech.icon}</span>
-                  <span
-                    className="font-medium"
-                    style={{ color: "var(--brand-dark-blue)" }}
-                  >
-                    {tech.name}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* CTA Section */}
-        <section id="cta" className="section bg-gradient-light">
+        <section id="cta" className="section">
           <div className="container mx-auto px-6 text-center">
             <h2 className="section-title">
               Mulai Perjalanan Literasi Investasi Anda
@@ -524,17 +489,21 @@ export default function Home() {
               investasi. Karena setiap orang berhak cerdas secara finansial.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link href="#features" className="btn btn-primary text-lg px-8 py-4">
-                <span>🚀</span>
+              <Link href="#features" className="btn btn-primary text-lg px-8 py-4"
+              style={{color: "var(--brand-white)",
+                backgroundColor: "var(--brand-sage)" 
+              }}>
+                <span></span>
                 Mulai Belajar Sekarang
               </Link>
-              <Link href="#owi" className="btn btn-secondary text-lg px-8 py-4">
-                <span>🦉</span>
+              <Link href="#owi" className="text-lg px-8 py-4 rounded-xl border transition-all hover:opacity-90 inline-flex items-center gap-2"
+              style={{ borderColor: "var(--brand-black)", color: "var(--brand-black)", background: "var(--brand-white)" }}>
+                <span></span>
                 Tanya OWI
               </Link>
             </div>
             <div className="mt-8 text-sm text-gray-500">
-              <span>❗ Fokus edukasi — </span>
+              <span>Fokus edukasi — </span>
               <strong>bukan</strong> platform transaksi investasi
             </div>
           </div>

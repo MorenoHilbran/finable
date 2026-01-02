@@ -15,7 +15,7 @@ export default function UserCard({ icon, title, features }: UserCardProps) {
       {/* Title */}
       <h3
         className="text-lg font-bold mb-4"
-        style={{ color: "var(--brand-dark-blue)" }}
+        style={{ color: "var(--brand-black)" }}
       >
         {title}
       </h3>
@@ -27,7 +27,7 @@ export default function UserCard({ icon, title, features }: UserCardProps) {
             key={index}
             className="px-3 py-1 text-xs font-medium rounded-full"
             style={{
-              background: "var(--brand-green)",
+              backgroundColor: "var(--brand-sage)",
               color: "white",
             }}
           >

@@ -15,7 +15,7 @@ export default async function DashboardPage() {
       description: "Akses modul pembelajaran investasi yang telah disesuaikan dengan kebutuhan Anda.",
       icon: "📚",
       href: "/dashboard/kelas-saya",
-      color: "var(--brand-cyan)",
+      color: "var(--brand-sage)",
       stats: "0 Modul",
     },
     {
@@ -23,7 +23,7 @@ export default async function DashboardPage() {
       description: "Simulasi dan pantau perkembangan investasi Anda dengan visualisasi yang mudah dipahami.",
       icon: "📊",
       href: "/dashboard/investasi",
-      color: "var(--brand-green)",
+      color: "var(--brand-blue)",
       stats: "0 Simulasi",
     },
   ];
@@ -33,7 +33,7 @@ export default async function DashboardPage() {
       {/* Welcome Section */}
       <div
         className="rounded-2xl p-8 mb-8 text-white"
-        style={{ background: "var(--gradient-hero)" }}
+        style={{ backgroundColor: "var(--brand-sage)" }}
       >
         <div className="flex items-center gap-4 mb-4">
           <div className="text-5xl animate-float">🦉</div>

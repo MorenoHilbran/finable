@@ -25,7 +25,7 @@ export default function Navbar() {
           <Link
             href="/"
             className="flex items-center gap-2 text-xl md:text-2xl font-bold"
-            style={{ color: "var(--brand-dark-blue)" }}
+            style={{ color: "var(--brand-black)" }}
           >
             <span className="text-2xl md:text-3xl">💡</span>
             <span>FINABLE</span>
@@ -37,8 +37,10 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium transition-colors hover:text-(--brand-cyan)"
-                style={{ color: "var(--brand-dark-blue)" }}
+                className="text-sm font-medium transition-colors"
+                style={{ color: "var(--brand-black)" }}
+                onMouseEnter={(e) => e.currentTarget.style.color = "var(--brand-sage)"}
+                onMouseLeave={(e) => e.currentTarget.style.color = "var(--brand-black)"}
               >
                 {link.label}
               </Link>
@@ -46,6 +48,7 @@ export default function Navbar() {
             <Link
               href="/belajar"
               className="btn btn-primary text-sm"
+              style={{ backgroundColor: "var(--brand-sage)" }}
             >
               Mulai Belajar
             </Link>
@@ -64,7 +67,7 @@ export default function Navbar() {
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
-              style={{ color: "var(--brand-dark-blue)" }}
+              style={{ color: "var(--brand-black)" }}
             >
               {isMenuOpen ? (
                 <path

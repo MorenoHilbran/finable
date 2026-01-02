@@ -11,7 +11,7 @@ export default function LearningModuleCard({
   category,
   title,
   image,
-  accentColor = "var(--brand-cyan)",
+  accentColor = "var(--brand-sage)",
   level,
   duration,
 }: LearningModuleCardProps) {
@@ -38,7 +38,7 @@ export default function LearningModuleCard({
         {/* Title */}
         <h3
           className="text-lg font-bold mb-4 flex-1 line-clamp-2 leading-snug"
-          style={{ color: "var(--brand-dark-blue)" }}
+          style={{ color: "var(--brand-black)" }}
         >
           {title}
         </h3>
@@ -64,7 +64,7 @@ export default function LearningModuleCard({
         {/* Button */}
         <button
           className="w-full py-3 rounded-xl font-semibold text-white transition-all duration-200 ease-out hover:opacity-90 hover:shadow-md mt-auto"
-          style={{ backgroundColor: "#FF6B4A" }}
+          style={{ backgroundColor: "var(--brand-sage)" }}
         >
           More details
         </button>

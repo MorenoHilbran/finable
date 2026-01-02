@@ -100,12 +100,12 @@ export default function OWIPage() {
             <div className="inline-flex items-center gap-3 mb-3">
               <div 
                 className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
-                style={{ background: "linear-gradient(135deg, var(--brand-dark-blue), var(--brand-cyan))" }}
+                style={{ backgroundColor: "var(--brand-sage)" }}
               >
                 <span className="text-3xl">🦉</span>
               </div>
               <div className="text-left">
-                <h1 className="text-2xl font-bold" style={{ color: "var(--brand-dark-blue)" }}>
+                <h1 className="text-2xl font-bold" style={{ color: "var(--brand-black)" }}>
                   OWI Assistant
                 </h1>
                 <p className="text-sm text-gray-500">AI Edukasi Investasi</p>
@@ -122,11 +122,11 @@ export default function OWIPage() {
                 <div className="h-full flex flex-col items-center justify-center p-8">
                   <div 
                     className="w-20 h-20 rounded-full flex items-center justify-center mb-6"
-                    style={{ background: "linear-gradient(135deg, var(--brand-dark-blue), var(--brand-cyan))" }}
+                    style={{ backgroundColor: "var(--brand-sage)" }}
                   >
                     <span className="text-4xl">🦉</span>
                   </div>
-                  <h2 className="text-xl font-bold mb-2" style={{ color: "var(--brand-dark-blue)" }}>
+                  <h2 className="text-xl font-bold mb-2" style={{ color: "var(--brand-black)" }}>
                     Halo! Saya OWI
                   </h2>
                   <p className="text-gray-500 text-center max-w-md mb-8">
@@ -142,7 +142,7 @@ export default function OWIPage() {
                           key={index}
                           onClick={() => sendMessage(question)}
                           className="p-3 text-left text-sm rounded-xl border border-gray-200 hover:border-cyan-300 hover:bg-cyan-50 transition-all"
-                          style={{ color: "var(--brand-dark-blue)" }}
+                          style={{ color: "var(--brand-black)" }}
                         >
                           {question}
                         </button>
@@ -162,7 +162,7 @@ export default function OWIPage() {
                         {msg.role === "assistant" && (
                           <div 
                             className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-                            style={{ background: "linear-gradient(135deg, var(--brand-dark-blue), var(--brand-cyan))" }}
+                            style={{ backgroundColor: "var(--brand-sage)" }}
                           >
                             <span className="text-sm">🦉</span>
                           </div>
@@ -189,7 +189,7 @@ export default function OWIPage() {
                       <div className="flex items-start gap-3">
                         <div 
                           className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-                          style={{ background: "linear-gradient(135deg, var(--brand-dark-blue), var(--brand-cyan))" }}
+                          style={{ backgroundColor: "var(--brand-blue)" }}
                         >
                           <span className="text-sm">🦉</span>
                         </div>

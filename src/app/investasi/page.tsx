@@ -152,15 +152,17 @@ export default function SimulasiPage() {
       <main id="main-content" className="pt-20">
         {/* Hero Section */}
         <section
-          className="py-16 text-white"
-          style={{ background: "var(--brand-dark-blue)" }}
+          className="py-30 "
+          style={{ background: "var(--brand-black)" }}
         >
           <div className="container mx-auto px-6">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4"
+              style={{color: "var(--brand-sage)"}}>
                 Simulasi Investasi Real-Time
               </h1>
-              <p className="text-lg md:text-xl text-gray-200">
+              <p className="text-lg md:text-xl "
+              style={{color: "var(--brand-white)"}}>
                 Pelajari potensi keuntungan investasi Anda dengan simulator berbasis
                 harga pasar real-time
               </p>
@@ -209,7 +211,7 @@ export default function SimulasiPage() {
                       </div>
                       <h3
                         className="font-bold text-lg mb-2"
-                        style={{ color: "var(--brand-dark-blue)" }}
+                        style={{ color: "var(--brand-black)" }}
                       >
                         {category.name}
                       </h3>
@@ -310,15 +312,15 @@ export default function SimulasiPage() {
                   <button
                     onClick={calculateSimulation}
                     className="flex-1 py-4 rounded-xl font-bold text-white text-lg transition-all hover:opacity-90 hover:shadow-lg"
-                    style={{ background: "var(--brand-cyan)" }}
+                    style={{ background: "var(--brand-sage)" }}
                   >
-                    🎯 Jalankan Simulasi
+                  Jalankan Simulasi
                   </button>
                   {showResults && (
                     <button
                       onClick={resetSimulation}
                       className="px-6 py-4 rounded-xl font-semibold border-2 transition-all hover:bg-gray-50"
-                      style={{ borderColor: "var(--brand-dark-blue)", color: "var(--brand-dark-blue)" }}
+                      style={{ borderColor: "var(--brand-black)", color: "var(--brand-black)" }}
                     >
                       Reset
                     </button>
@@ -368,7 +370,7 @@ export default function SimulasiPage() {
                   <div className="bg-white rounded-3xl shadow-lg p-8">
                     <h3
                       className="text-xl font-bold mb-6"
-                      style={{ color: "var(--brand-dark-blue)" }}
+                      style={{ color: "var(--brand-black)" }}
                     >
                       Proyeksi Pertumbuhan Investasi
                     </h3>
@@ -616,16 +618,16 @@ export default function SimulasiPage() {
                         <a
                           href="/belajar"
                           className="flex-1 min-w-50 py-3 px-6 rounded-xl font-semibold text-center transition-all hover:shadow-lg"
-                          style={{ background: "var(--brand-dark-blue)", color: "white" }}
+                          style={{ background: "var(--brand-blue)", color: "white" }}
                         >
-                          📚 Pelajari Lebih Lanjut
+                          Pelajari Lebih Lanjut
                         </a>
                         <a
                           href="#owi"
                           className="flex-1 min-w-50 py-3 px-6 rounded-xl font-semibold text-center border-2 transition-all hover:bg-gray-50"
                           style={{ borderColor: "var(--brand-dark-blue)", color: "var(--brand-dark-blue)" }}
                         >
-                          🦉 Tanya OWI
+                          Tanya OWI
                         </a>
                       </div>
                     </div>

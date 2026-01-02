@@ -11,7 +11,7 @@ export default function FeatureCard({
   title,
   description,
   highlights,
-  accentColor = "var(--brand-cyan)",
+  accentColor = "var(--brand-sage)",
 }: FeatureCardProps) {
   return (
     <article className="card group h-full">
@@ -26,7 +26,7 @@ export default function FeatureCard({
       {/* Content */}
       <h3
         className="text-lg font-bold mb-2"
-        style={{ color: "var(--brand-dark-blue)" }}
+        style={{ color: "var(--brand-black)" }}
       >
         {title}
       </h3>

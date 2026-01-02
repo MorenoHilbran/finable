@@ -35,7 +35,7 @@ export default function Footer() {
   return (
     <footer
       className="py-12 md:py-16"
-      style={{ background: "var(--brand-dark-blue)" }}
+      style={{ backgroundColor: "var(--brand-black)" }}
       role="contentinfo"
     >
       <div className="container mx-auto px-6">
@@ -46,7 +46,7 @@ export default function Footer() {
               href="/"
               className="flex items-center gap-2 text-2xl font-bold text-white mb-4"
             >
-              <span className="text-3xl">💡</span>
+              <span className="text-3xl"></span>
               <span>FINABLE</span>
             </Link>
             <p className="text-gray-300 text-sm leading-relaxed mb-6">
@@ -54,7 +54,7 @@ export default function Footer() {
               Belajar investasi dengan AI Assistant OWI yang adaptif.
             </p>
             <div className="flex items-center gap-2 text-sm text-gray-400">
-              <span className="text-lg">♿</span>
+              <span className="text-lg"></span>
               <span>WCAG 2.2 Compliant</span>
             </div>
           </div>
@@ -68,7 +68,9 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-gray-300 text-sm hover:text-(--brand-cyan) transition-colors"
+                      className="text-gray-300 text-sm transition-colors"
+                      onMouseEnter={(e) => e.currentTarget.style.color = "var(--brand-sage)"}
+                      onMouseLeave={(e) => e.currentTarget.style.color = ""}
                     >
                       {link.label}
                     </Link>
@@ -87,7 +89,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-6">
               <span className="text-gray-400 text-sm flex items-center gap-2">
-                <span>🌱</span>
+                <span></span>
                 SDGs: Reduced Inequalities
               </span>
             </div>
@@ -95,7 +97,7 @@ export default function Footer() {
           <p className="text-gray-500 text-xs text-center mt-6 max-w-2xl mx-auto">
             Finable hadir bukan untuk keuntungan semata — tetapi untuk
             memperjuangkan kesetaraan dalam akses literasi investasi. Karena
-            setiap orang berhak cerdas secara finansial. 🟦🟩🤝
+            setiap orang berhak cerdas secara finansial.
           </p>
         </div>
       </div>
