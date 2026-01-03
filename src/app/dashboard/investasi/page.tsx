@@ -9,7 +9,7 @@ export default function InvestasiPage() {
         <Link
           href="/dashboard"
           className="flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-80"
-          style={{ color: "var(--brand-cyan)" }}
+          style={{ color: "var(--brand-sage)" }}
         >
           <span>←</span>
           <span>Kembali ke Dashboard</span>
@@ -30,7 +30,7 @@ export default function InvestasiPage() {
             <li style={{ color: "var(--text-muted)" }}>/</li>
             <li
               className="font-medium"
-              style={{ color: "var(--brand-dark-blue)" }}
+              style={{ color: "var(--brand-black)" }}
             >
               Investasi
             </li>
@@ -54,7 +54,7 @@ export default function InvestasiPage() {
       {/* Empty State */}
       <div
         className="card text-center py-16"
-        style={{ background: "linear-gradient(135deg, rgba(70, 185, 131, 0.05) 0%, rgba(72, 189, 208, 0.05) 100%)" }}
+        style={{ background: "linear-gradient(135deg, rgba(80, 217, 144, 0.05) 0%, rgba(78, 153, 204, 0.05) 100%)" }}
       >
         <div className="text-6xl mb-4">📈</div>
         <h2
@@ -69,8 +69,8 @@ export default function InvestasiPage() {
         <div
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
           style={{
-            background: "rgba(70, 185, 131, 0.1)",
-            color: "var(--brand-green)",
+            background: "rgba(80, 217, 144, 0.1)",
+            color: "var(--brand-sage)",
           }}
         >
           <span>🚧</span>
@@ -91,25 +91,25 @@ export default function InvestasiPage() {
             title: "Simulasi Reksa Dana",
             description: "Hitung estimasi pertumbuhan investasi reksa dana Anda dengan berbagai skenario.",
             icon: "🎯",
-            color: "var(--brand-cyan)",
+            color: "var(--brand-blue)",
           },
           {
             title: "Kalkulator Saham",
             description: "Simulasikan potensi keuntungan dan risiko dari investasi saham.",
             icon: "📊",
-            color: "var(--brand-green)",
+            color: "var(--brand-sage)",
           },
           {
             title: "Perbandingan Instrumen",
             description: "Bandingkan berbagai instrumen investasi sesuai profil risiko Anda.",
             icon: "⚖️",
-            color: "var(--brand-orange)",
+            color: "var(--brand-blue)",
           },
           {
             title: "Proyeksi Jangka Panjang",
             description: "Lihat proyeksi pertumbuhan aset Anda dalam 5, 10, hingga 20 tahun.",
             icon: "🔮",
-            color: "var(--brand-magenta)",
+            color: "var(--brand-sage)",
           },
         ].map((feature, index) => (
           <div
@@ -141,8 +141,8 @@ export default function InvestasiPage() {
       <div
         className="mt-8 p-6 rounded-xl"
         style={{
-          background: "rgba(13, 40, 97, 0.05)",
-          border: "1px solid rgba(13, 40, 97, 0.1)",
+          background: "rgba(33, 33, 33, 0.05)",
+          border: "1px solid rgba(33, 33, 33, 0.1)",
         }}
       >
         <div className="flex items-start gap-4">

@@ -36,8 +36,8 @@ export default function DashboardLayoutClient({
           direction="diagonal"
           speed={0.3}
           squareSize={50}
-          borderColor="rgba(13, 40, 97, 0.04)"
-          hoverFillColor="rgba(72, 189, 208, 0.03)"
+          borderColor="rgba(33, 33, 33, 0.04)"
+          hoverFillColor="rgba(80, 217, 144, 0.03)"
         />
       </div>
 
@@ -53,10 +53,10 @@ export default function DashboardLayoutClient({
           <Link
             href="/dashboard"
             className="flex items-center gap-2 text-xl font-bold group"
-            style={{ color: "var(--brand-dark-blue)" }}
+            style={{ color: "var(--brand-black)" }}
           >
             <span className="text-2xl group-hover:scale-110 transition-transform">💡</span>
-            <span className="bg-clip-text bg-gradient-to-r from-[var(--brand-dark-blue)] to-[var(--brand-cyan)]">
+            <span className="bg-clip-text">
               FINABLE
             </span>
           </Link>
@@ -66,7 +66,7 @@ export default function DashboardLayoutClient({
             <div className="text-right hidden sm:block">
               <div
                 className="text-sm font-medium"
-                style={{ color: "var(--brand-dark-blue)" }}
+                style={{ color: "var(--brand-black)" }}
               >
                 {userName}
               </div>
@@ -75,7 +75,7 @@ export default function DashboardLayoutClient({
             <Link
               href="/dashboard/profile"
               className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold hover:scale-105 hover:shadow-lg transition-all"
-              style={{ background: "var(--gradient-cta)" }}
+              style={{ background: "var(--brand-sage)" }}
             >
               {userName.charAt(0).toUpperCase()}
             </Link>

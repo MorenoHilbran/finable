@@ -34,8 +34,8 @@ export default function LoginPage() {
           direction="diagonal"
           speed={0.4}
           squareSize={45}
-          borderColor="rgba(13, 40, 97, 0.06)"
-          hoverFillColor="rgba(72, 189, 208, 0.08)"
+          borderColor="rgba(33, 33, 33, 0.06)"
+          hoverFillColor="rgba(80, 217, 144, 0.08)"
         />
       </div>
 
@@ -44,7 +44,7 @@ export default function LoginPage() {
         <Link
           href="/"
           className="flex items-center justify-center gap-2 text-2xl font-bold mb-8 group"
-          style={{ color: "var(--brand-dark-blue)" }}
+          style={{ color: "var(--brand-black)" }}
         >
           <span className="text-3xl group-hover:scale-110 transition-transform">💡</span>
           <span className="bg-clip-text">FINABLE</span>
@@ -62,7 +62,7 @@ export default function LoginPage() {
         <div className="card bg-white/95 backdrop-blur-md shadow-2xl">
           <h1
             className="text-2xl font-bold text-center mb-2"
-            style={{ color: "var(--brand-dark-blue)" }}
+            style={{ color: "var(--brand-black)" }}
           >
             Selamat Datang Kembali
           </h1>
@@ -106,7 +106,7 @@ export default function LoginPage() {
               <label
                 htmlFor="email"
                 className="block text-sm font-medium mb-2"
-                style={{ color: "var(--brand-dark-blue)" }}
+                style={{ color: "var(--brand-black)" }}
               >
                 Email
               </label>
@@ -116,10 +116,10 @@ export default function LoginPage() {
                 type="email"
                 required
                 placeholder="nama@email.com"
-                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20"
+                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-[#50d990] focus:shadow-lg focus:shadow-[#50d990]/20"
                 style={{
                   borderColor: "var(--border)",
-                  color: "var(--brand-dark-blue)",
+                  color: "var(--brand-black)",
                 }}
               />
             </div>
@@ -129,7 +129,7 @@ export default function LoginPage() {
               <label
                 htmlFor="password"
                 className="block text-sm font-medium mb-2"
-                style={{ color: "var(--brand-dark-blue)" }}
+                style={{ color: "var(--brand-black)" }}
               >
                 Password
               </label>
@@ -139,12 +139,30 @@ export default function LoginPage() {
                 type="password"
                 required
                 placeholder="••••••••"
-                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20"
+                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-[#50d990] focus:shadow-lg focus:shadow-[#50d990]/20"
                 style={{
                   borderColor: "var(--border)",
-                  color: "var(--brand-dark-blue)",
+                  color: "var(--brand-black)",
                 }}
               />
+            </div>
+
+            {/* Remember Me Checkbox */}
+            <div className="flex items-center gap-3 mt-2">
+              <input
+                id="rememberMe"
+                name="rememberMe"
+                type="checkbox"
+                className="w-5 h-5 rounded-md border-2 accent-[#50d990] cursor-pointer transition-all"
+                style={{ borderColor: "var(--border)" }}
+              />
+              <label
+                htmlFor="rememberMe"
+                className="text-sm cursor-pointer select-none"
+                style={{ color: "var(--brand-black)" }}
+              >
+                Tetap login
+              </label>
             </div>
 
             {/* Submit Button */}
@@ -174,7 +192,7 @@ export default function LoginPage() {
             <Link
               href="/register"
               className="font-semibold transition-all hover:underline"
-              style={{ color: "var(--brand-cyan)" }}
+              style={{ color: "var(--brand-sage)" }}
             >
               Daftar sekarang
             </Link>
@@ -186,7 +204,7 @@ export default function LoginPage() {
           <Link
             href="/"
             className="transition-colors text-sm inline-flex items-center gap-2 hover:gap-3"
-            style={{ color: "var(--brand-cyan)" }}
+            style={{ color: "var(--brand-sage)" }}
           >
             <span>←</span>
             <span>Kembali ke Beranda</span>

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 interface LearningModuleCardProps {
   category: string;
   title: string;
@@ -5,6 +7,7 @@ interface LearningModuleCardProps {
   accentColor?: string;
   level?: string;
   duration?: string;
+  href?: string;
 }
 
 export default function LearningModuleCard({
@@ -14,8 +17,9 @@ export default function LearningModuleCard({
   accentColor = "var(--brand-sage)",
   level,
   duration,
+  href = "/belajar",
 }: LearningModuleCardProps) {
-  return (
+  const CardContent = (
     <article className="group h-full cursor-pointer rounded-3xl overflow-hidden border-2 border-gray-200 hover:border-gray-300 bg-white flex flex-col transition-all duration-200 ease-out hover:-translate-y-1 shadow-md hover:shadow-xl">
       <div className="p-6 flex-1 flex flex-col">
         {/* Category Badge */}
@@ -62,13 +66,20 @@ export default function LearningModuleCard({
         )}
         
         {/* Button */}
-        <button
-          className="w-full py-3 rounded-xl font-semibold text-white transition-all duration-200 ease-out hover:opacity-90 hover:shadow-md mt-auto"
+        <div
+          className="w-full py-3 rounded-xl font-semibold text-white text-center transition-all duration-200 ease-out hover:opacity-90 hover:shadow-md mt-auto"
           style={{ backgroundColor: "var(--brand-sage)" }}
         >
-          More details
-        </button>
+          Lihat Detail
+        </div>
       </div>
     </article>
   );
+
+  return (
+    <Link href={href} className="block h-full">
+      {CardContent}
+    </Link>
+  );
 }
+

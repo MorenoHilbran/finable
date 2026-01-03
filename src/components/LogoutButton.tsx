@@ -29,7 +29,7 @@ export default function LogoutButton({ className = "", style }: { className?: st
         <div className="text-5xl mb-4">🦉</div>
         <h3
           className="text-xl font-bold mb-2"
-          style={{ color: "var(--brand-dark-blue)" }}
+          style={{ color: "var(--brand-black)" }}
         >
           Yakin ingin keluar?
         </h3>
@@ -49,7 +49,7 @@ export default function LogoutButton({ className = "", style }: { className?: st
               type="submit"
               className="btn w-full"
               style={{
-                background: "var(--brand-red)",
+                background: "#dc2626",
                 color: "white",
               }}
             >

@@ -73,8 +73,8 @@ export default function DashboardNav() {
                         className={`flex items-center rounded-xl transition-all ${active ? '' : 'hover:bg-gray-100'}`}
                         style={{
                           ...(active && {
-                            background: "var(--gradient-cta)",
-                            boxShadow: "0 4px 14px rgba(72, 189, 208, 0.3)",
+                            background: "var(--brand-sage)",
+                            boxShadow: "0 4px 14px rgba(80, 217, 144, 0.3)",
                           }),
                         }}
                       >
@@ -82,7 +82,7 @@ export default function DashboardNav() {
                           href={link.href}
                           className="flex-1 flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors"
                           style={{
-                            color: active ? "white" : "var(--brand-dark-blue)",
+                            color: active ? "white" : "var(--brand-black)",
                           }}
                         >
                           <span className="text-xl">{link.icon}</span>
@@ -92,7 +92,7 @@ export default function DashboardNav() {
                           onClick={() => toggleDropdown(link.href)}
                           className="px-3 py-3 transition-colors"
                           style={{
-                            color: active ? "white" : "var(--brand-dark-blue)",
+                            color: active ? "white" : "var(--brand-black)",
                           }}
                           aria-label={`Toggle ${link.label} submenu`}
                         >
@@ -121,9 +121,9 @@ export default function DashboardNav() {
                                   href={subLink.href}
                                   className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all ${subActive ? '' : 'hover:bg-gray-100'}`}
                                   style={{
-                                    color: subActive ? "var(--brand-cyan)" : "var(--brand-dark-blue)",
+                                    color: subActive ? "var(--brand-sage)" : "var(--brand-black)",
                                     fontWeight: subActive ? 600 : 400,
-                                    background: subActive ? "rgba(72, 189, 208, 0.1)" : "transparent",
+                                    background: subActive ? "rgba(80, 217, 144, 0.1)" : "transparent",
                                   }}
                                 >
                                   <span>{subLink.icon}</span>
@@ -141,10 +141,10 @@ export default function DashboardNav() {
                       href={link.href}
                       className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${active ? '' : 'hover:bg-gray-100'}`}
                       style={{
-                        color: active ? "white" : "var(--brand-dark-blue)",
+                        color: active ? "white" : "var(--brand-black)",
                         ...(active && {
-                          background: "var(--gradient-cta)",
-                          boxShadow: "0 4px 14px rgba(72, 189, 208, 0.3)",
+                          background: "var(--brand-sage)",
+                          boxShadow: "0 4px 14px rgba(80, 217, 144, 0.3)",
                         }),
                       }}
                     >
@@ -156,15 +156,23 @@ export default function DashboardNav() {
               );
             })}
           </ul>
-
-          {/* Logout */}
-          <div className="mt-8 pt-4 border-t border-gray-100">
-            <LogoutButton
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-red-50 w-full hover:cursor-pointer"
-              style={{ color: "var(--brand-red)" }}
-            />
-          </div>
         </nav>
+
+        {/* Bottom Links */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-white/80">
+          <Link
+            href="/"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-blue-50 mb-2"
+            style={{ color: "var(--brand-blue)" }}
+          >
+            <span className="text-xl">🌐</span>
+            Ke Halaman Utama
+          </Link>
+          <LogoutButton
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-red-50 w-full"
+            style={{ color: "var(--brand-red)" }}
+          />
+        </div>
       </aside>
 
       {/* Mobile Bottom Navigation */}
@@ -181,8 +189,8 @@ export default function DashboardNav() {
                 href={link.href}
                 className="flex flex-col items-center gap-1 py-2 px-4 rounded-lg transition-all"
                 style={{
-                  color: active ? "var(--brand-cyan)" : "var(--brand-dark-blue)",
-                  background: active ? "rgba(72, 189, 208, 0.1)" : "transparent",
+                  color: active ? "var(--brand-sage)" : "var(--brand-black)",
+                  background: active ? "rgba(80, 217, 144, 0.1)" : "transparent",
                 }}
               >
                 <span className="text-xl">{link.icon}</span>

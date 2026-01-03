@@ -110,14 +110,14 @@ export default function OWIChat() {
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl"
         style={{
-          background: "var-(--brand-black)",
+          background: "var(--brand-black)",
         }}
         aria-label={isOpen ? "Tutup OWI Chat" : "Buka OWI Chat"}
       >
         {isOpen ? (
           <svg
             className="w-7 h-7 text-white"
-            style={{ color: "var(--brand-black)", background: "var-(--brand-black)" }}
+            style={{ color: "var(--brand-black)", background: "var(--brand-black)" }}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -131,7 +131,7 @@ export default function OWIChat() {
           </svg>
         ) : (
           <span className="text-3xl"
-          style={{background: "var-(--brand-black)"}}>🦉</span>
+          style={{background: "var(--brand-black)"}}>🦉</span>
         )}
       </button>
 
@@ -143,7 +143,7 @@ export default function OWIChat() {
           <div
             className="px-6 py-4 text-white"
             style={{
-              background: "linear-gradient(135deg, var(--brand-dark-blue), var(--brand-cyan))",
+              background: "linear-gradient(135deg, var(--brand-black), var(--brand-sage))",
             }}
           >
             <div className="flex items-center gap-3">
@@ -199,7 +199,7 @@ export default function OWIChat() {
                       <span className="text-lg">🦉</span>
                       <span
                         className="font-semibold text-sm"
-                        style={{ color: "var(--brand-dark-blue)" }}
+                        style={{ color: "var(--brand-black)" }}
                       >
                         OWI
                       </span>
@@ -241,15 +241,15 @@ export default function OWIChat() {
                   <div className="flex items-center gap-1">
                     <div
                       className="w-2 h-2 rounded-full animate-bounce"
-                      style={{ background: "var(--brand-cyan)", animationDelay: "0ms" }}
+                      style={{ background: "var(--brand-sage)", animationDelay: "0ms" }}
                     ></div>
                     <div
                       className="w-2 h-2 rounded-full animate-bounce"
-                      style={{ background: "var(--brand-cyan)", animationDelay: "150ms" }}
+                      style={{ background: "var(--brand-sage)", animationDelay: "150ms" }}
                     ></div>
                     <div
                       className="w-2 h-2 rounded-full animate-bounce"
-                      style={{ background: "var(--brand-cyan)", animationDelay: "300ms" }}
+                      style={{ background: "var(--brand-sage)", animationDelay: "300ms" }}
                     ></div>
                   </div>
                 </div>
@@ -273,8 +273,8 @@ export default function OWIChat() {
                     }}
                     className="px-3 py-1.5 text-xs rounded-full border-2 transition-all hover:bg-cyan-50"
                     style={{
-                      borderColor: "var(--brand-cyan)",
-                      color: "var(--brand-dark-blue)",
+                      borderColor: "var(--brand-sage)",
+                      color: "var(--brand-black)",
                     }}
                   >
                     {q}
@@ -294,14 +294,14 @@ export default function OWIChat() {
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Tanya OWI tentang investasi..."
-                className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-cyan-500 focus:outline-none text-sm"
+                className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#50d990] focus:outline-none text-sm"
                 disabled={isLoading}
               />
               <button
                 onClick={sendMessage}
                 disabled={isLoading || !message.trim()}
                 className="px-4 py-3 rounded-xl text-white font-semibold transition-all disabled:opacity-50 hover:opacity-90"
-                style={{ background: "var(--brand-cyan)" }}
+                style={{ background: "var(--brand-sage)" }}
                 aria-label="Kirim pesan"
               >
                 <svg

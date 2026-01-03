@@ -51,10 +51,10 @@ export default async function DashboardPage() {
       {/* Quick Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: "Modul Selesai", value: "0", icon: "✅", color: "var(--brand-green)" },
-          { label: "Dalam Proses", value: "0", icon: "📖", color: "var(--brand-cyan)" },
-          { label: "Sertifikat", value: "0", icon: "🏆", color: "var(--brand-orange)" },
-          { label: "Poin", value: "0", icon: "⭐", color: "var(--brand-magenta)" },
+          { label: "Modul Selesai", value: "0", icon: "✅", color: "var(--brand-sage)" },
+          { label: "Dalam Proses", value: "0", icon: "📖", color: "var(--brand-blue)" },
+          { label: "Sertifikat", value: "0", icon: "🏆", color: "var(--brand-sage)" },
+          { label: "Poin", value: "0", icon: "⭐", color: "var(--brand-blue)" },
         ].map((stat, index) => (
           <div
             key={index}
@@ -75,7 +75,7 @@ export default async function DashboardPage() {
       {/* Modules Grid */}
       <h2
         className="text-xl font-bold mb-4"
-        style={{ color: "var(--brand-dark-blue)" }}
+        style={{ color: "var(--brand-black)" }}
       >
         Modul Pembelajaran
       </h2>
@@ -95,8 +95,8 @@ export default async function DashboardPage() {
               </div>
               <div className="flex-1">
                 <h3
-                  className="text-lg font-semibold mb-1 group-hover:text-[var(--brand-cyan)] transition-colors"
-                  style={{ color: "var(--brand-dark-blue)" }}
+                  className="text-lg font-semibold mb-1 group-hover:text-[var(--brand-sage)] transition-colors"
+                  style={{ color: "var(--brand-black)" }}
                 >
                   {module.title}
                 </h3>
@@ -119,12 +119,12 @@ export default async function DashboardPage() {
       {/* OWI CTA */}
       <div
         className="mt-8 rounded-2xl p-6 text-center"
-        style={{ background: "linear-gradient(135deg, rgba(72, 189, 208, 0.1) 0%, rgba(70, 185, 131, 0.1) 100%)" }}
+        style={{ background: "linear-gradient(135deg, rgba(80, 217, 144, 0.1) 0%, rgba(78, 153, 204, 0.1) 100%)" }}
       >
         <div className="text-4xl mb-3">🦉</div>
         <h3
           className="text-lg font-semibold mb-2"
-          style={{ color: "var(--brand-dark-blue)" }}
+          style={{ color: "var(--brand-black)" }}
         >
           Butuh Bantuan?
         </h3>

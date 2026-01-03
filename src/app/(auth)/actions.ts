@@ -13,10 +13,26 @@ export async function login(formData: FormData) {
     password: formData.get("password") as string,
   };
 
-  const { error } = await supabase.auth.signInWithPassword(data);
+  const { data: authData, error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
     return { error: error.message };
+  }
+
+  // Check if user is admin
+  if (authData.user) {
+    const { data: profile } = await supabase
+      .from("users")
+      .select("role")
+      .eq("auth_id", authData.user.id)
+      .single();
+    
+    revalidatePath("/", "layout");
+    
+    // Redirect admin to admin panel, regular user to dashboard
+    if (profile?.role === "admin") {
+      redirect("/admin");
+    }
   }
 
   revalidatePath("/", "layout");

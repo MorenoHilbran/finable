@@ -9,7 +9,7 @@ export default function KelasSayaPage() {
         <Link
           href="/dashboard"
           className="flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-80"
-          style={{ color: "var(--brand-cyan)" }}
+          style={{ color: "var(--brand-sage)" }}
         >
           <span>←</span>
           <span>Kembali ke Dashboard</span>
@@ -30,7 +30,7 @@ export default function KelasSayaPage() {
             <li style={{ color: "var(--text-muted)" }}>/</li>
             <li
               className="font-medium"
-              style={{ color: "var(--brand-dark-blue)" }}
+              style={{ color: "var(--brand-black)" }}
             >
               Kelas Saya
             </li>
@@ -54,7 +54,7 @@ export default function KelasSayaPage() {
       {/* Empty State */}
       <div
         className="card text-center py-16"
-        style={{ background: "linear-gradient(135deg, rgba(72, 189, 208, 0.05) 0%, rgba(184, 48, 139, 0.05) 100%)" }}
+        style={{ background: "linear-gradient(135deg, rgba(78, 153, 204, 0.05) 0%, rgba(80, 217, 144, 0.05) 100%)" }}
       >
         <div className="text-6xl mb-4">📖</div>
         <h2
@@ -69,8 +69,8 @@ export default function KelasSayaPage() {
         <div
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
           style={{
-            background: "rgba(72, 189, 208, 0.1)",
-            color: "var(--brand-cyan)",
+            background: "rgba(80, 217, 144, 0.1)",
+            color: "var(--brand-sage)",
           }}
         >
           <span>🚧</span>
@@ -142,11 +142,11 @@ export default function KelasSayaPage() {
               className="inline-block px-3 py-1 rounded-full text-xs font-medium"
               style={{
                 background: module.level === "Pemula"
-                  ? "rgba(70, 185, 131, 0.1)"
-                  : "rgba(252, 106, 25, 0.1)",
+                  ? "rgba(80, 217, 144, 0.1)"
+                  : "rgba(78, 153, 204, 0.1)",
                 color: module.level === "Pemula"
-                  ? "var(--brand-green)"
-                  : "var(--brand-orange)",
+                  ? "var(--brand-sage)"
+                  : "var(--brand-blue)",
               }}
             >
               {module.level}

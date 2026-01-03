@@ -33,6 +33,7 @@ export type RiskProfile = "conservative" | "moderate" | "aggressive";
 export type DifficultyLevel = "basic" | "intermediate" | "advanced";
 export type ContentType = "text" | "audio" | "visual" | "mixed";
 export type InvestmentType = "saham" | "reksa_dana" | "obligasi" | "deposito";
+export type UserRole = "user" | "admin";
 
 export interface Database {
   public: {
@@ -45,6 +46,7 @@ export interface Database {
           email: string;
           disability_type: DisabilityType | null;
           accessibility_profile: AccessibilityProfile[] | null;
+          role: UserRole;
           created_at: string;
         };
         Insert: {
@@ -54,6 +56,7 @@ export interface Database {
           email: string;
           disability_type?: DisabilityType | null;
           accessibility_profile?: AccessibilityProfile[] | null;
+          role?: UserRole;
           created_at?: string;
         };
         Update: {
@@ -63,6 +66,7 @@ export interface Database {
           email?: string;
           disability_type?: DisabilityType | null;
           accessibility_profile?: AccessibilityProfile[] | null;
+          role?: UserRole;
           created_at?: string;
         };
       };
@@ -99,6 +103,14 @@ export interface Database {
           difficulty_level: DifficultyLevel;
           content_type: ContentType;
           description: string;
+          thumbnail_url: string | null;
+          category: string | null;
+          duration: string | null;
+          content: string | null;
+          is_published: boolean;
+          created_at: string;
+          updated_at: string;
+          order_index: number;
         };
         Insert: {
           module_id?: number;
@@ -106,6 +118,14 @@ export interface Database {
           difficulty_level: DifficultyLevel;
           content_type: ContentType;
           description: string;
+          thumbnail_url?: string | null;
+          category?: string | null;
+          duration?: string | null;
+          content?: string | null;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+          order_index?: number;
         };
         Update: {
           module_id?: number;
@@ -113,6 +133,14 @@ export interface Database {
           difficulty_level?: DifficultyLevel;
           content_type?: ContentType;
           description?: string;
+          thumbnail_url?: string | null;
+          category?: string | null;
+          duration?: string | null;
+          content?: string | null;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+          order_index?: number;
         };
       };
       user_progress: {
@@ -208,6 +236,7 @@ export interface Database {
       difficulty_level: DifficultyLevel;
       content_type: ContentType;
       investment_type: InvestmentType;
+      user_role: UserRole;
     };
   };
 }
@@ -219,3 +248,4 @@ export type LearningModule = Database["public"]["Tables"]["learning_modules"]["R
 export type UserProgress = Database["public"]["Tables"]["user_progress"]["Row"];
 export type OwiChatHistory = Database["public"]["Tables"]["owi_chat_history"]["Row"];
 export type InvestmentSimulation = Database["public"]["Tables"]["investment_simulation"]["Row"];
+

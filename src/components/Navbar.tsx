@@ -1,10 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const supabase = createClient();
+    
+    // Check initial auth state and get user info
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsLoggedIn(!!session);
+      if (session?.user) {
+        setUserEmail(session.user.email || "");
+        setUserName(session.user.user_metadata?.full_name || session.user.email?.split("@")[0] || "User");
+      }
+    });
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setIsLoggedIn(!!session);
+      if (session?.user) {
+        setUserEmail(session.user.email || "");
+        setUserName(session.user.user_metadata?.full_name || session.user.email?.split("@")[0] || "User");
+      } else {
+        setUserEmail("");
+        setUserName("");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Handle logout with page refresh
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setIsDropdownOpen(false);
+    setIsMenuOpen(false);
+    router.refresh();
+  }
 
   const navLinks = [
     { href: "/", label: "Beranda" },
@@ -45,13 +100,102 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/belajar"
-              className="btn btn-primary text-sm"
-              style={{ backgroundColor: "var(--brand-sage)" }}
-            >
-              Mulai Belajar
-            </Link>
+            
+            {isLoggedIn ? (
+              /* User Profile Dropdown */
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center gap-3 px-3 py-2 rounded-xl transition-all hover:bg-gray-50"
+                >
+                  {/* Avatar */}
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm"
+                    style={{ background: "var(--brand-sage)" }}
+                  >
+                    {userName.charAt(0).toUpperCase()}
+                  </div>
+                  {/* Name & Email */}
+                  <div className="text-left hidden lg:block">
+                    <div
+                      className="text-sm font-medium leading-tight"
+                      style={{ color: "var(--brand-black)" }}
+                    >
+                      {userName}
+                    </div>
+                    <div className="text-xs text-gray-500 leading-tight">
+                      {userEmail}
+                    </div>
+                  </div>
+                  {/* Arrow */}
+                  <span
+                    className="text-xs transition-transform duration-200"
+                    style={{ 
+                      transform: isDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      color: "var(--brand-black)"
+                    }}
+                  >
+                    ▼
+                  </span>
+                </button>
+
+                {/* Dropdown Menu */}
+                {isDropdownOpen && (
+                  <div 
+                    className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden"
+                    style={{ zIndex: 100 }}
+                  >
+                    {/* User info in dropdown (for smaller screens) */}
+                    <div className="px-4 py-3 border-b border-gray-100 lg:hidden">
+                      <div className="text-sm font-medium" style={{ color: "var(--brand-black)" }}>
+                        {userName}
+                      </div>
+                      <div className="text-xs text-gray-500">{userEmail}</div>
+                    </div>
+                    
+                    <div className="py-2">
+                      <Link
+                        href="/dashboard"
+                        className="flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-gray-50"
+                        style={{ color: "var(--brand-black)" }}
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        <span className="text-lg">📊</span>
+                        Dashboard
+                      </Link>
+                      <Link
+                        href="/dashboard/profile"
+                        className="flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-gray-50"
+                        style={{ color: "var(--brand-black)" }}
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        <span className="text-lg">👤</span>
+                        Edit Profil
+                      </Link>
+                    </div>
+                    
+                    <div className="border-t border-gray-100 py-2">
+                      <button 
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 px-4 py-3 text-sm w-full transition-colors hover:bg-red-50 hover:cursor-pointer"
+                        style={{ color: "var(--brand-red)" }}
+                      >
+                        <span className="text-xl">🚪</span>
+                        <span>Keluar</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="btn btn-primary text-sm"
+                style={{ backgroundColor: "var(--brand-sage)" }}
+              >
+                Mulai Belajar
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -99,20 +243,68 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-base font-medium py-2 transition-colors hover:text-(--brand-cyan)"
-                  style={{ color: "var(--brand-dark-blue)" }}
+                  className="text-base font-medium py-2 transition-colors hover:text-(--brand-sage)"
+                  style={{ color: "var(--brand-black)" }}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}
                 </Link>
               ))}
-              <Link
-                href="/login"
-                className="btn btn-primary mt-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Mulai Belajar
-              </Link>
+              
+              {isLoggedIn ? (
+                <>
+                  {/* User Profile Section for Mobile */}
+                  <div className="flex items-center gap-3 py-3 border-t border-gray-100 mt-2">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
+                      style={{ background: "var(--brand-sage)" }}
+                    >
+                      {userName.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium" style={{ color: "var(--brand-black)" }}>
+                        {userName}
+                      </div>
+                      <div className="text-xs text-gray-500">{userEmail}</div>
+                    </div>
+                  </div>
+                  
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center gap-3 py-2 text-base font-medium"
+                    style={{ color: "var(--brand-black)" }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <span>📊</span>
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/dashboard/profile"
+                    className="flex items-center gap-3 py-2 text-base font-medium"
+                    style={{ color: "var(--brand-black)" }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <span>👤</span>
+                    Edit Profil
+                  </Link>
+                  <button 
+                    onClick={handleLogout}
+                    className="flex items-center gap-3 py-3 rounded-xl transition-all hover:bg-red-50 mt-2"
+                    style={{ color: "var(--brand-red)" }}
+                  >
+                    <span className="text-xl">🚪</span>
+                    <span>Keluar</span>
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  className="btn btn-primary mt-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Mulai Belajar
+                </Link>
+              )}
             </div>
           </div>
         )}
@@ -120,3 +312,4 @@ export default function Navbar() {
     </nav>
   );
 }
+

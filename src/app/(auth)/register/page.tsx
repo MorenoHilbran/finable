@@ -78,8 +78,8 @@ export default function RegisterPage() {
           direction="diagonal"
           speed={0.4}
           squareSize={45}
-          borderColor="rgba(13, 40, 97, 0.06)"
-          hoverFillColor="rgba(72, 189, 208, 0.08)"
+          borderColor="rgba(33, 33, 33, 0.06)"
+          hoverFillColor="rgba(80, 217, 144, 0.08)"
         />
       </div>
 
@@ -88,7 +88,7 @@ export default function RegisterPage() {
         <Link
           href="/"
           className="flex items-center justify-center gap-2 text-2xl font-bold mb-6 group"
-          style={{ color: "var(--brand-dark-blue)" }}
+          style={{ color: "var(--brand-black)" }}
         >
           <span className="text-3xl group-hover:scale-110 transition-transform">💡</span>
           <span>FINABLE</span>
@@ -103,7 +103,7 @@ export default function RegisterPage() {
             </div>
             <h1
               className="text-2xl font-bold mb-2"
-              style={{ color: "var(--brand-dark-blue)" }}
+              style={{ color: "var(--brand-black)" }}
             >
               Buat Akun Baru
             </h1>
@@ -133,7 +133,7 @@ export default function RegisterPage() {
               <label
                 htmlFor="fullName"
                 className="block text-sm font-medium mb-2"
-                style={{ color: "var(--brand-dark-blue)" }}
+                style={{ color: "var(--brand-black)" }}
               >
                 Nama Lengkap
               </label>
@@ -143,10 +143,10 @@ export default function RegisterPage() {
                 type="text"
                 required
                 placeholder="Masukkan nama lengkap"
-                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20"
+                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-[#50d990] focus:shadow-lg focus:shadow-[#50d990]/20"
                 style={{
                   borderColor: "var(--border)",
-                  color: "var(--brand-dark-blue)",
+                  color: "var(--brand-black)",
                 }}
               />
             </div>
@@ -156,7 +156,7 @@ export default function RegisterPage() {
               <label
                 htmlFor="email"
                 className="block text-sm font-medium mb-2"
-                style={{ color: "var(--brand-dark-blue)" }}
+                style={{ color: "var(--brand-black)" }}
               >
                 Email
               </label>
@@ -166,10 +166,10 @@ export default function RegisterPage() {
                 type="email"
                 required
                 placeholder="nama@email.com"
-                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20"
+                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-[#50d990] focus:shadow-lg focus:shadow-[#50d990]/20"
                 style={{
                   borderColor: "var(--border)",
-                  color: "var(--brand-dark-blue)",
+                  color: "var(--brand-black)",
                 }}
               />
             </div>
@@ -179,7 +179,7 @@ export default function RegisterPage() {
               <label
                 htmlFor="disabilityType"
                 className="block text-sm font-medium mb-2"
-                style={{ color: "var(--brand-dark-blue)" }}
+                style={{ color: "var(--brand-black)" }}
               >
                 Tipe Disabilitas
               </label>
@@ -189,7 +189,7 @@ export default function RegisterPage() {
                 className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20 bg-white"
                 style={{
                   borderColor: "var(--border)",
-                  color: "var(--brand-dark-blue)",
+                  color: "var(--brand-black)",
                 }}
               >
                 {disabilityOptions.map((option) => (
@@ -204,7 +204,7 @@ export default function RegisterPage() {
             <div>
               <label
                 className="block text-sm font-medium mb-3"
-                style={{ color: "var(--brand-dark-blue)" }}
+                style={{ color: "var(--brand-black)" }}
               >
                 Preferensi Aksesibilitas (opsional)
               </label>
@@ -217,16 +217,16 @@ export default function RegisterPage() {
                     className="p-3 rounded-xl border-2 text-left text-sm transition-all hover:scale-[1.02]"
                     style={{
                       borderColor: selectedAccessibility.includes(option.value)
-                        ? "var(--brand-cyan)"
+                        ? "var(--brand-sage)"
                         : "var(--border)",
                       background: selectedAccessibility.includes(option.value)
-                        ? "linear-gradient(135deg, rgba(72, 189, 208, 0.15) 0%, rgba(70, 185, 131, 0.1) 100%)"
+                        ? "linear-gradient(135deg, rgba(80, 217, 144, 0.15) 0%, rgba(78, 153, 204, 0.1) 100%)"
                         : "white",
                       color: selectedAccessibility.includes(option.value)
-                        ? "var(--brand-cyan)"
-                        : "var(--brand-dark-blue)",
+                        ? "var(--brand-sage)"
+                        : "var(--brand-black)",
                       boxShadow: selectedAccessibility.includes(option.value)
-                        ? "0 4px 12px rgba(72, 189, 208, 0.15)"
+                        ? "0 4px 12px rgba(80, 217, 144, 0.15)"
                         : "none",
                     }}
                   >
@@ -241,7 +241,7 @@ export default function RegisterPage() {
               <label
                 htmlFor="password"
                 className="block text-sm font-medium mb-2"
-                style={{ color: "var(--brand-dark-blue)" }}
+                style={{ color: "var(--brand-black)" }}
               >
                 Password
               </label>
@@ -251,10 +251,10 @@ export default function RegisterPage() {
                 type="password"
                 required
                 placeholder="Minimal 6 karakter"
-                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20"
+                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-[#50d990] focus:shadow-lg focus:shadow-[#50d990]/20"
                 style={{
                   borderColor: "var(--border)",
-                  color: "var(--brand-dark-blue)",
+                  color: "var(--brand-black)",
                 }}
               />
             </div>
@@ -264,7 +264,7 @@ export default function RegisterPage() {
               <label
                 htmlFor="confirmPassword"
                 className="block text-sm font-medium mb-2"
-                style={{ color: "var(--brand-dark-blue)" }}
+                style={{ color: "var(--brand-black)" }}
               >
                 Konfirmasi Password
               </label>
@@ -274,10 +274,10 @@ export default function RegisterPage() {
                 type="password"
                 required
                 placeholder="Ulangi password"
-                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-cyan-400 focus:shadow-lg focus:shadow-cyan-400/20"
+                className="w-full px-4 py-3 rounded-xl border-2 transition-all focus:outline-none focus:border-[#50d990] focus:shadow-lg focus:shadow-[#50d990]/20"
                 style={{
                   borderColor: "var(--border)",
-                  color: "var(--brand-dark-blue)",
+                  color: "var(--brand-black)",
                 }}
               />
             </div>
@@ -309,7 +309,7 @@ export default function RegisterPage() {
             <Link
               href="/login"
               className="font-semibold transition-all hover:underline"
-              style={{ color: "var(--brand-cyan)" }}
+              style={{ color: "var(--brand-sage)" }}
             >
               Masuk di sini
             </Link>
@@ -321,7 +321,7 @@ export default function RegisterPage() {
           <Link
             href="/"
             className="transition-colors text-sm inline-flex items-center gap-2 hover:gap-3"
-            style={{ color: "var(--brand-cyan)" }}
+            style={{ color: "var(--brand-sage)" }}
           >
             <span>←</span>
             <span>Kembali ke Beranda</span>

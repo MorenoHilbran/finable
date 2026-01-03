@@ -100,7 +100,7 @@ export default function SimulasiPage() {
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold"
             style={{
               background: "var(--gradient-cta)",
-              color: "white",
+              color: "var(--brand-sage)",
               boxShadow: "0 4px 14px rgba(72, 189, 208, 0.3)",
             }}
           >

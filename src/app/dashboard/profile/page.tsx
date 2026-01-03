@@ -111,7 +111,7 @@ export default function ProfilePage() {
         <Link
           href="/dashboard"
           className="flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-80"
-          style={{ color: "var(--brand-cyan)" }}
+          style={{ color: "var(--brand-sage)" }}
         >
           <span>←</span>
           <span>Kembali ke Dashboard</span>
@@ -132,7 +132,7 @@ export default function ProfilePage() {
             <li style={{ color: "var(--text-muted)" }}>/</li>
             <li
               className="font-medium"
-              style={{ color: "var(--brand-dark-blue)" }}
+              style={{ color: "var(--brand-black)" }}
             >
               Edit Profil
             </li>
@@ -162,8 +162,8 @@ export default function ProfilePage() {
               ? "rgba(70, 185, 131, 0.1)" 
               : "rgba(176, 24, 62, 0.1)",
             color: message.type === "success" 
-              ? "var(--brand-green)" 
-              : "var(--brand-red)",
+              ? "var(--brand-sage)" 
+              : "#dc2626",
           }}
         >
           <span className="text-lg mr-2">
@@ -218,7 +218,7 @@ export default function ProfilePage() {
               className="w-full px-4 py-3 rounded-xl border-2 transition-colors focus:outline-none"
               style={{
                 borderColor: "var(--border)",
-                color: "var(--brand-dark-blue)",
+                color: "var(--brand-black)",
               }}
             />
           </div>
@@ -270,12 +270,12 @@ export default function ProfilePage() {
                   className="p-3 rounded-xl border-2 text-left text-sm transition-all"
                   style={{
                     borderColor: selectedAccessibility.includes(option.value)
-                      ? "var(--brand-cyan)"
+                      ? "var(--brand-sage)"
                       : "var(--border)",
                     background: selectedAccessibility.includes(option.value)
-                      ? "rgba(72, 189, 208, 0.1)"
+                      ? "rgba(80, 217, 144, 0.1)"
                       : "white",
-                    color: "var(--brand-dark-blue)",
+                    color: "var(--brand-black)",
                   }}
                 >
                   {option.label}

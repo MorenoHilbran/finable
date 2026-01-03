@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FeatureCard from "@/components/FeatureCard";
 import UserCard from "@/components/UserCard";
-import LearningModuleCard from "@/components/LearningModuleCard";
+import LearningModulesSection from "@/components/LearningModulesSection";
 import Squares from "@/components/Squares";
 import Link from "next/link";
 
@@ -131,45 +131,7 @@ export default function Home() {
     },
   ];
 
-  // Learning Modules
-  const learningModules = [
-    {
-      category: "Cryptocurrency",
-      title: "Bitcoin & Blockchain Fundamentals",
-      image: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=400&h=300&fit=crop",
-      accentColor: "var(--brand-blue)",
-    },
-    {
-      category: "Saham",
-      title: "Analisis Saham Indonesia untuk Pemula",
-      image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=300&fit=crop",
-      accentColor: "var(--brand-blue)",
-    },
-    {
-      category: "Emas",
-      title: "Investasi Emas & Logam Mulia",
-      image: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=400&h=300&fit=crop",
-      accentColor: "var(--brand-blue)",
-    },
-    {
-      category: "Reksa Dana",
-      title: "Strategi Reksa Dana Jangka Panjang",
-      image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=300&fit=crop",
-      accentColor: "var(--brand-blue)",
-    },
-    {
-      category: "Obligasi",
-      title: "Obligasi & Surat Utang Negara",
-      image: "https://images.unsplash.com/photo-1554224311-beee460ae6fb?w=400&h=300&fit=crop",
-      accentColor: "var(--brand-blue)",
-    },
-    {
-      category: "Properti",
-      title: "Real Estate Investment Trust (REIT)",
-      image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop",
-      accentColor: "var(--brand-blue)",
-    },
-  ];
+
 
   // OWI philosophy from README
   const owiPhilosophy = [
@@ -344,84 +306,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Learning Modules Section */}
-        <section
-          id="learning"
-          className="section"
-        >
-          <div className="container mx-auto px-6">
-            <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-2">
-                  Take your <span style={{ color: "var(--brand-blue)" }}>knowledge</span>
-                </h2>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: "var(--brand-black)" }}>
-                  a degree further
-                </h2>
-                <p className="text-gray-600 max-w-md">
-                  Make education work for you with flexible online courses from leading schools.
-                </p>
-              </div>
-              
-              {/* Navigation Controls */}
-              <div className="flex items-center gap-4">
-                {/* Filter Buttons */}
-                <div className="flex gap-2">
-                  <button className="px-4 py-2 rounded-full text-sm font-medium text-white" style={{ backgroundColor: "var(--brand-black)" }}>
-                    New courses (12)
-                  </button>
-                  <button className="px-4 py-2 rounded-full text-sm font-medium border-2 text-gray-700 hover:bg-gray-50" style={{ borderColor: "var(--brand-black)" }}>
-                    Recommended (8)
-                  </button>
-                  <button className="px-4 py-2 rounded-full text-sm font-medium border-2 text-gray-700 hover:bg-gray-50" style={{ borderColor: "var(--brand-black)" }}>
-                    Most popular (22)
-                  </button>
-                </div>
-                
-                {/* Slider Navigation */}
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => {
-                      const slider = document.getElementById('learning-slider');
-                      const cardWidth = 360; // 320px card + 24px gap + 16px padding
-                      if (slider) slider.scrollBy({ left: -cardWidth, behavior: 'smooth' });
-                    }}
-                    className="w-10 h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
-                  >
-                    <img src="/icons/Left circle.svg" alt="Previous" className="w-10 h-10" />
-                  </button>
-                  <span className="text-sm text-gray-600 min-w-10 text-center">1/6</span>
-                  <button
-                    onClick={() => {
-                      const slider = document.getElementById('learning-slider');
-                      const cardWidth = 360; // 320px card + 24px gap + 16px padding
-                      if (slider) slider.scrollBy({ left: cardWidth, behavior: 'smooth' });
-                    }}
-                    className="w-10 h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
-                  >
-                    <img src="/icons/Right circle.svg" alt="Next" className="w-10 h-10" />
-                  </button>
-                </div>
-              </div>
-            </div>
-            
-            {/* Slider Container */}
-            <div className="relative overflow-hidden py-10">
-              <div id="learning-slider" className="flex gap-6 overflow-x-scroll pb-4 snap-x snap-mandatory scrollbar-hide">
-                {learningModules.map((module, index) => (
-                  <div key={index} className="mt-5 flex-none w-[calc(33.333%-16px)] min-w-[320px] snap-start ">
-                    <LearningModuleCard
-                      category={module.category}
-                      title={module.title}
-                      image={module.image}
-                      accentColor={module.accentColor}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Learning Modules Section - Dynamic */}
+        <LearningModulesSection />
 
         {/* OWI Section */}
         <section id="owi" className="section bg-gradient-light drop-shadow-xl">
