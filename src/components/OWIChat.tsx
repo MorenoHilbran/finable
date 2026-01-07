@@ -110,14 +110,14 @@ export default function OWIChat() {
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl"
         style={{
-          background: "var(--brand-black)",
+          background: "var(--brand-white)",
         }}
         aria-label={isOpen ? "Tutup OWI Chat" : "Buka OWI Chat"}
       >
         {isOpen ? (
           <svg
             className="w-7 h-7 text-white"
-            style={{ color: "var(--brand-black)", background: "var(--brand-black)" }}
+            style={{ color: "var(--brand-black)", background: "var(--brand-white)" }}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -131,7 +131,7 @@ export default function OWIChat() {
           </svg>
         ) : (
           <span className="text-3xl"
-          style={{background: "var(--brand-black)"}}>🦉</span>
+          >🦉</span>
         )}
       </button>
 
