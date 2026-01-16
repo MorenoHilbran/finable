@@ -17,7 +17,7 @@ export default function OWIChat() {
       id: "welcome",
       role: "assistant",
       content:
-        "Halo! Saya OWI 🦉, asisten edukasi investasi Anda. Saya siap membantu Anda belajar tentang dunia investasi dengan cara yang mudah dipahami. Ada yang ingin Anda pelajari hari ini?",
+        "Halo! Saya OWI, asisten edukasi investasi Anda. Saya siap membantu Anda belajar tentang dunia investasi dengan cara yang mudah dipahami. Ada yang ingin Anda pelajari hari ini?",
       timestamp: new Date(),
     },
   ]);
@@ -80,7 +80,7 @@ export default function OWIChat() {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         content:
-          "Maaf, OWI sedang mengalami gangguan 🦉💤. Silakan coba lagi nanti.",
+          "Maaf, OWI sedang mengalami gangguan 💤. Silakan coba lagi nanti.",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMessage]);
@@ -131,7 +131,7 @@ export default function OWIChat() {
           </svg>
         ) : (
           <span className="text-3xl"
-          >🦉</span>
+          ><img src="/mascot/owi-mascot-1.svg" alt="OWI" className="w-10 h-10" /></span>
         )}
       </button>
 
@@ -148,7 +148,7 @@ export default function OWIChat() {
           >
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                <span className="text-2xl">🦉</span>
+                <img src="/mascot/owi-mascot-2.svg" alt="OWI" className="w-8 h-8" />
               </div>
               <div className="flex-1">
                 <h3 className="font-bold text-lg">OWI Assistant</h3>
@@ -196,7 +196,7 @@ export default function OWIChat() {
                 >
                   {msg.role === "assistant" && (
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-lg">🦉</span>
+                      <img src="/mascot/owi-mascot-3.svg" alt="OWI" className="w-5 h-5" />
                       <span
                         className="font-semibold text-sm"
                         style={{ color: "var(--brand-black)" }}
@@ -230,7 +230,7 @@ export default function OWIChat() {
               <div className="flex justify-start">
                 <div className="bg-white shadow-md rounded-2xl rounded-bl-md px-4 py-3">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-lg">🦉</span>
+                    <img src="/mascot/owi-mascot-4.svg" alt="OWI" className="w-5 h-5" />
                     <span
                       className="font-semibold text-sm"
                       style={{ color: "var(--brand-dark-blue)" }}

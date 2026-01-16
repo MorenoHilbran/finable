@@ -99,7 +99,7 @@ export default function RegisterPage() {
           {/* Header with Mascot */}
           <div className="text-center mb-6">
             <div className="inline-block relative mb-3">
-              <div className="text-5xl animate-float" style={{ animationDuration: "3s" }}>🦉</div>
+              <div className="animate-float" style={{ animationDuration: "3s" }}><img src="/mascot/owi-mascot-7.svg" alt="OWI" className="w-16 h-16" /></div>
             </div>
             <h1
               className="text-2xl font-bold mb-2"

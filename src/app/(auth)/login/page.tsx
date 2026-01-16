@@ -53,7 +53,7 @@ export default function LoginPage() {
         {/* Mascot */}
         <div className="flex justify-center mb-6">
           <div className="relative">
-            <div className="text-6xl animate-float" style={{ animationDuration: "3s" }}>🦉</div>
+            <div className="animate-float" style={{ animationDuration: "3s" }}><img src="/mascot/owi-mascot-1.svg" alt="OWI" className="w-20 h-20" /></div>
             <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-12 h-3 bg-black/20 rounded-full blur-sm" />
           </div>
         </div>

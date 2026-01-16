@@ -36,7 +36,7 @@ export default async function DashboardPage() {
         style={{ backgroundColor: "var(--brand-sage)" }}
       >
         <div className="flex items-center gap-4 mb-4">
-          <div className="text-5xl animate-float">🦉</div>
+          <div className="animate-float"><img src="/mascot/owi-mascot-1.svg" alt="OWI" className="w-16 h-16" /></div>
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-white">
               Halo, {userName}! 👋
@@ -121,7 +121,7 @@ export default async function DashboardPage() {
         className="mt-8 rounded-2xl p-6 text-center"
         style={{ background: "linear-gradient(135deg, rgba(80, 217, 144, 0.1) 0%, rgba(78, 153, 204, 0.1) 100%)" }}
       >
-        <div className="text-4xl mb-3">🦉</div>
+        <div className="mb-3 flex justify-center"><img src="/mascot/owi-mascot-2.svg" alt="OWI" className="w-12 h-12" /></div>
         <h3
           className="text-lg font-semibold mb-2"
           style={{ color: "var(--brand-black)" }}

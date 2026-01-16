@@ -26,7 +26,7 @@ export default function LogoutButton({ className = "", style }: { className?: st
         style={{ zIndex: 100000 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="text-5xl mb-4">🦉</div>
+        <div className="mb-4 flex justify-center"><img src="/mascot/owi-mascot-7.svg" alt="OWI" className="w-16 h-16" /></div>
         <h3
           className="text-xl font-bold mb-2"
           style={{ color: "var(--brand-black)" }}

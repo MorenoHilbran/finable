@@ -136,7 +136,7 @@ export default function Home() {
   // OWI philosophy from README
   const owiPhilosophy = [
     {
-      icon: "🦉",
+      icon: "/mascot/owi-mascot-5.svg",
       title: "Burung Hantu (Owl)",
       meaning: "Kebijaksanaan & kemampuan melihat dalam gelap (tantangan finansial)",
     },
@@ -249,7 +249,7 @@ export default function Home() {
                     style={{ background: "rgba(255,255,255,0.15)" }}
                   >
                     <div className="text-center">
-                      <div className="text-8xl mb-2">🦉</div>
+                      <div className="text-8xl mb-2"><img src="/mascot/owi-mascot-3.svg" alt="OWI Logo" width={256} height={256} /></div>
                       <div className="text-white font-bold text-2xl">OWI</div>
                       <div className="text-gray-300 text-sm">
                         Open Wisdom Intelligence
@@ -352,7 +352,7 @@ export default function Home() {
                   style={{ backgroundColor: "var(--brand-sage)" }}
                 >
                   <div className="text-center text-white">
-                    <div className="text-7xl mb-4 animate-float">🦉</div>
+                    <div className="mb-4 animate-float flex justify-center"><img src="/mascot/owi-mascot-6.svg" alt="OWI" className="w-24 h-24" /></div>
                     <div className="font-bold text-2xl">OWI</div>
                     <div className="text-sm text-gray-200 mt-2">
                       Owl Investment Assistant

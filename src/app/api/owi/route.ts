@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     if (!apiKey) {
       return NextResponse.json(
         { 
-          message: "Halo! Saya OWI 🦉, asisten edukasi investasi Anda. Maaf, saya sedang dalam mode demo karena API belum dikonfigurasi. Silakan hubungi admin untuk mengaktifkan fitur AI.",
+          message: "Halo! Saya OWI, asisten edukasi investasi Anda. Maaf, saya sedang dalam mode demo karena API belum dikonfigurasi. Silakan hubungi admin untuk mengaktifkan fitur AI.",
           isDemo: true 
         },
         { status: 200 }
@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
     console.error("OWI API Error:", error);
     return NextResponse.json(
       { 
-        message: "Maaf, OWI sedang mengalami gangguan teknis 🦉💤. Silakan coba lagi nanti atau hubungi tim support.",
+        message: "Maaf, OWI sedang mengalami gangguan teknis 💤. Silakan coba lagi nanti atau hubungi tim support.",
         error: true 
       },
       { status: 500 }

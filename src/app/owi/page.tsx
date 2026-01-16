@@ -102,7 +102,7 @@ export default function OWIPage() {
                 className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
                 style={{ backgroundColor: "var(--brand-sage)" }}
               >
-                <span className="text-3xl">🦉</span>
+                <img src="/mascot/owi-mascot-3.svg" alt="OWI" className="w-10 h-10" />
               </div>
               <div className="text-left">
                 <h1 className="text-2xl font-bold" style={{ color: "var(--brand-black)" }}>
@@ -124,7 +124,7 @@ export default function OWIPage() {
                     className="w-20 h-20 rounded-full flex items-center justify-center mb-6"
                     style={{ backgroundColor: "var(--brand-sage)" }}
                   >
-                    <span className="text-4xl">🦉</span>
+                    <img src="/mascot/owi-mascot-4.svg" alt="OWI" className="w-12 h-12" />
                   </div>
                   <h2 className="text-xl font-bold mb-2" style={{ color: "var(--brand-black)" }}>
                     Halo! Saya OWI
@@ -164,7 +164,7 @@ export default function OWIPage() {
                             className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
                             style={{ backgroundColor: "var(--brand-sage)" }}
                           >
-                            <span className="text-sm">🦉</span>
+                            <img src="/mascot/owi-mascot-5.svg" alt="OWI" className="w-6 h-6" />
                           </div>
                         )}
                         <div
@@ -191,7 +191,7 @@ export default function OWIPage() {
                           className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
                           style={{ backgroundColor: "var(--brand-blue)" }}
                         >
-                          <span className="text-sm">🦉</span>
+                          <img src="/mascot/owi-mascot-6.svg" alt="OWI" className="w-6 h-6" />
                         </div>
                         <div className="bg-gray-100 rounded-2xl px-4 py-3">
                           <div className="flex items-center gap-1">
