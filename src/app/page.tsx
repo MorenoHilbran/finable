@@ -170,95 +170,82 @@ export default function Home() {
           hoverFillColor="rgba(80, 217, 144, 0.05)"
         />
       </div>
-      
+
       <Navbar />
       <main id="main-content">
-        {/* Hero Section */}
+        {/* Hero Section - Split Layout */}
         <section
-          className="flex items-center pt-5 pb-32 bg-cover bg-center bg-no-repeat bg-white"
-          style={{ backgroundImage: "url(/hero.svg)", minHeight: "125vh" }}
+          className="relative pt-24 pb-20 overflow-hidden"
+          style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #F3F4F6 100%)" }}
         >
-          <div className="container mx-auto px-6">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="text-white">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-sm mb-6">
-                  <span></span>
-                  <span>Platform Edukasi Inklusif untuk Semua</span>
-                </div>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white">
-                  Literasi Investasi{" "}
-                  <span style={{ color: "var(--brand-sage)" }}>Tanpa Batas</span>
-                </h1>
-                <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-xl">
-                  Finable adalah platform edukasi investasi yang dirancang khusus
-                  untuk penyandang disabilitas. Dengan AI Assistant{" "}
-                  <strong style={{ color: "var(--brand-blue)" }}>OWI</strong>,
-                  informasi investasi dapat dipahami dengan lebih mudah dan inklusif.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <Link href="#features" className="btn btn-light"
-                  style={{ color: "var(--brand-black)" }}>
-                    <span></span>
-                    Jelajahi Fitur
-                  </Link>
-                  <Link
-                    href="#owi"
-                    className="btn btn-light"
-                    style={{
-                      background: "rgba(255,255,255,0.1)",
-                      color: "white",
-                      border: "2px solid rgba(255,255,255,0.3)",
-                    }}
-                  >
-                    <span></span>
-                    Kenali OWI
-                  </Link>
-                </div>
+          <div className="container mx-auto px-6 relative z-10">
 
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-white/20">
-                  <div>
-                    <div className="text-3xl font-bold" style={{ color: "var(--brand-sage)" }}>
-                      4+
-                    </div>
-                    <div className="text-sm text-gray-300">Tipe Disabilitas</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold" style={{ color: "var(--brand-blue)" }}>
-                      WCAG
-                    </div>
-                    <div className="text-sm text-gray-300">2.2 Compliant</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold" style={{ color: "var(--brand-sage)" }}>
-                      AI
-                    </div>
-                    <div className="text-sm text-gray-300">Powered by OWI</div>
+            {/* Split Layout Container */}
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-4 mb-16">
+
+              {/* Left Text */}
+              <div className="flex-1 text-center lg:text-right">
+                <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-none tracking-tight text-[var(--brand-black)]">
+                  LITERASI <br />
+                  INVESTASI
+                </h1>
+              </div>
+
+              {/* Center Mascot */}
+              <div className="flex-none relative z-20">
+                <div className="w-[280px] h-[280px] md:w-[350px] md:h-[350px] lg:w-[450px] lg:h-[450px] mx-auto animate-float">
+                  <img
+                    src="/mascot/owi-mascot-3.svg"
+                    alt="OWI Mascot"
+                    className="w-full h-full object-contain drop-shadow-2xl"
+                  />
+                </div>
+                {/* Decorative Badge */}
+                <div className="absolute -top-6 -right-6 md:top-0 md:-right-12 animate-spin-slow hidden md:block">
+                  <div className="w-24 h-24 rounded-full bg-[var(--brand-sage)] text-white flex items-center justify-center text-xs font-bold text-center p-2 shadow-lg transform rotate-12">
+                    FOR ALL ABILITIES
                   </div>
                 </div>
               </div>
 
-              {/* Hero Visual */}
-              <div className="hidden lg:flex justify-center items-center">
-                <div
-                  className="relative w-80 h-80 rounded-full flex items-center justify-center animate-float"
-                  style={{ background: "rgba(255,255,255,0.1)" }}
-                >
-                  <div
-                    className="w-64 h-64 rounded-full flex items-center justify-center"
-                    style={{ background: "rgba(255,255,255,0.15)" }}
-                  >
-                    <div className="text-center">
-                      <div className="text-8xl mb-2"><img src="/mascot/owi-mascot-3.svg" alt="OWI Logo" width={256} height={256} /></div>
-                      <div className="text-white font-bold text-2xl">OWI</div>
-                      <div className="text-gray-300 text-sm">
-                        Open Wisdom Intelligence
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              {/* Right Text */}
+              <div className="flex-1 text-center lg:text-left">
+                <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-none tracking-tight text-[var(--brand-sage)] mb-6">
+                  TANPA <br />
+                  BATAS
+                </h1>
+                <p className="text-lg text-gray-600 max-w-sm mx-auto lg:mx-0 leading-relaxed">
+                  Platform edukasi investasi yang dirancang khusus untuk penyandang disabilitas.
+                  Belajar cerdas bersama <strong style={{ color: "var(--brand-blue)" }}>OWI</strong>.
+                </p>
               </div>
             </div>
+
+            {/* Centered CTA */}
+            <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-30">
+              <Link
+                href="#features"
+                className="group btn flex items-center gap-3 text-base pl-8 pr-2 py-2 rounded-full font-bold transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(80,217,144,0.5)] active:scale-95"
+                style={{ backgroundColor: "var(--brand-sage)", color: "white" }}>
+                <span>Belajar Sekarang</span>
+                <div className="w-10 h-10 bg-white text-[var(--brand-sage)] rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1 group-hover:-rotate-45">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </div>
+              </Link>
+              <Link
+                href="#owi"
+                className="inline-flex items-center justify-center text-base px-8 py-3 rounded-full font-bold transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white border-2 border-solid hover:-translate-y-1 hover:shadow-lg active:scale-95"
+                style={{
+                  borderColor: "var(--brand-sage)",
+                  color: "var(--brand-sage)",
+                }}
+              >
+                Kenali OWI
+              </Link>
+            </div>
+
           </div>
         </section>
 
@@ -374,16 +361,17 @@ export default function Home() {
               Finable hadir untuk memperjuangkan kesetaraan dalam akses literasi
               investasi. Karena setiap orang berhak cerdas secara finansial.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="#features" className="btn btn-primary text-lg px-8 py-4"
-              style={{color: "var(--brand-white)",
-                backgroundColor: "var(--brand-sage)" 
-              }}>
+            <div className="flex flex-wrap justify-center gap-2">
+              <Link href="#features" className="btn btn-primary text-lg px-4 py-2"
+                style={{
+                  color: "var(--brand-white)",
+                  backgroundColor: "var(--brand-sage)"
+                }}>
                 <span></span>
                 Mulai Belajar Sekarang
               </Link>
               <Link href="#owi" className="text-lg px-8 py-4 rounded-xl border transition-all hover:opacity-90 inline-flex items-center gap-2"
-              style={{ borderColor: "var(--brand-black)", color: "var(--brand-black)", background: "var(--brand-white)" }}>
+                style={{ borderColor: "var(--brand-black)", color: "var(--brand-black)", background: "var(--brand-white)" }}>
                 <span></span>
                 Tanya OWI
               </Link>

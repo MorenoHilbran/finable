@@ -16,7 +16,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const supabase = createClient();
-    
+
     // Check initial auth state and get user info
     supabase.auth.getSession().then(({ data: { session } }) => {
       setIsLoggedIn(!!session);
@@ -86,8 +86,8 @@ export default function Navbar() {
             <span>FINABLE</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Desktop Navigation - Centered */}
+          <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 items-center gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -100,7 +100,10 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            
+          </div>
+
+          {/* Right Actions */}
+          <div className="hidden md:flex items-center gap-4 ml-auto">
             {isLoggedIn ? (
               /* User Profile Dropdown */
               <div className="relative" ref={dropdownRef}>
@@ -130,7 +133,7 @@ export default function Navbar() {
                   {/* Arrow */}
                   <span
                     className="text-xs transition-transform duration-200"
-                    style={{ 
+                    style={{
                       transform: isDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
                       color: "var(--brand-black)"
                     }}
@@ -141,7 +144,7 @@ export default function Navbar() {
 
                 {/* Dropdown Menu */}
                 {isDropdownOpen && (
-                  <div 
+                  <div
                     className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden"
                     style={{ zIndex: 100 }}
                   >
@@ -152,7 +155,7 @@ export default function Navbar() {
                       </div>
                       <div className="text-xs text-gray-500">{userEmail}</div>
                     </div>
-                    
+
                     <div className="py-2">
                       <Link
                         href="/dashboard"
@@ -173,9 +176,9 @@ export default function Navbar() {
                         Edit Profil
                       </Link>
                     </div>
-                    
+
                     <div className="border-t border-gray-100 py-2">
-                      <button 
+                      <button
                         onClick={handleLogout}
                         className="flex items-center gap-3 px-4 py-3 text-sm w-full transition-colors hover:bg-red-50 hover:cursor-pointer"
                         style={{ color: "var(--brand-red)" }}
@@ -250,7 +253,7 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              
+
               {isLoggedIn ? (
                 <>
                   {/* User Profile Section for Mobile */}
@@ -268,7 +271,7 @@ export default function Navbar() {
                       <div className="text-xs text-gray-500">{userEmail}</div>
                     </div>
                   </div>
-                  
+
                   <Link
                     href="/dashboard"
                     className="flex items-center gap-3 py-2 text-base font-medium"
@@ -287,7 +290,7 @@ export default function Navbar() {
                     <span>👤</span>
                     Edit Profil
                   </Link>
-                  <button 
+                  <button
                     onClick={handleLogout}
                     className="flex items-center gap-3 py-3 rounded-xl transition-all hover:bg-red-50 mt-2"
                     style={{ color: "var(--brand-red)" }}
