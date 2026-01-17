@@ -35,10 +35,11 @@ BATASAN:
 - Selalu disclaimer bahwa ini edukasi, bukan advice
 
 FORMAT RESPONS:
-- Gunakan emoji untuk membuat respons lebih engaging
+- Gunakan format markdown untuk struktur yang jelas (heading, bold, list)
 - Jelaskan dengan struktur yang jelas
 - Berikan contoh sederhana jika diperlukan
-- Akhiri dengan pertanyaan atau saran untuk eksplorasi lebih lanjut`;
+- Akhiri dengan pertanyaan atau saran untuk eksplorasi lebih lanjut
+- JANGAN gunakan emoji dalam respons`;
 
 export async function POST(req: NextRequest) {
   try {
@@ -85,7 +86,10 @@ export async function POST(req: NextRequest) {
       contents: fullPrompt,
     });
 
-    const text = response.text || "Maaf, saya tidak dapat memproses permintaan Anda saat ini.";
+    let text = response.text || "Maaf, saya tidak dapat memproses permintaan Anda saat ini.";
+    
+    // Remove emojis from the response
+    text = text.replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{FE00}-\u{FE0F}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA70}-\u{1FAFF}]/gu, '');
 
     return NextResponse.json({ message: text });
   } catch (error) {

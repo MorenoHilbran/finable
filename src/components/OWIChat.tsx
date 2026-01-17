@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface Message {
   id: string;
@@ -205,13 +207,17 @@ export default function OWIChat() {
                       </span>
                     </div>
                   )}
-                  <p
-                    className={`text-sm leading-relaxed whitespace-pre-wrap ${
-                      msg.role === "user" ? "text-white" : "text-gray-700"
-                    }`}
-                  >
-                    {msg.content}
-                  </p>
+                  {msg.role === "user" ? (
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap text-white">
+                      {msg.content}
+                    </p>
+                  ) : (
+                    <div className="text-sm leading-relaxed text-gray-700 prose prose-sm max-w-none prose-headings:mt-4 prose-headings:mb-2 prose-p:my-2.5 prose-ul:my-2.5 prose-ol:my-2.5 prose-li:my-1 prose-strong:text-gray-900 prose-strong:font-semibold prose-hr:my-3">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {msg.content}
+                      </ReactMarkdown>
+                    </div>
+                  )}
                   <p
                     className={`text-xs mt-2 ${
                       msg.role === "user" ? "text-white/70" : "text-gray-400"
@@ -262,7 +268,7 @@ export default function OWIChat() {
           {/* Quick Questions */}
           {messages.length <= 2 && (
             <div className="px-4 py-3 border-t border-gray-100 bg-white">
-              <p className="text-xs text-gray-500 mb-2">💡 Pertanyaan populer:</p>
+              <p className="text-xs text-gray-500 mb-2">Pertanyaan populer:</p>
               <div className="flex flex-wrap gap-2">
                 {quickQuestions.map((q, i) => (
                   <button
