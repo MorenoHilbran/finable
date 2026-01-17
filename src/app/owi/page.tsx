@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface Message {
   id: string;
@@ -99,10 +101,10 @@ export default function OWIPage() {
           <div className="text-center mb-6">
             <div className="inline-flex items-center gap-3 mb-3">
               <div 
-                className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
-                style={{ backgroundColor: "var(--brand-sage)" }}
+                className="p-2 rounded-2xl flex items-center justify-center shadow-lg"
+                // style={{ backgroundColor: "var(--brand-sage)" }}
               >
-                <img src="/mascot/owi-mascot-3.svg" alt="OWI" className="w-10 h-10" />
+                <img src="/mascot/owi-mascot-3.svg" alt="OWI" className="w-14 h-14" />
               </div>
               <div className="text-left">
                 <h1 className="text-2xl font-bold" style={{ color: "var(--brand-black)" }}>
@@ -121,10 +123,10 @@ export default function OWIPage() {
                 /* Welcome Screen */
                 <div className="h-full flex flex-col items-center justify-center p-8">
                   <div 
-                    className="w-20 h-20 rounded-full flex items-center justify-center mb-6"
-                    style={{ backgroundColor: "var(--brand-sage)" }}
+                    className="w-40 h-40 rounded-full flex items-center justify-center mb-6"
+                    // style={{ backgroundColor: "var(--brand-sage)" }}
                   >
-                    <img src="/mascot/owi-mascot-4.svg" alt="OWI" className="w-12 h-12" />
+                    <img src="/mascot/owi-mascot-4.svg" alt="OWI" className="w-40 h-40" />
                   </div>
                   <h2 className="text-xl font-bold mb-2" style={{ color: "var(--brand-black)" }}>
                     Halo! Saya OWI
@@ -174,11 +176,17 @@ export default function OWIPage() {
                               : "bg-gray-100"
                           }`}
                         >
-                          <p className={`text-sm leading-relaxed whitespace-pre-wrap ${
-                            msg.role === "user" ? "text-white" : "text-gray-700"
-                          }`}>
-                            {msg.content}
-                          </p>
+                          {msg.role === "user" ? (
+                            <p className="text-sm leading-relaxed whitespace-pre-wrap text-white">
+                              {msg.content}
+                            </p>
+                          ) : (
+                            <div className="text-sm leading-relaxed text-gray-700 prose prose-sm max-w-none prose-headings:mt-6 prose-headings:mb-3 prose-p:my-3 prose-ul:my-3 prose-ol:my-3 prose-li:my-1 prose-strong:text-gray-900 prose-strong:font-semibold prose-hr:my-4">
+                              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                {msg.content}
+                              </ReactMarkdown>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>

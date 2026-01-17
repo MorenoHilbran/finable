@@ -227,7 +227,7 @@ export default function Home() {
                 href="#features"
                 className="group btn flex items-center gap-3 text-base pl-8 pr-2 py-2 rounded-full font-bold transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(80,217,144,0.5)] active:scale-95"
                 style={{ backgroundColor: "var(--brand-sage)", color: "white" }}>
-                <span>Belajar Sekarang</span>
+                <span>Belajar Sekarang</span> 
                 <div className="w-10 h-10 bg-white text-[var(--brand-sage)] rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1 group-hover:-rotate-45">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -313,7 +313,7 @@ export default function Home() {
                   yang melambangkan kebijaksanaan, OWI membantu pengguna &quot;melihat&quot;
                   peluang investasi yang sebelumnya tidak terlihat.
                 </p>
-                <div className="grid sm:grid-cols-2 gap-4">
+                {/* <div className="grid sm:grid-cols-2 gap-4">
                   {owiPhilosophy.map((item, index) => (
                     <div
                       key={index}
@@ -331,19 +331,19 @@ export default function Home() {
                       </div>
                     </div>
                   ))}
-                </div>
+                </div> */}
               </div>
               <div className="flex justify-center">
                 <div
                   className="relative w-72 h-72 rounded-3xl flex items-center justify-center"
-                  style={{ backgroundColor: "var(--brand-sage)" }}
+                  // style={{ backgroundColor: "var(--brand-sage)" }}
                 >
                   <div className="text-center text-white">
-                    <div className="mb-4 animate-float flex justify-center"><img src="/mascot/owi-mascot-6.svg" alt="OWI" className="w-24 h-24" /></div>
-                    <div className="font-bold text-2xl">OWI</div>
-                    <div className="text-sm text-gray-200 mt-2">
+                    <div className="mb-4 animate-float flex justify-center"><img src="/mascot/owi-mascot-5.svg" alt="OWI" className="w-[300px] h-[300px]" /></div>
+                    {/* <div className="font-bold text-2xl">OWI</div> */}
+                    {/* <div className="text-sm text-gray-200 mt-2">
                       Owl Investment Assistant
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
