@@ -52,13 +52,13 @@ export default function LearningModuleCard({
           <div className="flex items-center justify-between text-sm text-gray-600 mb-4 pb-4 border-b border-gray-100">
             {level && (
               <span className="flex items-center gap-1.5">
-                <span>📊</span>
+                <img src="/icons/icon-chart.svg" alt="" className="w-4 h-4" />
                 <span className="font-medium">{level}</span>
               </span>
             )}
             {duration && (
               <span className="flex items-center gap-1.5">
-                <span>⏱️</span>
+                <img src="/icons/icon-clock.svg" alt="" className="w-4 h-4" />
                 <span className="font-medium">{duration}</span>
               </span>
             )}

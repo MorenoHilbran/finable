@@ -40,7 +40,7 @@ export default function FeatureCard({
               key={index}
               className="flex items-start gap-2 text-sm text-gray-600"
             >
-              <span style={{ color: accentColor }}>✓</span>
+              <img src="/icons/icon-check.svg" alt="" className="w-4 h-4" style={{ filter: "brightness(0) saturate(100%) invert(29%) sepia(21%) saturate(2251%) hue-rotate(120deg) brightness(98%) contrast(98%)" }} />
               <span>{item}</span>
             </li>
           ))}

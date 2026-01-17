@@ -25,7 +25,7 @@ export default function LessonNavigation({
           href={`/dashboard/belajar/${moduleId}/lesson/${prevLesson.id}`}
           className="flex items-center gap-2 px-4 py-3 rounded-xl border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all group flex-1 max-w-xs"
         >
-          <span className="text-xl group-hover:-translate-x-1 transition-transform">←</span>
+          <img src="/icons/icon-arrow-left.svg" alt="" className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
           <div className="text-left min-w-0">
             <p className="text-xs text-gray-500">Sebelumnya</p>
             <p className="text-sm font-medium truncate" style={{ color: "var(--brand-black)" }}>
@@ -54,7 +54,7 @@ export default function LessonNavigation({
               {nextLesson.title}
             </p>
           </div>
-          <span className="text-xl group-hover:translate-x-1 transition-transform">→</span>
+          <img src="/icons/icon-arrow-right.svg" alt="" className="w-5 h-5 invert brightness-0 group-hover:translate-x-1 transition-transform" />
         </Link>
       ) : (
         <button
@@ -68,12 +68,12 @@ export default function LessonNavigation({
         >
           {isCompleting ? (
             <>
-              <span className="animate-spin">⏳</span>
+              <img src="/icons/icon-loading.svg" alt="" className="w-5 h-5 animate-spin" />
               Menyimpan...
             </>
           ) : (
             <>
-              <span>🎉</span>
+              <img src="/icons/icon-success.svg" alt="" className="w-5 h-5 invert brightness-0" />
               Selesaikan Kelas
             </>
           )}

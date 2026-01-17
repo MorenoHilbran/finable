@@ -55,7 +55,7 @@ export default function DashboardLayoutClient({
             className="flex items-center gap-2 text-xl font-bold group"
             style={{ color: "var(--brand-black)" }}
           >
-            <span className="text-2xl group-hover:scale-110 transition-transform">💡</span>
+            <img src="/icons/logo-finable.svg" alt="Finable" className="w-8 h-8 group-hover:scale-110 transition-transform" />
             <span className="bg-clip-text">
               FINABLE
             </span>

@@ -231,7 +231,7 @@ export default function BelajarClient({ modules }: BelajarClientProps) {
                               />
                             ) : (
                               <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                                <span className="text-4xl">📚</span>
+                                <img src="/icons/learn.svg" alt="" className="w-12 h-12 opacity-50" />
                               </div>
                             )}
                             {module.category && (
@@ -266,8 +266,8 @@ export default function BelajarClient({ modules }: BelajarClientProps) {
                                 {getLevelLabel(module.difficulty_level)}
                               </span>
                               {module.duration && (
-                                <span className="text-xs text-gray-500">
-                                  ⏱️ {module.duration}
+                                <span className="text-xs text-gray-500 flex items-center gap-1">
+                                  <img src="/icons/icon-clock.svg" alt="" className="w-3 h-3" /> {module.duration}
                                 </span>
                               )}
                             </div>
@@ -278,7 +278,7 @@ export default function BelajarClient({ modules }: BelajarClientProps) {
                   </div>
                 ) : (
                   <div className="text-center py-16">
-                    <div className="text-6xl mb-4">🔍</div>
+                    <img src="/icons/icon-search.svg" alt="" className="w-16 h-16 mb-4 mx-auto opacity-50" />
                     <h3
                       className="text-xl font-bold mb-2"
                       style={{ color: "var(--brand-black)" }}

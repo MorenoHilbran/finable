@@ -141,17 +141,17 @@ export default function Home() {
       meaning: "Kebijaksanaan & kemampuan melihat dalam gelap (tantangan finansial)",
     },
     {
-      icon: "👁️",
+      icon: "/icons/icon-eye.svg",
       title: "Mata Besar",
       meaning: "Analisis dan perhatian pada detail investasi",
     },
     {
-      icon: "🤖",
+      icon: "/icons/icon-robot.svg",
       title: "AI Asisten",
       meaning: "Pemandu investasi yang sabar, inklusif & adaptif",
     },
     {
-      icon: "✨",
+      icon: "/icons/icon-insight.svg",
       title: "Ability & Vision",
       meaning: "Semua orang mampu merencanakan masa depan finansial",
     },
@@ -319,7 +319,7 @@ export default function Home() {
                       key={index}
                       className="flex items-start gap-3 p-4 rounded-xl bg-white shadow-sm"
                     >
-                      <span className="text-2xl">{item.icon}</span>
+                      <img src={item.icon} alt="" className="w-8 h-8" />
                       <div>
                         <h4
                           className="font-semibold text-sm"

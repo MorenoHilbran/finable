@@ -13,7 +13,7 @@ export default async function DashboardPage() {
     {
       title: "Kelas Saya",
       description: "Akses modul pembelajaran investasi yang telah disesuaikan dengan kebutuhan Anda.",
-      icon: "📚",
+      icon: "/icons/learn.svg",
       href: "/dashboard/kelas-saya",
       color: "var(--brand-sage)",
       stats: "0 Modul",
@@ -21,7 +21,7 @@ export default async function DashboardPage() {
     {
       title: "Investasi",
       description: "Simulasi dan pantau perkembangan investasi Anda dengan visualisasi yang mudah dipahami.",
-      icon: "📊",
+      icon: "/icons/invest.svg",
       href: "/dashboard/investasi",
       color: "var(--brand-blue)",
       stats: "0 Simulasi",
@@ -29,7 +29,7 @@ export default async function DashboardPage() {
   ];
 
   return (
-    <div>
+    <div className="p-6">
       {/* Welcome Section */}
       <div
         className="rounded-2xl p-8 mb-8 text-white"
@@ -39,7 +39,7 @@ export default async function DashboardPage() {
           <div className="animate-float"><img src="/mascot/owi-mascot-1.svg" alt="OWI" className="w-16 h-16" /></div>
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-white">
-              Halo, {userName}! 👋
+              Halo, {userName}!
             </h1>
             <p className="text-gray-200 mt-1">
               Selamat datang di dashboard Finable. Mari lanjutkan belajar!
@@ -51,16 +51,16 @@ export default async function DashboardPage() {
       {/* Quick Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: "Modul Selesai", value: "0", icon: "✅", color: "var(--brand-sage)" },
-          { label: "Dalam Proses", value: "0", icon: "📖", color: "var(--brand-blue)" },
-          { label: "Sertifikat", value: "0", icon: "🏆", color: "var(--brand-sage)" },
-          { label: "Poin", value: "0", icon: "⭐", color: "var(--brand-blue)" },
+          { label: "Modul Selesai", value: "0", icon: "/icons/icon-check.svg", color: "var(--brand-sage)" },
+          { label: "Dalam Proses", value: "0", icon: "/icons/icon-progress.svg", color: "var(--brand-blue)" },
+          { label: "Sertifikat", value: "0", icon: "/icons/icon-certificate.svg", color: "var(--brand-sage)" },
+          { label: "Poin", value: "0", icon: "/icons/icon-star.svg", color: "var(--brand-blue)" },
         ].map((stat, index) => (
           <div
             key={index}
             className="card text-center"
           >
-            <div className="text-3xl mb-2">{stat.icon}</div>
+            <img src={stat.icon} alt={stat.label} className="w-10 h-10 mb-2 mx-auto" />
             <div
               className="text-2xl font-bold"
               style={{ color: stat.color }}
@@ -91,7 +91,7 @@ export default async function DashboardPage() {
                 className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
                 style={{ background: `${module.color}20` }}
               >
-                {module.icon}
+                <img src={module.icon} alt={module.title} className="w-8 h-8" />
               </div>
               <div className="flex-1">
                 <h3
@@ -135,7 +135,6 @@ export default async function DashboardPage() {
           className="btn btn-primary"
           disabled
         >
-          <span>💬</span>
           Tanya OWI (Segera Hadir)
         </button>
       </div>

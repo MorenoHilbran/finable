@@ -148,9 +148,9 @@ export default function ModulesClient({ modules }: ModulesClientProps) {
 
   function SortIcon({ field }: { field: SortField }) {
     if (sortField !== field) {
-      return <span className="text-gray-300 ml-1">↕</span>;
+      return <img src="/icons/icon-sort-desc.svg" alt="" className="w-3 h-3 ml-1 opacity-20" />;
     }
-    return <span className="ml-1">{sortOrder === "asc" ? "↑" : "↓"}</span>;
+    return <img src={sortOrder === "asc" ? "/icons/icon-sort-asc.svg" : "/icons/icon-sort-desc.svg"} alt="" className="w-3 h-3 ml-1" />;
   }
 
   return (
@@ -189,7 +189,7 @@ export default function ModulesClient({ modules }: ModulesClientProps) {
               }}
               className="w-full px-4 py-2 pl-10 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none"
             />
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+            <img src="/icons/icon-search.svg" alt="" className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           </div>
           
           {/* Items per page */}
@@ -257,7 +257,7 @@ export default function ModulesClient({ modules }: ModulesClientProps) {
                           />
                         ) : (
                           <div className="w-16 h-12 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
-                            📷
+                            <img src="/icons/icon-image.svg" alt="" className="w-6 h-6 text-gray-400" />
                           </div>
                         )}
                         <div>
@@ -308,7 +308,10 @@ export default function ModulesClient({ modules }: ModulesClientProps) {
                           className="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 transition-colors"
                           style={{ color: "var(--brand-sage)" }}
                         >
-                          📖 Materi
+                          <div className="flex items-center gap-1">
+                            <img src="/icons/icon-note.svg" alt="" className="w-4 h-4" /> 
+                            Materi
+                          </div>
                         </a>
                         <button
                           onClick={() => openEditModal(module)}
@@ -365,7 +368,7 @@ export default function ModulesClient({ modules }: ModulesClientProps) {
                   disabled={currentPage === 1}
                   className="px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
                 >
-                  ← Prev
+                  <div className="flex items-center gap-1"><img src="/icons/icon-arrow-left.svg" alt="" className="w-3 h-3" /> Prev</div>
                 </button>
                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                   let page: number;
@@ -398,7 +401,7 @@ export default function ModulesClient({ modules }: ModulesClientProps) {
                   disabled={currentPage === totalPages}
                   className="px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
                 >
-                  Next →
+                  <div className="flex items-center gap-1">Next <img src="/icons/icon-arrow-right.svg" alt="" className="w-3 h-3" /></div>
                 </button>
               </div>
             )}
@@ -424,7 +427,7 @@ export default function ModulesClient({ modules }: ModulesClientProps) {
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center">
-                <span className="text-3xl">🗑️</span>
+                <img src="/icons/icon-trash.svg" alt="" className="w-8 h-8" />
               </div>
               <h3 className="text-xl font-bold mb-2" style={{ color: "var(--brand-black)" }}>
                 Hapus Modul?

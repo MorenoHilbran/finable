@@ -82,7 +82,7 @@ export default function Navbar() {
             className="flex items-center gap-2 text-xl md:text-2xl font-bold"
             style={{ color: "var(--brand-black)" }}
           >
-            <span className="text-2xl md:text-3xl">💡</span>
+            <img src="/icons/logo-finable.svg" alt="Finable" className="w-8 h-8 md:w-10 md:h-10" />
             <span>FINABLE</span>
           </Link>
 
@@ -163,7 +163,7 @@ export default function Navbar() {
                         style={{ color: "var(--brand-black)" }}
                         onClick={() => setIsDropdownOpen(false)}
                       >
-                        <span className="text-lg">📊</span>
+                        <img src="/icons/icon-dashboard.svg" alt="" className="w-5 h-5" />
                         Dashboard
                       </Link>
                       <Link
@@ -172,7 +172,7 @@ export default function Navbar() {
                         style={{ color: "var(--brand-black)" }}
                         onClick={() => setIsDropdownOpen(false)}
                       >
-                        <span className="text-lg">👤</span>
+                        <img src="/icons/icon-user.svg" alt="" className="w-5 h-5" />
                         Edit Profil
                       </Link>
                     </div>
@@ -183,7 +183,7 @@ export default function Navbar() {
                         className="flex items-center gap-3 px-4 py-3 text-sm w-full transition-colors hover:bg-red-50 hover:cursor-pointer"
                         style={{ color: "var(--brand-red)" }}
                       >
-                        <span className="text-xl">🚪</span>
+                        <img src="/icons/icon-logout.svg" alt="" className="w-5 h-5" />
                         <span>Keluar</span>
                       </button>
                     </div>
@@ -278,7 +278,7 @@ export default function Navbar() {
                     style={{ color: "var(--brand-black)" }}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <span>📊</span>
+                    <img src="/icons/icon-dashboard.svg" alt="" className="w-5 h-5" />
                     Dashboard
                   </Link>
                   <Link
@@ -287,7 +287,7 @@ export default function Navbar() {
                     style={{ color: "var(--brand-black)" }}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <span>👤</span>
+                    <img src="/icons/icon-user.svg" alt="" className="w-5 h-5" />
                     Edit Profil
                   </Link>
                   <button
@@ -295,7 +295,7 @@ export default function Navbar() {
                     className="flex items-center gap-3 py-3 rounded-xl transition-all hover:bg-red-50 mt-2"
                     style={{ color: "var(--brand-red)" }}
                   >
-                    <span className="text-xl">🚪</span>
+                    <img src="/icons/icon-logout.svg" alt="" className="w-5 h-5" />
                     <span>Keluar</span>
                   </button>
                 </>

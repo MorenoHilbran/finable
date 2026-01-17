@@ -21,7 +21,7 @@ const investmentCategories = [
   {
     id: "gold",
     name: "Emas",
-    icon: "🏆",
+    icon: "/icons/icon-trophy.svg",
     color: "#FFD700",
     unit: "gram",
     description: "Logam mulia sebagai aset safe haven",
@@ -31,7 +31,7 @@ const investmentCategories = [
   {
     id: "stock",
     name: "Saham",
-    icon: "📈",
+    icon: "/icons/icon-chart.svg",
     color: "#3B82F6",
     unit: "lot",
     description: "Kepemilikan bagian dari perusahaan",
@@ -41,7 +41,7 @@ const investmentCategories = [
   {
     id: "crypto",
     name: "Cryptocurrency",
-    icon: "₿",
+    icon: "/icons/icon-crypto.svg",
     color: "#F7931A",
     unit: "koin",
     description: "Aset digital terdesentralisasi",
@@ -51,7 +51,7 @@ const investmentCategories = [
   {
     id: "mutual-fund",
     name: "Reksa Dana",
-    icon: "💼",
+    icon: "/icons/icon-briefcase.svg",
     color: "#10B981",
     unit: "unit",
     description: "Investasi kolektif yang dikelola profesional",
@@ -197,7 +197,7 @@ export default function SimulasiPage() {
                       }`}
                     >
                       <div className="flex items-start justify-between mb-3">
-                        <span className="text-4xl">{category.icon}</span>
+                        <img src={category.icon} alt="" className="w-10 h-10" />
                         <span
                           className={`text-sm font-semibold px-2 py-1 rounded ${
                             category.priceChange >= 0
@@ -430,7 +430,7 @@ export default function SimulasiPage() {
                   {/* Disclaimer */}
                   <div className="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-6">
                     <div className="flex items-start gap-3">
-                      <span className="text-2xl">⚠️</span>
+                      <img src="/icons/icon-warning.svg" alt="" className="w-8 h-8" />
                       <div>
                         <h4 className="font-bold text-yellow-900 mb-2">
                           Disclaimer Penting
@@ -452,7 +452,7 @@ export default function SimulasiPage() {
                       className="text-2xl font-bold mb-6 flex items-center gap-3"
                       style={{ color: "var(--brand-dark-blue)" }}
                     >
-                      <span className="text-3xl">📊</span>
+                      <img src="/icons/icon-chart.svg" alt="" className="w-10 h-10" />
                       Review & Kesimpulan Simulasi
                     </h3>
 
@@ -466,7 +466,7 @@ export default function SimulasiPage() {
                           <div className="flex justify-between items-center py-2 border-b border-blue-100">
                             <span className="text-gray-600">Jenis Investasi:</span>
                             <span className="font-semibold flex items-center gap-2">
-                              <span>{selectedCategory.icon}</span>
+                              <img src={selectedCategory.icon} alt="" className="w-5 h-5" />
                               {selectedCategory.name}
                             </span>
                           </div>
@@ -493,7 +493,7 @@ export default function SimulasiPage() {
                         <div className="space-y-3">
                           {/* ROI Analysis */}
                           <div className="flex items-start gap-3 p-4 bg-green-50 rounded-xl">
-                            <span className="text-2xl">💰</span>
+                            <img src="/icons/icon-money.svg" alt="" className="w-8 h-8" />
                             <div className="flex-1">
                               <div className="font-semibold text-gray-900 mb-1">Return on Investment (ROI)</div>
                               <div className="text-sm text-gray-600">
@@ -512,7 +512,7 @@ export default function SimulasiPage() {
 
                           {/* Risk Assessment */}
                           <div className="flex items-start gap-3 p-4 bg-orange-50 rounded-xl">
-                            <span className="text-2xl">⚡</span>
+                            <img src="/icons/icon-lightning.svg" alt="" className="w-8 h-8" />
                             <div className="flex-1">
                               <div className="font-semibold text-gray-900 mb-1">Penilaian Risiko</div>
                               <div className="text-sm text-gray-600">
@@ -531,7 +531,7 @@ export default function SimulasiPage() {
 
                           {/* Time Horizon */}
                           <div className="flex items-start gap-3 p-4 bg-purple-50 rounded-xl">
-                            <span className="text-2xl">⏰</span>
+                            <img src="/icons/icon-clock.svg" alt="" className="w-8 h-8" />
                             <div className="flex-1">
                               <div className="font-semibold text-gray-900 mb-1">Horizon Waktu</div>
                               <div className="text-sm text-gray-600">
@@ -550,7 +550,7 @@ export default function SimulasiPage() {
 
                           {/* Category Specific Insight */}
                           <div className="flex items-start gap-3 p-4 bg-cyan-50 rounded-xl">
-                            <span className="text-2xl">🎯</span>
+                            <img src="/icons/icon-target.svg" alt="" className="w-8 h-8" />
                             <div className="flex-1">
                               <div className="font-semibold text-gray-900 mb-1">Insight untuk {selectedCategory.name}</div>
                               <div className="text-sm text-gray-600">

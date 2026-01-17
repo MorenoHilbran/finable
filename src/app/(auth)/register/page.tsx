@@ -7,19 +7,19 @@ import Squares from "@/components/Squares";
 
 const disabilityOptions = [
   { value: "", label: "Pilih tipe disabilitas (opsional)" },
-  { value: "tunanetra", label: "👁️ Tunanetra" },
-  { value: "tunarungu", label: "👂 Tunarungu" },
-  { value: "disabilitas_daksa", label: "🦾 Disabilitas Daksa" },
-  { value: "disabilitas_kognitif", label: "🧠 Disabilitas Kognitif" },
+  { value: "tunanetra", label: "Tunanetra" },
+  { value: "tunarungu", label: "Tunarungu" },
+  { value: "disabilitas_daksa", label: "Disabilitas Daksa" },
+  { value: "disabilitas_kognitif", label: "Disabilitas Kognitif" },
 ];
 
 const accessibilityOptions = [
-  { value: "high_contrast", label: "🎨 High Contrast", icon: "🎨" },
-  { value: "screen_reader", label: "🔊 Screen Reader", icon: "🔊" },
-  { value: "dyslexic_friendly", label: "📖 Dyslexic Friendly", icon: "📖" },
-  { value: "audio_learning", label: "🎧 Audio Learning", icon: "🎧" },
-  { value: "sign_language", label: "🤟 Sign Language", icon: "🤟" },
-  { value: "reduced_motion", label: "🚫 Reduced Motion", icon: "🚫" },
+  { value: "high_contrast", label: "High Contrast" },
+  { value: "screen_reader", label: "Screen Reader" },
+  { value: "dyslexic_friendly", label: "Dyslexic Friendly" },
+  { value: "audio_learning", label: "Audio Learning" },
+  { value: "sign_language", label: "Sign Language" },
+  { value: "reduced_motion", label: "Reduced Motion" },
 ];
 
 export default function RegisterPage() {
@@ -90,7 +90,7 @@ export default function RegisterPage() {
           className="flex items-center justify-center gap-2 text-2xl font-bold mb-6 group"
           style={{ color: "var(--brand-black)" }}
         >
-          <span className="text-3xl group-hover:scale-110 transition-transform">💡</span>
+          <img src="/icons/logo-finable.svg" alt="Finable" className="w-10 h-10 group-hover:scale-110 transition-transform" />
           <span>FINABLE</span>
         </Link>
 
@@ -122,7 +122,7 @@ export default function RegisterPage() {
                 border: "1px solid rgba(176, 24, 62, 0.2)",
               }}
             >
-              <span className="text-lg">⚠️</span>
+              <img src="/icons/icon-warning.svg" alt="" className="w-5 h-5" />
               <span>{error}</span>
             </div>
           )}
@@ -291,12 +291,11 @@ export default function RegisterPage() {
             >
               {isLoading ? (
                 <>
-                  <span className="animate-spin">⏳</span>
+                  <img src="/icons/icon-loading.svg" alt="" className="w-5 h-5 animate-spin" />
                   Memproses...
                 </>
               ) : (
                 <>
-                  <span>✨</span>
                   Daftar Sekarang
                 </>
               )}

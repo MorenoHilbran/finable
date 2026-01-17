@@ -26,10 +26,10 @@ export default function MasterDataClient() {
   const [error, setError] = useState("");
 
   const tabs: { key: TabType; label: string; icon: string }[] = [
-    { key: "categories", label: "Kategori", icon: "📁" },
-    { key: "difficulty_levels", label: "Tingkat Kesulitan", icon: "📊" },
-    { key: "duration_units", label: "Satuan Durasi", icon: "⏱️" },
-    { key: "content_types", label: "Tipe Konten", icon: "📝" },
+    { key: "categories", label: "Kategori", icon: "/icons/icon-folder.svg" },
+    { key: "difficulty_levels", label: "Tingkat Kesulitan", icon: "/icons/icon-chart.svg" },
+    { key: "duration_units", label: "Satuan Durasi", icon: "/icons/icon-clock.svg" },
+    { key: "content_types", label: "Tipe Konten", icon: "/icons/icon-note.svg" },
   ];
 
   const apiEndpoints: Record<TabType, string> = {
@@ -152,7 +152,7 @@ export default function MasterDataClient() {
             }`}
             style={activeTab === tab.key ? { backgroundColor: "var(--brand-sage)" } : {}}
           >
-            <span>{tab.icon}</span>
+            <img src={tab.icon} alt="" className="w-4 h-4" />
             {tab.label}
           </button>
         ))}
@@ -167,7 +167,7 @@ export default function MasterDataClient() {
           </div>
         ) : data.length === 0 ? (
           <div className="p-8 text-center">
-            <div className="text-4xl mb-4">📭</div>
+            <img src="/icons/icon-folder-open.svg" alt="" className="w-16 h-16 mb-4 opacity-50 mx-auto" />
             <p className="text-gray-600">Belum ada data. Klik "Tambah Data" untuk menambahkan.</p>
           </div>
         ) : (
@@ -203,9 +203,11 @@ export default function MasterDataClient() {
                     {activeTab !== "categories" && (
                       <td className="px-6 py-4 text-gray-600">{item.name}</td>
                     )}
-                    {(activeTab === "categories" || activeTab === "content_types") && (
-                      <td className="px-6 py-4 text-2xl">{item.icon || "-"}</td>
-                    )}
+                      <td className="px-6 py-4 text-2xl">
+                        {activeTab === "categories" || activeTab === "content_types" ? (
+                          <span className="text-2xl">{item.icon}</span>
+                        ) : "-"}
+                      </td>
                     {activeTab === "difficulty_levels" && (
                       <td className="px-6 py-4">
                         {item.color_class ? (
@@ -323,7 +325,7 @@ function MasterDataModal({
             {isEdit ? "Edit" : "Tambah"} {tabLabels[activeTab]}
           </h2>
           <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            ✕
+            <img src="/icons/icon-close.svg" alt="" className="w-5 h-5" />
           </button>
         </div>
 
@@ -383,14 +385,14 @@ function MasterDataModal({
           {showIcon && (
             <div>
               <label className="block text-sm font-medium mb-1" style={{ color: "var(--brand-black)" }}>
-                Icon (Emoji)
+                Icon (Path / Emoji)
               </label>
               <input
                 type="text"
                 value={formData.icon || ""}
                 onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
                 className="w-full px-4 py-2 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none"
-                placeholder="📁"
+                placeholder="/icons/icon-name.svg"
               />
             </div>
           )}

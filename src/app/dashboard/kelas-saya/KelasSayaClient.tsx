@@ -73,7 +73,7 @@ export default function KelasSayaClient() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="animate-spin text-4xl">⏳</div>
+        <img src="/icons/icon-loading.svg" alt="" className="w-12 h-12 animate-spin" />
       </div>
     );
   }
@@ -116,7 +116,7 @@ export default function KelasSayaClient() {
           className="text-2xl md:text-3xl font-bold mb-2"
           style={{ color: "var(--brand-dark-blue)" }}
         >
-          📚 Kelas Saya
+          Kelas Saya
         </h1>
         <p className="text-gray-600">
           Akses modul pembelajaran investasi yang telah Anda ambil.
@@ -170,7 +170,7 @@ export default function KelasSayaClient() {
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                        <span className="text-4xl">📚</span>
+                        <img src="/icons/learn.svg" alt="" className="w-12 h-12" />
                       </div>
                     )}
                     {enrollment.learning_modules.category && (
@@ -234,8 +234,8 @@ export default function KelasSayaClient() {
                       {getLevelLabel(enrollment.learning_modules.difficulty_level)}
                     </span>
                     {enrollment.learning_modules.duration && (
-                      <span className="text-xs text-gray-500">
-                        ⏱️ {enrollment.learning_modules.duration}
+                      <span className="text-xs text-gray-500 flex items-center gap-1">
+                        <img src="/icons/icon-clock.svg" alt="" className="w-3 h-3" /> {enrollment.learning_modules.duration}
                       </span>
                     )}
                   </div>
@@ -276,7 +276,7 @@ export default function KelasSayaClient() {
             className="card text-center py-16"
             style={{ background: "linear-gradient(135deg, rgba(78, 153, 204, 0.05) 0%, rgba(80, 217, 144, 0.05) 100%)" }}
           >
-            <div className="text-6xl mb-4">📖</div>
+            <img src="/icons/learn.svg" alt="" className="w-16 h-16 mx-auto mb-4" />
             <h2
               className="text-xl font-semibold mb-2"
               style={{ color: "var(--brand-dark-blue)" }}
@@ -294,7 +294,6 @@ export default function KelasSayaClient() {
                 boxShadow: "0 4px 14px rgba(80, 217, 144, 0.3)"
               }}
             >
-              <span>🔍</span>
               Jelajahi Kelas
             </Link>
           </div>

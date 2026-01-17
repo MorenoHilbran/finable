@@ -22,19 +22,19 @@ export default async function AdminDashboard() {
     { 
       label: "Total Modul", 
       value: totalModules || 0, 
-      icon: "📚", 
+      icon: "/icons/learn.svg", 
       color: "var(--brand-blue)" 
     },
     { 
       label: "Modul Dipublikasi", 
       value: publishedModules || 0, 
-      icon: "✅", 
+      icon: "/icons/icon-check.svg", 
       color: "var(--brand-sage)" 
     },
     { 
       label: "Total Pengguna", 
       value: totalUsers || 0, 
-      icon: "👥", 
+      icon: "/icons/icon-user.svg", 
       color: "var(--brand-black)" 
     },
   ];
@@ -62,7 +62,7 @@ export default async function AdminDashboard() {
                 className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl"
                 style={{ backgroundColor: `${stat.color}20` }}
               >
-                {stat.icon}
+                <img src={stat.icon} alt="" className="w-8 h-8" />
               </div>
               <div>
                 <div 

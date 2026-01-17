@@ -8,19 +8,19 @@ import type { User } from "@/lib/supabase/database.types";
 
 const disabilityOptions = [
   { value: "", label: "Tidak ada / Tidak ingin menyebutkan" },
-  { value: "tunanetra", label: "👁️ Tunanetra" },
-  { value: "tunarungu", label: "👂 Tunarungu" },
-  { value: "disabilitas_daksa", label: "🦾 Disabilitas Daksa" },
-  { value: "disabilitas_kognitif", label: "🧠 Disabilitas Kognitif" },
+  { value: "tunanetra", label: "Tunanetra" },
+  { value: "tunarungu", label: "Tunarungu" },
+  { value: "disabilitas_daksa", label: "Disabilitas Daksa" },
+  { value: "disabilitas_kognitif", label: "Disabilitas Kognitif" },
 ];
 
 const accessibilityOptions = [
-  { value: "high_contrast", label: "🎨 High Contrast Mode" },
-  { value: "screen_reader", label: "🔊 Screen Reader" },
-  { value: "dyslexic_friendly", label: "📖 Dyslexic Friendly" },
-  { value: "audio_learning", label: "🎧 Audio Learning" },
-  { value: "sign_language", label: "🤟 Sign Language" },
-  { value: "reduced_motion", label: "🚫 Reduced Motion" },
+  { value: "high_contrast", label: "High Contrast Mode" },
+  { value: "screen_reader", label: "Screen Reader" },
+  { value: "dyslexic_friendly", label: "Dyslexic Friendly" },
+  { value: "audio_learning", label: "Audio Learning" },
+  { value: "sign_language", label: "Sign Language" },
+  { value: "reduced_motion", label: "Reduced Motion" },
 ];
 
 export default function ProfilePage() {
@@ -96,7 +96,7 @@ export default function ProfilePage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="text-4xl animate-spin mb-4">⏳</div>
+          <img src="/icons/icon-loading.svg" alt="" className="w-12 h-12 animate-spin mb-4 mx-auto" />
           <p className="text-gray-600">Memuat profil...</p>
         </div>
       </div>
@@ -104,7 +104,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div>
+    <div className="p-6">
       {/* Navigation Bar */}
       <div className="flex items-center justify-between mb-6">
         {/* Back Button - Top Left */}
@@ -146,7 +146,7 @@ export default function ProfilePage() {
           className="text-2xl md:text-3xl font-bold mb-2"
           style={{ color: "var(--brand-dark-blue)" }}
         >
-          👤 Edit Profil
+          Edit Profil
         </h1>
         <p className="text-gray-600">
           Perbarui informasi profil dan preferensi aksesibilitas Anda.
@@ -166,9 +166,7 @@ export default function ProfilePage() {
               : "#dc2626",
           }}
         >
-          <span className="text-lg mr-2">
-            {message.type === "success" ? "✅" : "⚠️"}
-          </span>
+          <img src={message.type === "success" ? "/icons/icon-success.svg" : "/icons/icon-warning.svg"} alt="" className="w-5 h-5 mr-2 inline" />
           {message.text}
         </div>
       )}
@@ -300,12 +298,11 @@ export default function ProfilePage() {
             >
               {isSaving ? (
                 <>
-                  <span className="animate-spin">⏳</span>
+                  <img src="/icons/icon-loading.svg" alt="" className="w-5 h-5 animate-spin" />
                   Menyimpan...
                 </>
               ) : (
                 <>
-                  <span>💾</span>
                   Simpan Perubahan
                 </>
               )}
