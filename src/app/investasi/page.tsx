@@ -21,7 +21,7 @@ const investmentCategories = [
   {
     id: "gold",
     name: "Emas",
-    icon: "/icons/icon-trophy.svg",
+    icon: "/icons/icon-emas.svg",
     color: "#FFD700",
     unit: "gram",
     description: "Logam mulia sebagai aset safe haven",
@@ -31,7 +31,7 @@ const investmentCategories = [
   {
     id: "stock",
     name: "Saham",
-    icon: "/icons/icon-chart.svg",
+    icon: "/icons/icon-saham.svg",
     color: "#3B82F6",
     unit: "lot",
     description: "Kepemilikan bagian dari perusahaan",
@@ -51,7 +51,7 @@ const investmentCategories = [
   {
     id: "mutual-fund",
     name: "Reksa Dana",
-    icon: "/icons/icon-briefcase.svg",
+    icon: "/icons/icon-reksadana.svg",
     color: "#10B981",
     unit: "unit",
     description: "Investasi kolektif yang dikelola profesional",
