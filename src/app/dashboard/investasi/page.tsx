@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function InvestasiPage() {
   return (
-    <div>
+    <div className="p-6">
       {/* Navigation Bar */}
       <div className="flex items-center justify-between mb-6">
         {/* Back Button - Top Left */}
@@ -44,7 +44,7 @@ export default function InvestasiPage() {
           className="text-2xl md:text-3xl font-bold mb-2"
           style={{ color: "var(--brand-dark-blue)" }}
         >
-          📊 Investasi
+          Investasi
         </h1>
         <p className="text-gray-600">
           Simulasi dan pantau perkembangan investasi Anda dengan visualisasi yang mudah dipahami.
@@ -56,7 +56,7 @@ export default function InvestasiPage() {
         className="card text-center py-16"
         style={{ background: "linear-gradient(135deg, rgba(80, 217, 144, 0.05) 0%, rgba(78, 153, 204, 0.05) 100%)" }}
       >
-        <div className="text-6xl mb-4">📈</div>
+        <img src="/icons/icon-trending.svg" alt="" className="w-16 h-16 mx-auto mb-4" />
         <h2
           className="text-xl font-semibold mb-2"
           style={{ color: "var(--brand-dark-blue)" }}
@@ -73,7 +73,6 @@ export default function InvestasiPage() {
             color: "var(--brand-sage)",
           }}
         >
-          <span>🚧</span>
           Segera Hadir
         </div>
       </div>
@@ -120,7 +119,7 @@ export default function InvestasiPage() {
               className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
               style={{ background: `${feature.color}20` }}
             >
-              {feature.icon}
+              <img src={feature.icon} alt="" className="w-6 h-6" />
             </div>
             <div>
               <h4
@@ -146,7 +145,7 @@ export default function InvestasiPage() {
         }}
       >
         <div className="flex items-start gap-4">
-          <span className="text-2xl">ℹ️</span>
+          <img src="/icons/icon-info.svg" alt="" className="w-6 h-6" />
           <div>
             <h4
               className="font-semibold mb-1"

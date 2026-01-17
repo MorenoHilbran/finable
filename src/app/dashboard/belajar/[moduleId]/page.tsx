@@ -315,12 +315,12 @@ export default async function ModuleLearningPage({
                                       ? "bg-green-500 text-white"
                                       : "bg-gray-100 text-gray-600"
                                   }`}>
-                                    {isCompleted ? "✓" : `${idx + 1}.${childIdx + 1}`}
+                                    {isCompleted ? <img src="/icons/icon-check.svg" alt="" className="w-4 h-4 invert brightness-0" /> : `${idx + 1}.${childIdx + 1}`}
                                   </span>
                                   <span className="flex-1 text-sm" style={{ color: "var(--brand-black)" }}>
                                     {child.title}
                                   </span>
-                                  <span className="text-gray-400 text-sm">→</span>
+                                  <img src="/icons/icon-arrow-right.svg" alt="" className="w-4 h-4 text-gray-400" />
                                 </Link>
                               ) : (
                                 <div
@@ -328,7 +328,7 @@ export default async function ModuleLearningPage({
                                   className="flex items-center gap-3 p-3 rounded-lg border-l-2 border-gray-200 opacity-50 cursor-not-allowed"
                                 >
                                   <span className="w-7 h-7 rounded-full flex items-center justify-center text-xs bg-gray-100 text-gray-400">
-                                    🔒
+                                    <img src="/icons/icon-lock.svg" alt="" className="w-4 h-4 opacity-50" />
                                   </span>
                                   <span className="flex-1 text-sm text-gray-400">
                                     {child.title}
@@ -344,7 +344,7 @@ export default async function ModuleLearningPage({
                 </div>
               ) : (
                 <div className="text-center py-12 text-gray-500">
-                  <div className="text-4xl mb-4">📝</div>
+                  <img src="/icons/icon-note.svg" alt="" className="w-16 h-16 mb-4 mx-auto" />
                   <p>Materi belum tersedia</p>
                 </div>
               )}
@@ -361,7 +361,7 @@ export default async function ModuleLearningPage({
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
-                    📊
+                    <img src="/icons/icon-chart.svg" alt="" className="w-6 h-6" />
                   </div>
                   <div>
                     <p className="text-xs text-gray-500">Tingkat</p>
@@ -374,7 +374,7 @@ export default async function ModuleLearningPage({
                 {module.duration && (
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
-                      ⏱️
+                      <img src="/icons/icon-clock.svg" alt="" className="w-6 h-6" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-500">Durasi</p>
@@ -387,7 +387,7 @@ export default async function ModuleLearningPage({
                 
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
-                    📚
+                    <img src="/icons/learn.svg" alt="" className="w-6 h-6" />
                   </div>
                   <div>
                     <p className="text-xs text-gray-500">Total Materi</p>

@@ -205,12 +205,12 @@ function ImageUploadModal({
           >
             {isUploading ? (
               <>
-                <span className="animate-spin">⏳</span>
+                <img src="/icons/icon-loading.svg" alt="" className="w-5 h-5 animate-spin" />
                 Mengupload...
               </>
             ) : (
               <>
-                <span>📁</span>
+                <img src="/icons/icon-image.svg" alt="" className="w-5 h-5" />
                 Pilih File Gambar
               </>
             )}
@@ -226,7 +226,7 @@ function ImageUploadModal({
           onClick={onClose}
           className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-lg transition-colors"
         >
-          ✕
+          <img src="/icons/icon-close.svg" alt="" className="w-4 h-4" />
         </button>
       </div>
     </div>
@@ -304,7 +304,7 @@ function SpecialCharsModal({
           onClick={onClose}
           className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-lg transition-colors"
         >
-          ✕
+          <img src="/icons/icon-close.svg" alt="" className="w-4 h-4" />
         </button>
       </div>
     </div>
@@ -431,21 +431,21 @@ function Toolbar({ editor }: { editor: Editor | null }) {
             isActive={editor.isActive({ textAlign: "left" })}
             title="Align Left"
           >
-            <span className="text-sm">⬅</span>
+            <img src="/icons/icon-align-left.svg" alt="" className="w-4 h-4" />
           </ToolbarButton>
           <ToolbarButton
             onClick={() => editor.chain().focus().setTextAlign("center").run()}
             isActive={editor.isActive({ textAlign: "center" })}
             title="Align Center"
           >
-            <span className="text-sm">⬌</span>
+            <img src="/icons/icon-align-center.svg" alt="" className="w-4 h-4" />
           </ToolbarButton>
           <ToolbarButton
             onClick={() => editor.chain().focus().setTextAlign("right").run()}
             isActive={editor.isActive({ textAlign: "right" })}
             title="Align Right"
           >
-            <span className="text-sm">➡</span>
+            <img src="/icons/icon-align-right.svg" alt="" className="w-4 h-4" />
           </ToolbarButton>
         </div>
 
@@ -456,24 +456,24 @@ function Toolbar({ editor }: { editor: Editor | null }) {
             isActive={editor.isActive("bulletList")}
             title="Bullet List"
           >
-            <span className="text-sm">•</span>
+            <img src="/icons/icon-list-bullet.svg" alt="" className="w-4 h-4" />
           </ToolbarButton>
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
             isActive={editor.isActive("orderedList")}
             title="Numbered List"
           >
-            <span className="text-sm">1.</span>
+            <img src="/icons/icon-list-ordered.svg" alt="" className="w-4 h-4" />
           </ToolbarButton>
         </div>
 
         {/* Insert */}
         <div className="flex items-center gap-1 pr-2 border-r border-gray-300">
           <ToolbarButton onClick={setLink} isActive={editor.isActive("link")} title="Insert Link">
-            <span className="text-sm">🔗</span>
+            <img src="/icons/icon-link.svg" alt="" className="w-4 h-4" />
           </ToolbarButton>
           <ToolbarButton onClick={() => setIsImageModalOpen(true)} title="Insert Image">
-            <span className="text-sm">🖼️</span>
+            <img src="/icons/icon-image.svg" alt="" className="w-4 h-4" />
           </ToolbarButton>
           <ToolbarButton onClick={() => setIsCharsModalOpen(true)} title="Special Characters & Math">
             <span className="text-sm">Ω</span>
@@ -511,14 +511,14 @@ function Toolbar({ editor }: { editor: Editor | null }) {
             disabled={!editor.can().undo()}
             title="Undo"
           >
-            <span className="text-sm">↩️</span>
+            <img src="/icons/icon-undo.svg" alt="" className="w-4 h-4" />
           </ToolbarButton>
           <ToolbarButton
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().redo()}
             title="Redo"
           >
-            <span className="text-sm">↪️</span>
+            <img src="/icons/icon-redo.svg" alt="" className="w-4 h-4" />
           </ToolbarButton>
         </div>
       </div>

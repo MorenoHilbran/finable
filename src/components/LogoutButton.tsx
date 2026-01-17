@@ -69,7 +69,7 @@ export default function LogoutButton({ className = "", style }: { className?: st
         className={className}
         style={style}
       >
-        <span className="text-xl">🚪</span>
+        <img src="/icons/icon-logout.svg" alt="" className="w-5 h-5" />
         <span>Keluar</span>
       </button>
 

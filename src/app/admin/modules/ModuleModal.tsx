@@ -201,7 +201,7 @@ export default function ModuleModal({ isOpen, onClose, module, onSuccess }: Modu
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            ✕
+            <img src="/icons/icon-close.svg" alt="" className="w-5 h-5" />
           </button>
         </div>
         

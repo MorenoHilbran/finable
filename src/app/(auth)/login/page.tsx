@@ -46,7 +46,7 @@ export default function LoginPage() {
           className="flex items-center justify-center gap-2 text-2xl font-bold mb-8 group"
           style={{ color: "var(--brand-black)" }}
         >
-          <span className="text-3xl group-hover:scale-110 transition-transform">💡</span>
+          <img src="/icons/logo-finable.svg" alt="Finable" className="w-10 h-10 group-hover:scale-110 transition-transform" />
           <span className="bg-clip-text">FINABLE</span>
         </Link>
 
@@ -80,7 +80,7 @@ export default function LoginPage() {
                 border: "1px solid rgba(70, 185, 131, 0.3)",
               }}
             >
-              <span className="text-lg">✅</span>
+              <img src="/icons/icon-success.svg" alt="" className="w-5 h-5" />
               <span>Registrasi berhasil! Silakan masuk.</span>
             </div>
           )}
@@ -95,7 +95,7 @@ export default function LoginPage() {
                 border: "1px solid rgba(176, 24, 62, 0.2)",
               }}
             >
-              <span className="text-lg">⚠️</span>
+              <img src="/icons/icon-warning.svg" alt="" className="w-5 h-5" />
               <span>{error}</span>
             </div>
           )}
@@ -174,12 +174,11 @@ export default function LoginPage() {
             >
               {isLoading ? (
                 <>
-                  <span className="animate-spin">⏳</span>
+                  <img src="/icons/icon-loading.svg" alt="" className="w-5 h-5 animate-spin" />
                   Memproses...
                 </>
               ) : (
                 <>
-                  <span>🚀</span>
                   Masuk
                 </>
               )}

@@ -34,14 +34,14 @@ export default function LessonSidebar({
     if (completedLessonIds.includes(lessonId)) {
       return (
         <span className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-xs shrink-0">
-          ✓
+          <img src="/icons/icon-check.svg" alt="" className="w-3 h-3 invert brightness-0" />
         </span>
       );
     }
     if (!isUnlocked) {
       return (
         <span className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs shrink-0">
-          🔒
+          <img src="/icons/icon-lock.svg" alt="" className="w-3 h-3 opacity-50" />
         </span>
       );
     }
@@ -51,13 +51,13 @@ export default function LessonSidebar({
           className="w-5 h-5 rounded-full flex items-center justify-center text-white text-xs shrink-0"
           style={{ backgroundColor: "var(--brand-sage)" }}
         >
-          ●
+          <div className="w-2 h-2 rounded-full bg-white" />
         </span>
       );
     }
     return (
       <span className="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-400 text-xs shrink-0">
-        ○
+        <div className="w-2 h-2 rounded-full bg-gray-300" />
       </span>
     );
   };
@@ -152,7 +152,7 @@ export default function LessonSidebar({
             onClick={onToggleSidebar}
             className="p-2 hover:bg-gray-100 rounded-lg"
           >
-            ✕
+            <img src="/icons/icon-close.svg" alt="" className="w-4 h-4" />
           </button>
         </div>
 

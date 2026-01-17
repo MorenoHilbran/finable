@@ -18,11 +18,11 @@ interface InvestmentNote {
 type NoteType = InvestmentNote["type"];
 
 const NOTE_TYPES: { value: NoteType; label: string; icon: string; color: string }[] = [
-  { value: "insight", label: "Insight", icon: "💡", color: "var(--brand-yellow)" },
-  { value: "strategy", label: "Strategi", icon: "🎯", color: "var(--brand-cyan)" },
-  { value: "simulation", label: "Simulasi", icon: "📊", color: "var(--brand-green)" },
-  { value: "mistake", label: "Kesalahan", icon: "⚠️", color: "var(--brand-orange)" },
-  { value: "question", label: "Pertanyaan", icon: "❓", color: "var(--brand-magenta)" },
+  { value: "insight", label: "Insight", icon: "/icons/icon-insight.svg", color: "var(--brand-yellow)" },
+  { value: "strategy", label: "Strategi", icon: "/icons/icon-target.svg", color: "var(--brand-cyan)" },
+  { value: "simulation", label: "Simulasi", icon: "/icons/icon-bar-chart.svg", color: "var(--brand-green)" },
+  { value: "mistake", label: "Kesalahan", icon: "/icons/icon-warning.svg", color: "var(--brand-orange)" },
+  { value: "question", label: "Pertanyaan", icon: "/icons/icon-question.svg", color: "var(--brand-magenta)" },
 ];
 
 const STORAGE_KEY = "finable_investment_notes";
@@ -165,7 +165,7 @@ export default function CatatanPage() {
   };
 
   return (
-    <div>
+    <div className="p-6">
       {/* Navigation Bar */}
       <div className="flex items-center justify-between mb-6">
         <Link
@@ -223,7 +223,7 @@ export default function CatatanPage() {
           {/* Search */}
           <div className="flex-1">
             <div className="relative">
-              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
+              <img src="/icons/icon-search.svg" alt="" className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
                 placeholder="Cari catatan..."
@@ -282,7 +282,7 @@ export default function CatatanPage() {
                   onClick={resetForm}
                   className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center"
                 >
-                  ✕
+                  <img src="/icons/icon-close.svg" alt="Close" className="w-4 h-4" />
                 </button>
               </div>
 
@@ -395,7 +395,7 @@ export default function CatatanPage() {
       {/* Notes List */}
       {isLoading ? (
         <div className="card text-center py-12">
-          <div className="text-4xl mb-4 animate-spin" style={{ animationDuration: "2s" }}>⏳</div>
+          <img src="/icons/icon-loading.svg" alt="" className="w-12 h-12 mb-4 mx-auto animate-spin" style={{ animationDuration: "2s" }} />
           <p className="text-gray-500">Memuat catatan...</p>
         </div>
       ) : filteredNotes.length === 0 ? (
@@ -403,7 +403,7 @@ export default function CatatanPage() {
           className="card text-center py-12"
           style={{ background: "linear-gradient(135deg, rgba(72, 189, 208, 0.05) 0%, rgba(70, 185, 131, 0.05) 100%)" }}
         >
-          <div className="text-6xl mb-4">📝</div>
+          <img src="/icons/icon-note.svg" alt="" className="w-16 h-16 mb-4 mx-auto" />
           <h3 className="text-xl font-semibold mb-2" style={{ color: "var(--brand-dark-blue)" }}>
             {notes.length === 0 ? "Belum Ada Catatan" : "Tidak Ada Hasil"}
           </h3>
@@ -453,8 +453,8 @@ export default function CatatanPage() {
 
                     {/* Source */}
                     {note.source && (
-                      <p className="text-xs text-gray-500 mb-2">
-                        📚 Sumber: {note.source}
+                      <p className="text-xs text-gray-500 mb-2 flex items-center gap-1">
+                        <img src="/icons/learn.svg" alt="" className="w-3 h-3" /> Sumber: {note.source}
                       </p>
                     )}
 
@@ -481,17 +481,17 @@ export default function CatatanPage() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleEdit(note)}
-                          className="text-sm px-3 py-1 rounded-lg hover:bg-gray-100 transition-colors"
+                          className="text-sm px-3 py-1 rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-1"
                           style={{ color: "var(--brand-cyan)" }}
                         >
-                          ✏️ Edit
+                          <img src="/icons/icon-edit.svg" alt="" className="w-4 h-4" /> Edit
                         </button>
                         <button
                           onClick={() => handleDelete(note.id)}
-                          className="text-sm px-3 py-1 rounded-lg hover:bg-red-50 transition-colors"
+                          className="text-sm px-3 py-1 rounded-lg hover:bg-red-50 transition-colors flex items-center gap-1"
                           style={{ color: "var(--brand-red)" }}
                         >
-                          🗑️ Hapus
+                          <img src="/icons/icon-trash.svg" alt="" className="w-4 h-4" /> Hapus
                         </button>
                       </div>
                     </div>
@@ -512,7 +512,7 @@ export default function CatatanPage() {
         }}
       >
         <div className="flex items-start gap-4">
-          <span className="text-2xl">💡</span>
+          <img src="/icons/icon-insight.svg" alt="" className="w-8 h-8" />
           <div>
             <h4 className="font-semibold mb-2" style={{ color: "var(--brand-dark-blue)" }}>
               Tips Membuat Catatan Efektif

@@ -141,17 +141,17 @@ export default function Home() {
       meaning: "Kebijaksanaan & kemampuan melihat dalam gelap (tantangan finansial)",
     },
     {
-      icon: "👁️",
+      icon: "/icons/icon-eye.svg",
       title: "Mata Besar",
       meaning: "Analisis dan perhatian pada detail investasi",
     },
     {
-      icon: "🤖",
+      icon: "/icons/icon-robot.svg",
       title: "AI Asisten",
       meaning: "Pemandu investasi yang sabar, inklusif & adaptif",
     },
     {
-      icon: "✨",
+      icon: "/icons/icon-insight.svg",
       title: "Ability & Vision",
       meaning: "Semua orang mampu merencanakan masa depan finansial",
     },
@@ -175,10 +175,10 @@ export default function Home() {
       <main id="main-content">
         {/* Hero Section - Split Layout */}
         <section
-          className="relative pt-24 pb-20 overflow-hidden"
+          className="relative min-h-screen flex items-center overflow-hidden"
           style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #F3F4F6 100%)" }}
         >
-          <div className="container mx-auto px-6 relative z-10">
+          <div className="container mx-auto px-6 relative z-10 py-20">
 
             {/* Split Layout Container */}
             <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-4 mb-16">
@@ -319,7 +319,7 @@ export default function Home() {
                       key={index}
                       className="flex items-start gap-3 p-4 rounded-xl bg-white shadow-sm"
                     >
-                      <span className="text-2xl">{item.icon}</span>
+                      <img src={item.icon} alt="" className="w-8 h-8" />
                       <div>
                         <h4
                           className="font-semibold text-sm"

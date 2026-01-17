@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function SimulasiPage() {
   return (
-    <div>
+    <div className="p-6">
       {/* Navigation Bar */}
       <div className="flex items-center justify-between mb-6">
         {/* Back Button - Top Left */}
@@ -54,7 +54,7 @@ export default function SimulasiPage() {
           className="text-2xl md:text-3xl font-bold mb-2"
           style={{ color: "var(--brand-dark-blue)" }}
         >
-          🎯 Simulasi Investasi
+          Simulasi Investasi
         </h1>
         <p className="text-gray-600">
           Latih kemampuan investasi Anda dengan simulasi tanpa risiko finansial nyata.
@@ -83,8 +83,8 @@ export default function SimulasiPage() {
         </div>
 
         <div className="relative z-10">
-          <div className="text-7xl mb-6 animate-bounce" style={{ animationDuration: "2s" }}>
-            🚀
+          <div className="mb-6">
+            <img src="/icons/icon-rocket.svg" alt="" className="w-20 h-20 mx-auto animate-bounce" style={{ animationDuration: "2s" }} />
           </div>
           <h2
             className="text-2xl md:text-3xl font-bold mb-3"
@@ -104,7 +104,7 @@ export default function SimulasiPage() {
               boxShadow: "0 4px 14px rgba(72, 189, 208, 0.3)",
             }}
           >
-            <span className="animate-spin" style={{ animationDuration: "3s" }}>⏳</span>
+            <img src="/icons/icon-clock.svg" alt="" className="w-5 h-5 animate-spin" style={{ animationDuration: "3s" }} />
             Dalam Pengembangan
           </div>
         </div>
@@ -122,28 +122,28 @@ export default function SimulasiPage() {
           {
             title: "Simulasi Reksa Dana",
             description: "Simulasikan investasi reksa dana dengan data historis nyata.",
-            icon: "📈",
+            icon: "/icons/icon-trending.svg",
             color: "var(--brand-cyan)",
             progress: 65,
           },
           {
             title: "Simulasi Saham",
             description: "Beli dan jual saham virtual untuk belajar analisis pasar.",
-            icon: "📊",
+            icon: "/icons/icon-bar-chart.svg",
             color: "var(--brand-green)",
             progress: 45,
           },
           {
             title: "Paper Trading",
             description: "Trading dengan uang virtual, pengalaman nyata tanpa risiko.",
-            icon: "💹",
+            icon: "/icons/icon-chart.svg",
             color: "var(--brand-orange)",
             progress: 30,
           },
           {
             title: "Skenario Challenge",
             description: "Tantangan investasi dengan skenario ekonomi yang berbeda.",
-            icon: "🏆",
+            icon: "/icons/icon-certificate.svg",
             color: "var(--brand-magenta)",
             progress: 20,
           },
@@ -157,7 +157,7 @@ export default function SimulasiPage() {
               className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
               style={{ background: `${feature.color}20` }}
             >
-              {feature.icon}
+              <img src={feature.icon} alt="" className="w-6 h-6" />
             </div>
             <div className="flex-1">
               <h4
@@ -196,7 +196,7 @@ export default function SimulasiPage() {
         }}
       >
         <div className="flex items-start gap-4">
-          <span className="text-2xl">🔔</span>
+          <img src="/icons/icon-bell.svg" alt="" className="w-6 h-6" />
           <div>
             <h4
               className="font-semibold mb-1"
@@ -212,7 +212,7 @@ export default function SimulasiPage() {
               disabled
               style={{ opacity: 0.6, cursor: "not-allowed" }}
             >
-              📧 Notifikasi (Segera Hadir)
+              Notifikasi (Segera Hadir)
             </button>
           </div>
         </div>

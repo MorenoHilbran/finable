@@ -132,7 +132,7 @@ export default function LessonsClient({ moduleId, moduleTitle }: LessonsClientPr
             <div className="flex-1">
               <div className="flex items-center gap-3">
                 <span className="text-gray-400 font-mono text-sm">
-                  {level > 0 ? `↳` : `${index + 1}.`}
+                  {level > 0 ? <img src="/icons/icon-return-right.svg" alt="" className="w-4 h-4 text-gray-400" /> : `${index + 1}.`}
                 </span>
                 <h3 className="font-semibold" style={{ color: "var(--brand-black)" }}>
                   {lesson.title}
@@ -227,7 +227,7 @@ export default function LessonsClient({ moduleId, moduleTitle }: LessonsClientPr
         </div>
       ) : tree.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-2xl shadow-sm">
-          <div className="text-5xl mb-4">📖</div>
+          <img src="/icons/learn.svg" alt="" className="w-16 h-16 mb-4 opacity-50 mx-auto" />
           <h3 className="text-lg font-semibold mb-2" style={{ color: "var(--brand-black)" }}>
             Belum Ada Materi
           </h3>
@@ -261,7 +261,7 @@ export default function LessonsClient({ moduleId, moduleTitle }: LessonsClientPr
                 onClick={() => setIsModalOpen(false)}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               >
-                ✕
+                <img src="/icons/icon-close.svg" alt="" className="w-5 h-5" />
               </button>
             </div>
 

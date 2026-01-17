@@ -13,18 +13,18 @@ interface NavLink {
 }
 
 const sidebarLinks: NavLink[] = [
-  { href: "/dashboard", label: "Beranda", icon: "🏠" },
-  { href: "/dashboard/kelas-saya", label: "Kelas Saya", icon: "📚" },
+  { href: "/dashboard", label: "Beranda", icon: "/icons/icon-home.svg" },
+  { href: "/dashboard/kelas-saya", label: "Kelas Saya", icon: "/icons/learn.svg" },
   {
     href: "/dashboard/investasi",
     label: "Investasi",
-    icon: "📊",
+    icon: "/icons/invest.svg",
     subLinks: [
-      { href: "/dashboard/investasi/simulasi", label: "Simulasi", icon: "🎯" },
-      { href: "/dashboard/investasi/catatan", label: "Catatan", icon: "📝" },
+      { href: "/dashboard/investasi/simulasi", label: "Simulasi", icon: "/icons/icon-target.svg" },
+      { href: "/dashboard/investasi/catatan", label: "Catatan", icon: "/icons/icon-note.svg" },
     ],
   },
-  { href: "/dashboard/profile", label: "Edit Profil", icon: "👤" },
+  { href: "/dashboard/profile", label: "Edit Profil", icon: "/icons/icon-user.svg" },
 ];
 
 export default function DashboardNav() {
@@ -85,7 +85,7 @@ export default function DashboardNav() {
                             color: active ? "white" : "var(--brand-black)",
                           }}
                         >
-                          <span className="text-xl">{link.icon}</span>
+                          <img src={link.icon} alt={link.label} className="w-5 h-5" style={{ filter: active ? 'brightness(0) invert(1)' : 'none' }} />
                           {link.label}
                         </Link>
                         <button
@@ -100,7 +100,7 @@ export default function DashboardNav() {
                             className="text-xs transition-transform duration-200 inline-block"
                             style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
                           >
-                            ▼
+                            <img src="/icons/icon-chevron-down.svg" alt="" className="w-3 h-3 text-gray-400" />
                           </span>
                         </button>
                       </div>
@@ -126,7 +126,7 @@ export default function DashboardNav() {
                                     background: subActive ? "rgba(80, 217, 144, 0.1)" : "transparent",
                                   }}
                                 >
-                                  <span>{subLink.icon}</span>
+                                  <img src={subLink.icon} alt={subLink.label} className="w-4 h-4" />
                                   {subLink.label}
                                 </Link>
                               </li>
@@ -148,7 +148,7 @@ export default function DashboardNav() {
                         }),
                       }}
                     >
-                      <span className="text-xl">{link.icon}</span>
+                      <img src={link.icon} alt={link.label} className="w-5 h-5" style={{ filter: active ? 'brightness(0) invert(1)' : 'none' }} />
                       {link.label}
                     </Link>
                   )}
@@ -165,7 +165,7 @@ export default function DashboardNav() {
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-blue-50 mb-2"
             style={{ color: "var(--brand-blue)" }}
           >
-            <span className="text-xl">🌐</span>
+            <img src="/icons/icon-globe.svg" alt="Ke Halaman Utama" className="w-5 h-5" />
             Ke Halaman Utama
           </Link>
           <LogoutButton
@@ -193,7 +193,7 @@ export default function DashboardNav() {
                   background: active ? "rgba(80, 217, 144, 0.1)" : "transparent",
                 }}
               >
-                <span className="text-xl">{link.icon}</span>
+                <img src={link.icon} alt={link.label} className="w-5 h-5" />
                 <span className="text-xs font-medium">{link.label}</span>
               </Link>
             );

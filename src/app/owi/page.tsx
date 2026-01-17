@@ -251,19 +251,19 @@ export default function OWIPage() {
           {/* Feature Pills */}
           <div className="flex flex-wrap justify-center gap-3 mt-6">
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-sm text-gray-600">
-              <span>🎯</span>
+              <img src="/icons/icon-target.svg" alt="" className="w-4 h-4" />
               <span>Edukasi Inklusif</span>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-sm text-gray-600">
-              <span>🧠</span>
+              <img src="/icons/icon-brain.svg" alt="" className="w-4 h-4" />
               <span>Mudah Dipahami</span>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-sm text-gray-600">
-              <span>♿</span>
+              <img src="/icons/icon-accessibility.svg" alt="" className="w-4 h-4" />
               <span>Aksesibel</span>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-sm text-gray-600">
-              <span>🔒</span>
+              <img src="/icons/icon-lock.svg" alt="" className="w-4 h-4" />
               <span>Aman & Privat</span>
             </div>
           </div>

@@ -19,9 +19,9 @@ interface NavLink {
 }
 
 const sidebarLinks: NavLink[] = [
-  { href: "/admin", label: "Dashboard", icon: "📊" },
-  { href: "/admin/modules", label: "Modul Pembelajaran", icon: "📚" },
-  { href: "/admin/master-data", label: "Master Data", icon: "⚙️" },
+  { href: "/admin", label: "Dashboard", icon: "/icons/icon-dashboard.svg" },
+  { href: "/admin/modules", label: "Modul Pembelajaran", icon: "/icons/learn.svg" },
+  { href: "/admin/master-data", label: "Master Data", icon: "/icons/icon-settings.svg" },
 ];
 
 export default function AdminLayoutClient({
@@ -74,7 +74,7 @@ export default function AdminLayoutClient({
             className="flex items-center gap-2 text-xl font-bold group"
             style={{ color: "var(--brand-black)" }}
           >
-            <span className="text-2xl group-hover:scale-110 transition-transform">💡</span>
+            <img src="/icons/logo-finable.svg" alt="Finable" className="w-8 h-8 group-hover:scale-110 transition-transform" />
             <span className="bg-clip-text">
               FINABLE <span className="text-sm font-normal text-gray-500">Admin</span>
             </span>
@@ -130,7 +130,7 @@ export default function AdminLayoutClient({
                       }),
                     }}
                   >
-                    <span className="text-xl">{link.icon}</span>
+                    <img src={link.icon} alt={link.label} className="w-5 h-5" style={{ filter: active ? 'brightness(0) invert(1)' : 'none' }} />
                     {link.label}
                   </Link>
                 </li>
@@ -146,7 +146,7 @@ export default function AdminLayoutClient({
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-100 mb-2"
             style={{ color: "var(--brand-blue)" }}
           >
-            <span className="text-xl">🌐</span>
+            <img src="/icons/icon-globe.svg" alt="" className="w-5 h-5" />
             Ke Halaman Utama
           </Link>
           <Link
@@ -154,7 +154,7 @@ export default function AdminLayoutClient({
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-100 mb-2"
             style={{ color: "var(--brand-black)" }}
           >
-            <span className="text-xl">👤</span>
+            <img src="/icons/icon-user.svg" alt="" className="w-5 h-5" />
             Dashboard User
           </Link>
           <LogoutButton
@@ -181,7 +181,7 @@ export default function AdminLayoutClient({
                   ...(!active && { color: "var(--brand-black)" }),
                 }}
               >
-                <span className="text-xl">{link.icon}</span>
+                <img src={link.icon} alt={link.label} className="w-5 h-5" />
                 <span className="text-xs mt-1 font-medium">{link.label}</span>
               </Link>
             );

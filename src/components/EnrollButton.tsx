@@ -73,13 +73,13 @@ export default function EnrollButton({ moduleId, isEnrolled, isLoggedIn }: Enrol
     >
       {loading ? (
         <span className="flex items-center justify-center gap-2">
-          <span className="animate-spin">⏳</span>
+          <img src="/icons/icon-loading.svg" alt="" className="w-5 h-5 animate-spin" />
           Memproses...
         </span>
       ) : isLoggedIn ? (
-        <>🚀 Ambil Kelas Gratis</>
+        <><img src="/icons/icon-rocket.svg" alt="" className="w-5 h-5 inline mr-2" /> Ambil Kelas Gratis</>
       ) : (
-        <>🔐 Login untuk Mengambil Kelas</>
+        <><img src="/icons/icon-lock.svg" alt="" className="w-5 h-5 inline mr-2" /> Login untuk Mengambil Kelas</>
       )}
     </button>
   );
