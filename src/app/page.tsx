@@ -175,10 +175,10 @@ export default function Home() {
       <main id="main-content">
         {/* Hero Section - Split Layout */}
         <section
-          className="relative pt-24 pb-20 overflow-hidden"
+          className="relative min-h-screen flex items-center overflow-hidden"
           style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #F3F4F6 100%)" }}
         >
-          <div className="container mx-auto px-6 relative z-10">
+          <div className="container mx-auto px-6 relative z-10 py-20">
 
             {/* Split Layout Container */}
             <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-4 mb-16">
