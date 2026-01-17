@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Squares from "@/components/Squares";
 import Link from "next/link";
+import EnrollButton from "@/components/EnrollButton";
 
 export default async function ModuleDetailPage({
   params,
@@ -23,6 +24,54 @@ export default async function ModuleDetailPage({
   if (error || !module) {
     notFound();
   }
+  
+  // Check if user is logged in and enrolled
+  const { data: { user } } = await supabase.auth.getUser();
+  let isEnrolled = false;
+  
+  if (user) {
+    const { data: userData } = await supabase
+      .from("users")
+      .select("user_id")
+      .eq("auth_id", user.id)
+      .single();
+    
+    if (userData) {
+      const { data: enrollment } = await supabase
+        .from("user_enrollments")
+        .select("id")
+        .eq("user_id", userData.user_id)
+        .eq("module_id", id)
+        .single();
+      
+      isEnrolled = !!enrollment;
+    }
+  }
+  
+  // Fetch recommended modules (other published modules, excluding current one)
+  const { data: recommendedModules } = await supabase
+    .from("learning_modules")
+    .select("*")
+    .eq("is_published", true)
+    .neq("module_id", id)
+    .order("order_index", { ascending: true })
+    .limit(4);
+  
+  // Fetch lessons for this module (published only)
+  const { data: lessons } = await supabase
+    .from("module_lessons")
+    .select("*")
+    .eq("module_id", id)
+    .eq("is_published", true)
+    .order("order_index", { ascending: true });
+  
+  // Build lesson tree (only level 0 and 1)
+  const lessonTree = (lessons || [])
+    .filter((l: any) => l.parent_id === null)
+    .map((parent: any) => ({
+      ...parent,
+      children: (lessons || []).filter((c: any) => c.parent_id === parent.id),
+    }));
   
   const getLevelLabel = (level: string) => {
     switch (level) {
@@ -73,28 +122,17 @@ export default async function ModuleDetailPage({
                 <h1 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "var(--brand-sage)" }}>
                   {module.title}
                 </h1>
-                <p className="text-lg text-gray-200 mb-6">
+                <p className="text-lg text-gray-200">
                   {module.description}
                 </p>
                 
-                <div className="flex flex-wrap gap-4">
-                  <span className={`px-4 py-2 rounded-full text-sm font-medium ${
-                    module.difficulty_level === "basic"
-                      ? "bg-green-500/20 text-green-300"
-                      : module.difficulty_level === "intermediate"
-                      ? "bg-yellow-500/20 text-yellow-300"
-                      : "bg-red-500/20 text-red-300"
-                  }`}>
-                    {getLevelLabel(module.difficulty_level)}
-                  </span>
-                  {module.duration && (
-                    <span className="px-4 py-2 rounded-full text-sm bg-white/10">
-                      ⏱️ {module.duration}
-                    </span>
-                  )}
-                  <span className="px-4 py-2 rounded-full text-sm bg-white/10">
-                    {getContentTypeLabel(module.content_type)}
-                  </span>
+                {/* Mobile CTA */}
+                <div className="mt-6 lg:hidden">
+                  <EnrollButton 
+                    moduleId={module.module_id} 
+                    isEnrolled={isEnrolled} 
+                    isLoggedIn={!!user} 
+                  />
                 </div>
               </div>
               
@@ -129,62 +167,283 @@ export default async function ModuleDetailPage({
           </div>
           
           <div className="container px-6">
-            <div className="max-w-4xl">
-              <div className="bg-white rounded-2xl p-8 shadow-sm overflow-hidden">
-                <h2 className="text-2xl font-bold mb-6" style={{ color: "var(--brand-black)" }}>
-                  Konten Pembelajaran
-                </h2>
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Main Content - Left */}
+              <div className="flex-1">
+                <div className="bg-white rounded-2xl p-8 shadow-sm overflow-hidden">
+                  <h2 className="text-2xl font-bold mb-6" style={{ color: "var(--brand-black)" }}>
+                    Tentang Modul
+                  </h2>
+                  
+                  {module.content ? (
+                    <div 
+                      className="prose prose-lg max-w-none"
+                      style={{ 
+                        color: "var(--brand-black)",
+                        wordBreak: "break-word",
+                        overflowWrap: "break-word"
+                      }}
+                    >
+                      {/* Simple markdown-like rendering */}
+                      {module.content.split('\n').map((line, index) => {
+                        if (line.startsWith('# ')) {
+                          return <h2 key={index} className="text-2xl font-bold mt-8 mb-4 break-words">{line.slice(2)}</h2>;
+                        }
+                        if (line.startsWith('## ')) {
+                          return <h3 key={index} className="text-xl font-bold mt-6 mb-3 break-words">{line.slice(3)}</h3>;
+                        }
+                        if (line.startsWith('### ')) {
+                          return <h4 key={index} className="text-lg font-bold mt-4 mb-2 break-words">{line.slice(4)}</h4>;
+                        }
+                        if (line.startsWith('- ')) {
+                          return <li key={index} className="ml-4 break-words">{line.slice(2)}</li>;
+                        }
+                        if (line.trim() === '') {
+                          return <br key={index} />;
+                        }
+                        return <p key={index} className="mb-4 leading-relaxed break-words whitespace-pre-wrap">{line}</p>;
+                      })}
+                    </div>
+                  ) : (
+                      <div className="text-center py-12 text-gray-500">
+                      <div className="text-4xl mb-4">📝</div>
+                      <p>Konten modul sedang dalam pengembangan</p>
+                    </div>
+                  )}
+                </div>
                 
-                {module.content ? (
-                  <div 
-                    className="prose prose-lg max-w-none"
-                    style={{ 
-                      color: "var(--brand-black)",
-                      wordBreak: "break-word",
-                      overflowWrap: "break-word"
-                    }}
-                  >
-                    {/* Simple markdown-like rendering */}
-                    {module.content.split('\n').map((line, index) => {
-                      if (line.startsWith('# ')) {
-                        return <h2 key={index} className="text-2xl font-bold mt-8 mb-4 break-words">{line.slice(2)}</h2>;
-                      }
-                      if (line.startsWith('## ')) {
-                        return <h3 key={index} className="text-xl font-bold mt-6 mb-3 break-words">{line.slice(3)}</h3>;
-                      }
-                      if (line.startsWith('### ')) {
-                        return <h4 key={index} className="text-lg font-bold mt-4 mb-2 break-words">{line.slice(4)}</h4>;
-                      }
-                      if (line.startsWith('- ')) {
-                        return <li key={index} className="ml-4 break-words">{line.slice(2)}</li>;
-                      }
-                      if (line.trim() === '') {
-                        return <br key={index} />;
-                      }
-                      return <p key={index} className="mb-4 leading-relaxed break-words whitespace-pre-wrap">{line}</p>;
-                    })}
-                  </div>
-                ) : (
-                  <div className="text-center py-12 text-gray-500">
-                    <div className="text-4xl mb-4">📝</div>
-                    <p>Konten modul sedang dalam pengembangan</p>
+                {/* Lessons Overview Card */}
+                {lessonTree.length > 0 && (
+                  <div className="bg-white rounded-2xl p-8 shadow-sm mt-6">
+                    <h2 className="text-2xl font-bold mb-6" style={{ color: "var(--brand-black)" }}>
+                      Materi yang Dipelajari
+                    </h2>
+                    
+                    <div className="space-y-3">
+                      {lessonTree.map((lesson: any, idx: number) => (
+                        <div key={lesson.id}>
+                          {/* Parent Lesson */}
+                          <div className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors">
+                            <div 
+                              className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm shrink-0"
+                              style={{ backgroundColor: "var(--brand-sage)" }}
+                            >
+                              {idx + 1}
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-semibold" style={{ color: "var(--brand-black)" }}>
+                                {lesson.title}
+                              </h4>
+                              {lesson.children && lesson.children.length > 0 && (
+                                <div className="mt-2 pl-4 border-l-2 border-gray-200 space-y-2">
+                                  {lesson.children.map((child: any, childIdx: number) => (
+                                    <div key={child.id} className="flex items-center gap-2 text-sm text-gray-600">
+                                      <span className="text-xs text-gray-400">{idx + 1}.{childIdx + 1}</span>
+                                      <span>{child.title}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* CTA at bottom of lessons */}
+                    <div className="mt-6 pt-6 border-t border-gray-200">
+                      <EnrollButton 
+                        moduleId={module.module_id} 
+                        isEnrolled={isEnrolled} 
+                        isLoggedIn={!!user} 
+                      />
+                    </div>
                   </div>
                 )}
               </div>
               
-              {/* Navigation */}
-              <div className="mt-8 flex justify-start">
-                <Link
-                  href="/belajar"
-                  className="px-6 py-3 rounded-xl font-medium border-2 transition-all hover:bg-gray-100"
-                  style={{ borderColor: "var(--brand-black)", color: "var(--brand-black)" }}
-                >
-                  ← Kembali ke Daftar
-                </Link>
+              {/* Sidebar - Right */}
+              <div className="lg:w-80 shrink-0">
+                <div className="bg-white rounded-2xl p-6 shadow-sm sticky">
+                  <h3 className="text-lg font-bold mb-4" style={{ color: "var(--brand-black)" }}>
+                    Informasi Modul
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    {/* Difficulty Level */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
+                        <span className="text-xl">📊</span>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-500 uppercase tracking-wide">Tingkat Kesulitan</p>
+                        <span className={`inline-block mt-1 px-3 py-1 rounded-full text-xs font-medium ${
+                          module.difficulty_level === "basic"
+                            ? "bg-green-100 text-green-700"
+                            : module.difficulty_level === "intermediate"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-red-100 text-red-700"
+                        }`}>
+                          {getLevelLabel(module.difficulty_level)}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    {/* Duration */}
+                    {module.duration && (
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
+                          <span className="text-xl">⏱️</span>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500 uppercase tracking-wide">Durasi</p>
+                          <p className="font-medium" style={{ color: "var(--brand-black)" }}>
+                            {module.duration}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Total Lessons */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
+                        <span className="text-xl">📚</span>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-500 uppercase tracking-wide">Total Materi</p>
+                        <p className="font-medium" style={{ color: "var(--brand-black)" }}>
+                          {lessons?.length || 0} materi
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Content Type */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
+                        <span className="text-xl">
+                          {module.content_type === "text" ? "📖" 
+                            : module.content_type === "audio" ? "🎧" 
+                            : module.content_type === "visual" ? "🎬" 
+                            : "📦"}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-500 uppercase tracking-wide">Tipe Konten</p>
+                        <p className="font-medium" style={{ color: "var(--brand-black)" }}>
+                          {getContentTypeLabel(module.content_type).replace(/^[^\s]+\s/, '')}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Category */}
+                    {module.category && (
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
+                          <span className="text-xl">📁</span>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500 uppercase tracking-wide">Kategori</p>
+                          <p className="font-medium" style={{ color: "var(--brand-black)" }}>
+                            {module.category}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* CTA Button */}
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <EnrollButton 
+                      moduleId={module.module_id} 
+                      isEnrolled={isEnrolled} 
+                      isLoggedIn={!!user} 
+                    />
+                    {!user && (
+                      <p className="text-xs text-gray-500 text-center mt-3">
+                        Sudah punya akun?{" "}
+                        <Link href="/login" className="text-blue-600 hover:underline">
+                          Login
+                        </Link>
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
+        
+        {/* Recommended Modules Section */}
+        {recommendedModules && recommendedModules.length > 0 && (
+          <section className="py-12 bg-gray-50">
+            <div className="container px-6">
+              <h2 className="text-2xl font-bold mb-6" style={{ color: "var(--brand-black)" }}>
+                Modul Lainnya
+              </h2>
+              
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {recommendedModules.map((recModule: any) => (
+                  <Link 
+                    key={recModule.module_id}
+                    href={`/belajar/${recModule.module_id}`}
+                    className="group"
+                  >
+                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1">
+                      {/* Thumbnail */}
+                      <div className="relative h-36 overflow-hidden">
+                        {recModule.thumbnail_url ? (
+                          <img
+                            src={recModule.thumbnail_url}
+                            alt={recModule.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                            <span className="text-3xl">📚</span>
+                          </div>
+                        )}
+                        {recModule.category && (
+                          <div 
+                            className="absolute top-3 left-3 px-2 py-0.5 rounded-full text-xs font-semibold text-white"
+                            style={{ backgroundColor: "var(--brand-blue)" }}
+                          >
+                            {recModule.category}
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="p-4">
+                        <h3 
+                          className="font-bold text-sm mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors"
+                          style={{ color: "var(--brand-black)" }}
+                        >
+                          {recModule.title}
+                        </h3>
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                            recModule.difficulty_level === "basic"
+                              ? "bg-green-100 text-green-700"
+                              : recModule.difficulty_level === "intermediate"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : "bg-red-100 text-red-700"
+                          }`}>
+                            {getLevelLabel(recModule.difficulty_level)}
+                          </span>
+                          {recModule.duration && (
+                            <span className="text-xs text-gray-500">
+                              ⏱️ {recModule.duration}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
       </main>
       <Footer />
     </div>

@@ -21,6 +21,7 @@ interface NavLink {
 const sidebarLinks: NavLink[] = [
   { href: "/admin", label: "Dashboard", icon: "📊" },
   { href: "/admin/modules", label: "Modul Pembelajaran", icon: "📚" },
+  { href: "/admin/master-data", label: "Master Data", icon: "⚙️" },
 ];
 
 export default function AdminLayoutClient({

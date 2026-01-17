@@ -88,7 +88,7 @@ export default function DashboardLayoutClient({
 
       {/* Main Content */}
       <main className="pt-16 md:pl-64 pb-20 md:pb-8">
-        <div className="p-6">{children}</div>
+        <div>{children}</div>
       </main>
     </div>
   );

@@ -303,6 +303,13 @@ export default function ModulesClient({ modules }: ModulesClientProps) {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        <a
+                          href={`/admin/modules/${module.module_id}/lessons`}
+                          className="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 transition-colors"
+                          style={{ color: "var(--brand-sage)" }}
+                        >
+                          📖 Materi
+                        </a>
                         <button
                           onClick={() => openEditModal(module)}
                           className="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 transition-colors"

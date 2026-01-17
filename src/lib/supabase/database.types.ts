@@ -38,6 +38,121 @@ export type UserRole = "user" | "admin";
 export interface Database {
   public: {
     Tables: {
+      // Master Data Tables
+      categories: {
+        Row: {
+          id: number;
+          name: string;
+          description: string | null;
+          icon: string | null;
+          order_index: number;
+          is_active: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: number;
+          name: string;
+          description?: string | null;
+          icon?: string | null;
+          order_index?: number;
+          is_active?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: number;
+          name?: string;
+          description?: string | null;
+          icon?: string | null;
+          order_index?: number;
+          is_active?: boolean;
+          created_at?: string;
+        };
+      };
+      difficulty_levels: {
+        Row: {
+          id: number;
+          code: string;
+          name: string;
+          color_class: string | null;
+          order_index: number;
+          is_active: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: number;
+          code: string;
+          name: string;
+          color_class?: string | null;
+          order_index?: number;
+          is_active?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: number;
+          code?: string;
+          name?: string;
+          color_class?: string | null;
+          order_index?: number;
+          is_active?: boolean;
+          created_at?: string;
+        };
+      };
+      duration_units: {
+        Row: {
+          id: number;
+          code: string;
+          name: string;
+          order_index: number;
+          is_active: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: number;
+          code: string;
+          name: string;
+          order_index?: number;
+          is_active?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: number;
+          code?: string;
+          name?: string;
+          order_index?: number;
+          is_active?: boolean;
+          created_at?: string;
+        };
+      };
+      content_types: {
+        Row: {
+          id: number;
+          code: string;
+          name: string;
+          icon: string | null;
+          order_index: number;
+          is_active: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: number;
+          code: string;
+          name: string;
+          icon?: string | null;
+          order_index?: number;
+          is_active?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: number;
+          code?: string;
+          name?: string;
+          icon?: string | null;
+          order_index?: number;
+          is_active?: boolean;
+          created_at?: string;
+        };
+      };
+      // Core Tables
       users: {
         Row: {
           user_id: number;
@@ -100,6 +215,7 @@ export interface Database {
         Row: {
           module_id: number;
           title: string;
+          // Legacy ENUM fields (kept for backward compatibility)
           difficulty_level: DifficultyLevel;
           content_type: ContentType;
           description: string;
@@ -111,6 +227,12 @@ export interface Database {
           created_at: string;
           updated_at: string;
           order_index: number;
+          // New foreign key fields
+          category_id: number | null;
+          difficulty_level_id: number | null;
+          content_type_id: number | null;
+          duration_value: number | null;
+          duration_unit_id: number | null;
         };
         Insert: {
           module_id?: number;
@@ -126,6 +248,11 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
           order_index?: number;
+          category_id?: number | null;
+          difficulty_level_id?: number | null;
+          content_type_id?: number | null;
+          duration_value?: number | null;
+          duration_unit_id?: number | null;
         };
         Update: {
           module_id?: number;
@@ -141,6 +268,11 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
           order_index?: number;
+          category_id?: number | null;
+          difficulty_level_id?: number | null;
+          content_type_id?: number | null;
+          duration_value?: number | null;
+          duration_unit_id?: number | null;
         };
       };
       user_progress: {
@@ -249,3 +381,93 @@ export type UserProgress = Database["public"]["Tables"]["user_progress"]["Row"];
 export type OwiChatHistory = Database["public"]["Tables"]["owi_chat_history"]["Row"];
 export type InvestmentSimulation = Database["public"]["Tables"]["investment_simulation"]["Row"];
 
+// Master Data Types
+export type Category = Database["public"]["Tables"]["categories"]["Row"];
+export type DifficultyLevelData = Database["public"]["Tables"]["difficulty_levels"]["Row"];
+export type DurationUnit = Database["public"]["Tables"]["duration_units"]["Row"];
+export type ContentTypeData = Database["public"]["Tables"]["content_types"]["Row"];
+
+// Extended LearningModule with joined master data
+export interface LearningModuleWithRelations extends LearningModule {
+  categories?: Category | null;
+  difficulty_levels?: DifficultyLevelData | null;
+  content_types?: ContentTypeData | null;
+  duration_units?: DurationUnit | null;
+}
+
+// Master Data collection type
+export interface MasterData {
+  categories: Category[];
+  difficultyLevels: DifficultyLevelData[];
+  durationUnits: DurationUnit[];
+  contentTypes: ContentTypeData[];
+}
+
+// Module Lesson types
+export interface ModuleLesson {
+  id: number;
+  module_id: number;
+  parent_id: number | null;
+  title: string;
+  content: string | null;
+  order_index: number;
+  is_published: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ModuleLessonInsert {
+  module_id: number;
+  parent_id?: number | null;
+  title: string;
+  content?: string | null;
+  order_index?: number;
+  is_published?: boolean;
+}
+
+export interface ModuleLessonUpdate {
+  title?: string;
+  content?: string | null;
+  order_index?: number;
+  is_published?: boolean;
+  parent_id?: number | null;
+}
+
+// Lesson with children for tree structure
+export interface ModuleLessonWithChildren extends ModuleLesson {
+  children?: ModuleLessonWithChildren[];
+}
+
+// User Enrollment types
+export interface UserEnrollment {
+  id: number;
+  user_id: number;
+  module_id: number;
+  enrolled_at: string;
+  last_accessed_at: string;
+}
+
+export interface UserEnrollmentInsert {
+  user_id: number;
+  module_id: number;
+}
+
+export interface UserEnrollmentWithModule extends UserEnrollment {
+  learning_modules?: LearningModule;
+}
+
+// User Lesson Progress types
+export interface UserLessonProgress {
+  id: number;
+  user_id: number;
+  lesson_id: number;
+  is_completed: boolean;
+  completed_at: string | null;
+  created_at: string;
+}
+
+export interface UserLessonProgressInsert {
+  user_id: number;
+  lesson_id: number;
+  is_completed?: boolean;
+}
