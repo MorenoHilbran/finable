@@ -1,6 +1,6 @@
 "use client";
 
-import { useEditor, EditorContent, Editor } from "@tiptap/react";
+import { useEditor, EditorContent, Editor, Node, mergeAttributes } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import Image from "@tiptap/extension-image";
@@ -11,6 +11,8 @@ import { TextStyle } from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
 import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
+import Youtube from "@tiptap/extension-youtube";
+import { uploadFile } from "@/app/actions/upload";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface RichTextEditorProps {
@@ -19,7 +21,51 @@ interface RichTextEditorProps {
   placeholder?: string;
 }
 
-// Math/Special Characters data
+// Custom Video Extension
+const Video = Node.create({
+  name: 'video',
+  group: 'block',
+  selectable: true,
+  draggable: true,
+  atom: true,
+
+  addAttributes() {
+    return {
+      src: {
+        default: null,
+      },
+    }
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'video',
+      },
+    ]
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['video', mergeAttributes(HTMLAttributes, { controls: 'true', class: 'w-full max-w-full rounded-lg my-4' })]
+  },
+
+  addNodeView() {
+    return ({ node }) => {
+      const dom = document.createElement('div');
+      dom.className = 'relative group';
+      
+      const video = document.createElement('video');
+      video.src = node.attrs.src;
+      video.controls = true;
+      video.className = 'w-full max-w-full rounded-lg border border-gray-200';
+      
+      dom.appendChild(video);
+      return { dom };
+    }
+  },
+});
+
+// Math/Special Characters data (kept same)
 const SPECIAL_CHARACTERS = [
   { category: "Math Operators", chars: ["+", "−", "×", "÷", "=", "≠", "≈", "≤", "≥", "<", ">", "±", "∓", "√", "∛", "∞"] },
   { category: "Greek Letters", chars: ["α", "β", "γ", "δ", "ε", "θ", "λ", "μ", "π", "σ", "φ", "ω", "Δ", "Σ", "Ω"] },
@@ -27,7 +73,7 @@ const SPECIAL_CHARACTERS = [
   { category: "Arrows", chars: ["→", "←", "↑", "↓", "↔", "⇒", "⇐", "⇑", "⇓", "⇔", "↗", "↘", "↙", "↖"] },
   { category: "Sets & Logic", chars: ["∈", "∉", "⊂", "⊃", "⊆", "⊇", "∪", "∩", "∅", "∀", "∃", "∧", "∨", "¬", "⊕"] },
   { category: "Currency", chars: ["$", "€", "£", "¥", "₹", "₽", "₩", "฿", "₿", "¢"] },
-  { category: "Other", chars: ["°", "′", "″", "‰", "‱", "†", "‡", "§", "¶", "©", "®", "™", "•", "◦", "■", "□"] },
+  { category: "Other", chars: ["°", "′", "″", "‰", "ⅱ", "†", "‡", "§", "¶", "©", "®", "™", "•", "◦", "■", "□"] },
 ];
 
 // Toolbar Button Component
@@ -61,83 +107,76 @@ function ToolbarButton({
   );
 }
 
-// Image Upload Modal Component
-function ImageUploadModal({
+// Media Upload Modal Component (Renamed from ImageUploadModal)
+function MediaUploadModal({
   isOpen,
   onClose,
   onInsert,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  onInsert: (url: string) => void;
+  onInsert: (url: string, type: 'image' | 'video' | 'youtube') => void;
 }) {
-  const [imageUrl, setImageUrl] = useState("");
+  const [url, setUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
 
   const handleUrlInsert = () => {
-    if (imageUrl.trim()) {
-      onInsert(imageUrl.trim());
-      setImageUrl("");
+    if (url.trim()) {
+      // Check if it's a YouTube URL
+      if (url.includes('youtube.com') || url.includes('youtu.be')) {
+         onInsert(url.trim(), 'youtube');
+      } else if (url.match(/\.(jpeg|jpg|gif|png|webp)$/) != null) {
+         onInsert(url.trim(), 'image');
+      } else if (url.match(/\.(mp4|webm|ogg)$/) != null) {
+         onInsert(url.trim(), 'video');
+      } else {
+         // Default to image if unknown, or maybe ask user? 
+         // For now let's assume image unless it looks like a video
+         onInsert(url.trim(), 'image'); 
+      }
+      setUrl("");
       onClose();
     }
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'video') => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
-    if (!file.type.startsWith("image/")) {
-      alert("Please select an image file");
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert("Image size must be less than 5MB");
+    // Validate file size
+    const maxSize = type === 'video' ? 50 * 1024 * 1024 : 5 * 1024 * 1024;
+    const maxSizeText = type === 'video' ? '50MB' : '5MB';
+    
+    if (file.size > maxSize) {
+      alert(`File size must be less than ${maxSizeText}`);
       return;
     }
 
     setIsUploading(true);
     try {
-      // Create FormData and upload to API
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("type", type);
+      
+      const result = await uploadFile(formData);
+      console.log("Upload result:", result);
 
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        onInsert(data.url);
+      if (result.url) {
+        onInsert(result.url, type);
         onClose();
       } else {
-        // Fallback: convert to base64
-        const reader = new FileReader();
-        reader.onload = () => {
-          const base64 = reader.result as string;
-          onInsert(base64);
-          onClose();
-        };
-        reader.readAsDataURL(file);
+        console.error("Upload returned error:", result.error);
+        alert(result.error || "Upload failed");
       }
-    } catch (error) {
-      // Fallback: convert to base64
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64 = reader.result as string;
-        onInsert(base64);
-        onClose();
-      };
-      reader.readAsDataURL(file);
+    } catch (error: any) {
+       console.error("Detailed upload error:", error);
+       alert("Upload error: " + (error?.message || JSON.stringify(error)));
     } finally {
       setIsUploading(false);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      if (videoInputRef.current) videoInputRef.current.value = "";
     }
   };
 
@@ -148,26 +187,26 @@ function ImageUploadModal({
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
         <h3 className="text-lg font-bold mb-4" style={{ color: "var(--brand-black)" }}>
-          Tambah Gambar
+          Sisipkan Media
         </h3>
 
         {/* URL Input */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2 text-gray-700">
-            Dari URL
+            Dari URL (Gambar / Youtube)
           </label>
           <div className="flex gap-2">
             <input
               type="url"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="https://example.com/image.jpg"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="https://..."
               className="flex-1 px-4 py-2 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none"
             />
             <button
               type="button"
               onClick={handleUrlInsert}
-              disabled={!imageUrl.trim()}
+              disabled={!url.trim()}
               className="px-4 py-2 rounded-xl text-white font-medium disabled:opacity-50"
               style={{ backgroundColor: "var(--brand-sage)" }}
             >
@@ -181,43 +220,58 @@ function ImageUploadModal({
             <div className="w-full border-t border-gray-200" />
           </div>
           <div className="relative flex justify-center">
-            <span className="bg-white px-4 text-sm text-gray-500">atau</span>
+            <span className="bg-white px-4 text-sm text-gray-500">atau Upload</span>
           </div>
         </div>
 
-        {/* File Upload */}
-        <div>
-          <label className="block text-sm font-medium mb-2 text-gray-700">
-            Upload dari Perangkat
-          </label>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleFileUpload}
-            className="hidden"
-          />
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isUploading}
-            className="w-full py-3 px-4 rounded-xl border-2 border-dashed border-gray-300 hover:border-gray-400 transition-colors text-gray-600 flex items-center justify-center gap-2"
-          >
-            {isUploading ? (
-              <>
+        {/* File Uploads */}
+        <div className="space-y-3">
+          {/* Image Upload */}
+          <div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleFileUpload(e, 'image')}
+              className="hidden"
+            />
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+              className="w-full py-3 px-4 rounded-xl border-2 border-dashed border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-all text-gray-600 flex items-center justify-center gap-2"
+            >
+               <img src="/icons/icon-image.svg" alt="" className="w-5 h-5" />
+               Upload Gambar (Max 5MB)
+            </button>
+          </div>
+
+          {/* Video Upload */}
+           <div>
+            <input
+              ref={videoInputRef}
+              type="file"
+              accept="video/*"
+              onChange={(e) => handleFileUpload(e, 'video')}
+              className="hidden"
+            />
+            <button
+              type="button"
+              onClick={() => videoInputRef.current?.click()}
+              disabled={isUploading}
+              className="w-full py-3 px-4 rounded-xl border-2 border-dashed border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-all text-gray-600 flex items-center justify-center gap-2"
+            >
+               <img src="/icons/icon-video.svg" alt="" className="w-5 h-5" />
+               Upload Video (Max 50MB)
+            </button>
+          </div>
+
+          {isUploading && (
+             <div className="flex items-center justify-center gap-2 text-blue-600">
                 <img src="/icons/icon-loading.svg" alt="" className="w-5 h-5 animate-spin" />
-                Mengupload...
-              </>
-            ) : (
-              <>
-                <img src="/icons/icon-image.svg" alt="" className="w-5 h-5" />
-                Pilih File Gambar
-              </>
-            )}
-          </button>
-          <p className="text-xs text-gray-500 mt-2 text-center">
-            Maksimal 5MB • Format: JPG, PNG, GIF, WebP
-          </p>
+                <span className="text-sm font-medium">Sedang mengupload...</span>
+             </div>
+          )}
         </div>
 
         {/* Close Button */}
@@ -233,7 +287,7 @@ function ImageUploadModal({
   );
 }
 
-// Special Characters Modal Component
+// Special Characters Modal Component (Kept same)
 function SpecialCharsModal({
   isOpen,
   onClose,
@@ -313,12 +367,19 @@ function SpecialCharsModal({
 
 // Toolbar Component
 function Toolbar({ editor }: { editor: Editor | null }) {
-  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
   const [isCharsModalOpen, setIsCharsModalOpen] = useState(false);
 
-  const insertImage = useCallback((url: string) => {
-    if (url && editor) {
-      editor.chain().focus().setImage({ src: url }).run();
+  const insertMedia = useCallback((url: string, type: 'image' | 'video' | 'youtube') => {
+    if (!editor) return;
+    
+    if (type === 'youtube') {
+      editor.commands.setYoutubeVideo({ src: url });
+    } else if (type === 'video') {
+       // Insert custom video node
+       editor.chain().focus().insertContent({ type: 'video', attrs: { src: url } }).run();
+    } else {
+       editor.chain().focus().setImage({ src: url }).run();
     }
   }, [editor]);
 
@@ -472,7 +533,7 @@ function Toolbar({ editor }: { editor: Editor | null }) {
           <ToolbarButton onClick={setLink} isActive={editor.isActive("link")} title="Insert Link">
             <img src="/icons/icon-link.svg" alt="" className="w-4 h-4" />
           </ToolbarButton>
-          <ToolbarButton onClick={() => setIsImageModalOpen(true)} title="Insert Image">
+          <ToolbarButton onClick={() => setIsMediaModalOpen(true)} title="Insert Media">
             <img src="/icons/icon-image.svg" alt="" className="w-4 h-4" />
           </ToolbarButton>
           <ToolbarButton onClick={() => setIsCharsModalOpen(true)} title="Special Characters & Math">
@@ -524,10 +585,10 @@ function Toolbar({ editor }: { editor: Editor | null }) {
       </div>
 
       {/* Modals */}
-      <ImageUploadModal
-        isOpen={isImageModalOpen}
-        onClose={() => setIsImageModalOpen(false)}
-        onInsert={insertImage}
+      <MediaUploadModal
+        isOpen={isMediaModalOpen}
+        onClose={() => setIsMediaModalOpen(false)}
+        onInsert={insertMedia}
       />
       <SpecialCharsModal
         isOpen={isCharsModalOpen}
@@ -568,6 +629,12 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
       Color,
       Superscript,
       Subscript,
+      Youtube.configure({
+        controls: true,
+        allowFullscreen: true,
+        autoplay: false,
+      }),
+      Video,
     ],
     content,
     immediatelyRender: false, // Fix SSR hydration mismatch
