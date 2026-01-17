@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import OWIChat from "@/components/OWIChat";
+import AccessibilityWrapper from "@/components/AccessibilityWrapper";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -49,8 +50,10 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">
           Main Content
         </a>
-        {children}
-        <OWIChat />
+        <AccessibilityWrapper>
+          {children}
+          <OWIChat />
+        </AccessibilityWrapper>
       </body>
     </html>
   );

@@ -14,13 +14,13 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export type DisabilityType = 
+export type DisabilityType =
   | "tunanetra"
   | "tunarungu"
   | "disabilitas_daksa"
   | "disabilitas_kognitif";
 
-export type AccessibilityProfile = 
+export type AccessibilityProfile =
   | "high_contrast"
   | "screen_reader"
   | "dyslexic_friendly"
@@ -351,6 +351,64 @@ export interface Database {
           duration_month?: number;
           estimated_return?: number;
           created_at?: string;
+        };
+      };
+      module_lessons: {
+        Row: {
+          id: number;
+          module_id: number;
+          parent_id: number | null;
+          title: string;
+          content: string | null;
+          order_index: number;
+          is_published: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: number;
+          module_id: number;
+          parent_id?: number | null;
+          title: string;
+          content?: string | null;
+          order_index?: number;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: number;
+          module_id?: number;
+          parent_id?: number | null;
+          title?: string;
+          content?: string | null;
+          order_index?: number;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      user_enrollments: {
+        Row: {
+          id: number;
+          user_id: number;
+          module_id: number;
+          enrolled_at: string;
+          last_accessed_at: string;
+        };
+        Insert: {
+          id?: number;
+          user_id: number;
+          module_id: number;
+          enrolled_at?: string;
+          last_accessed_at?: string;
+        };
+        Update: {
+          id?: number;
+          user_id?: number;
+          module_id?: number;
+          enrolled_at?: string;
+          last_accessed_at?: string;
         };
       };
     };

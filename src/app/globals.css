@@ -93,6 +93,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: var(--dynamic-font-size, 16px);
 }
 
 /* Hide scrollbar for slider */
