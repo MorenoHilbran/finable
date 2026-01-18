@@ -83,7 +83,7 @@ export default function Navbar() {
             style={{ color: "var(--brand-black)" }}
           >
             <img src="/icons/logo-finable.svg" alt="Finable" className="w-8 h-8 md:w-10 md:h-10" />
-            <span>FINABLE</span>
+            <span>F<span style={{ color: "#61a1ad" }}>i</span><span style={{ color: "#61a1ad" }}>n</span>able</span>
           </Link>
 
           {/* Desktop Navigation - Centered */}
