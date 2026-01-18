@@ -14,10 +14,10 @@ const reasons = [
         visual: (
             <div className="relative w-32 h-32 transform transition-transform duration-500 hover:scale-110">
                 {/* Abstract Isometric Layers */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-emerald-400 rounded-xl transform rotate-45 skew-x-12 opacity-80 animate-pulse-slow"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-20 h-20 bg-emerald-300 rounded-xl transform rotate-45 skew-x-12 opacity-90 shadow-lg"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[70%] w-20 h-20 bg-white border-2 border-emerald-500 rounded-xl transform rotate-45 skew-x-12 flex items-center justify-center shadow-2xl z-10 transition-transform hover:-translate-y-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-emerald-600 transform -rotate-45 -skew-x-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-emerald-400 rounded-xl transform rotate-45  opacity-80 animate-pulse-slow"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-20 h-20 bg-emerald-300 rounded-xl transform rotate-45  opacity-90 shadow-lg"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[70%] w-20 h-20 bg-white border-2 border-emerald-500 rounded-xl transform rotate-45  flex items-center justify-center shadow-2xl z-10 transition-transform hover:-translate-y-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-emerald-600 transform -rotate-45 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                     </svg>
                 </div>
@@ -34,9 +34,9 @@ const reasons = [
         visual: (
             <div className="relative w-32 h-32">
                 {/* Floating Owl Head Block */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-blue-500 rounded-lg transform rotate-45 skew-y-12 shadow-xl animate-float"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-16 h-16 bg-white border-4 border-blue-500 rounded-lg transform rotate-45 skew-y-12 flex items-center justify-center z-10 animate-float" style={{ animationDelay: '0.1s' }}>
-                    <span className="text-2xl transform -rotate-45 -skew-y-12">🦉</span>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-blue-500 rounded-lg transform rotate-45 shadow-xl animate-float"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-20 h-20 bg-white border-4 border-blue-500 rounded-lg transform rotate-45 flex items-center justify-center z-10 animate-float" style={{ animationDelay: '0.1s' }}>
+                    <img src="/mascot/owi-mascot-1.svg" alt="OWI" className="w-12 h-12 transform -rotate-45" />
                 </div>
                 {/* Glow effect */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-blue-400 rounded-full blur-xl opacity-20 animate-pulse"></div>
@@ -53,9 +53,9 @@ const reasons = [
         visual: (
             <div className="relative w-32 h-32">
                 {/* Rising Bar Chart Isometric */}
-                <div className="absolute bottom-6 left-6 w-6 h-12 bg-teal-300 transform skew-y-12 border-r border-b border-teal-500 origin-bottom transition-all hover:h-16"></div>
-                <div className="absolute bottom-4 left-14 w-6 h-20 bg-teal-400 transform skew-y-12 border-r border-b border-teal-600 origin-bottom shadow-md transition-all hover:h-24"></div>
-                <div className="absolute bottom-2 left-22 w-6 h-28 bg-teal-500 transform skew-y-12 border-r border-b border-teal-700 origin-bottom shadow-xl transition-all hover:h-32"></div>
+                <div className="absolute bottom-6 left-6 w-6 h-12 bg-teal-300 transform  border-r border-b border-teal-500 origin-bottom transition-all hover:h-16"></div>
+                <div className="absolute bottom-4 left-14 w-6 h-20 bg-teal-400 transform  border-r border-b border-teal-600 origin-bottom shadow-md transition-all hover:h-24"></div>
+                <div className="absolute bottom-2 left-22 w-6 h-28 bg-teal-500 transform  border-r border-b border-teal-700 origin-bottom shadow-xl transition-all hover:h-32"></div>
 
                 {/* Ground */}
                 <div className="absolute bottom-4 left-0 w-32 h-20 bg-gray-100 rounded-full transform scale-y-50 -z-10 opacity-50"></div>
@@ -72,11 +72,11 @@ const reasons = [
         visual: (
             <div className="relative w-32 h-32 group">
                 {/* Funnel / Filter Metaphor */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-12 bg-indigo-200 rounded-t-lg transform skew-x-12 opacity-80"></div>
-                <div className="absolute top-10 left-1/2 -translate-x-1/2 w-12 h-16 bg-indigo-400 transform skew-x-12 border-x-2 border-indigo-300"></div>
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-12 bg-indigo-200 rounded-t-lg transform opacity-80"></div>
+                <div className="absolute top-10 left-1/2 -translate-x-1/2 w-12 h-16 bg-indigo-400 transform border-x-2 border-indigo-300"></div>
                 {/* Gold Coin Dropping */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-yellow-400 rounded-full border-2 border-yellow-600 shadow-lg animate-bounce transform skew-x-12 z-10 flex items-center justify-center">
-                    <span className="text-yellow-800 text-xs font-bold">$</span>
+                    <span className="text-yellow-800 text-sm font-bold">$</span>
                 </div>
             </div>
         )

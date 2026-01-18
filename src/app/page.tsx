@@ -263,11 +263,16 @@ export default function Home() {
             <div className="flex flex-col lg:flex-row items-center gap-12">
               {/* Left: Animation */}
               <div className="flex-1 w-full max-w-lg lg:max-w-xl">
-                <img
-                  src="/animations/Money_Management.gif"
-                  alt="Money Management Animation"
-                  className="w-full h-auto object-cover"
-                />
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-auto object-cover rounded-2xl"
+                >
+                  <source src="/animations/loop-fitur-finable.webm" type="video/webm" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
 
               {/* Right: Features Compact List */}
