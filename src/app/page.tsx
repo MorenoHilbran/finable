@@ -224,7 +224,7 @@ export default function Home() {
             {/* Centered CTA */}
             <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-30">
               <Link
-                href="#features"
+                href="/belajar"
                 className="group btn flex items-center gap-3 text-base pl-8 pr-2 py-2 rounded-full font-bold transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(80,217,144,0.5)] active:scale-95"
                 style={{ backgroundColor: "var(--brand-sage)", color: "white" }}>
                 <span>Belajar Sekarang</span> 
@@ -235,7 +235,7 @@ export default function Home() {
                 </div>
               </Link>
               <Link
-                href="#owi"
+                href="/owi"
                 className="inline-flex items-center justify-center text-base px-8 py-3 rounded-full font-bold transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white border-2 border-solid hover:-translate-y-1 hover:shadow-lg active:scale-95"
                 style={{
                   borderColor: "var(--brand-sage)",
