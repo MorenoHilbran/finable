@@ -22,19 +22,23 @@ export async function login(formData: FormData) {
   // Check if user is admin
   if (authData.user) {
     const { data: profile } = await supabase
-      .from("users")
+      .from("users" as any)
       .select("role")
       .eq("auth_id", authData.user.id)
       .single();
     
+    // Force revalidation to ensure fresh session data
     revalidatePath("/", "layout");
     
     // Redirect admin to admin panel, regular user to dashboard
-    if (profile?.role === "admin") {
+    if (profile && profile.role === "admin") {
       redirect("/admin");
+    } else {
+      redirect("/dashboard");
     }
   }
 
+  // Fallback (should typically be handled inside the if block)
   revalidatePath("/", "layout");
   redirect("/dashboard");
 }
@@ -68,7 +72,7 @@ export async function signup(formData: FormData) {
   }
 
   // Insert user profile to public.users table
-  const { error: profileError } = await supabase.from("users").insert({
+  const { error: profileError } = await supabase.from("users" as any).insert({
     auth_id: authData.user.id,
     email: email,
     full_name: fullName,
@@ -119,7 +123,7 @@ export async function updateProfile(formData: FormData) {
 
   // Check if profile exists
   const { data: existingProfile } = await supabase
-    .from("users")
+    .from("users" as any)
     .select("user_id")
     .eq("auth_id", user.id)
     .single();
@@ -127,7 +131,7 @@ export async function updateProfile(formData: FormData) {
   if (existingProfile) {
     // Update existing profile
     const { error } = await supabase
-      .from("users")
+      .from("users" as any)
       .update({
         full_name: fullName,
         disability_type: disabilityType || null,
@@ -142,7 +146,7 @@ export async function updateProfile(formData: FormData) {
     }
   } else {
     // Create profile if doesn't exist
-    const { error } = await supabase.from("users").insert({
+    const { error } = await supabase.from("users" as any).insert({
       auth_id: user.id,
       email: user.email!,
       full_name: fullName,
@@ -173,7 +177,7 @@ export async function getUserProfile() {
   }
 
   const { data: profile } = await supabase
-    .from("users")
+    .from("users" as any)
     .select("*")
     .eq("auth_id", user.id)
     .single();

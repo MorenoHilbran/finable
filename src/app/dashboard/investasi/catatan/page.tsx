@@ -261,7 +261,7 @@ export default function CatatanPage() {
                   border: filterType === type.value ? `1px solid ${type.color}` : "1px solid transparent",
                 }}
               >
-                <span>{type.icon}</span>
+                <img src={type.icon} alt="" className="w-4 h-4" />
                 <span className="hidden sm:inline">{type.label}</span>
               </button>
             ))}
@@ -320,7 +320,7 @@ export default function CatatanPage() {
                           border: formData.type === type.value ? `2px solid ${type.color}` : "2px solid var(--border)",
                         }}
                       >
-                        <span>{type.icon}</span>
+                        <img src={type.icon} alt="" className="w-4 h-4" />
                         {type.label}
                       </button>
                     ))}
@@ -430,7 +430,7 @@ export default function CatatanPage() {
                     className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
                     style={{ background: `${typeInfo.color}20` }}
                   >
-                    {typeInfo.icon}
+                    <img src={typeInfo.icon} alt="" className="w-6 h-6" />
                   </div>
 
                   {/* Content */}

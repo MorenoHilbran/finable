@@ -89,25 +89,25 @@ export default function InvestasiPage() {
           {
             title: "Simulasi Reksa Dana",
             description: "Hitung estimasi pertumbuhan investasi reksa dana Anda dengan berbagai skenario.",
-            icon: "🎯",
+            icon: "/icons/icon-reksadana.svg",
             color: "var(--brand-blue)",
           },
           {
             title: "Kalkulator Saham",
             description: "Simulasikan potensi keuntungan dan risiko dari investasi saham.",
-            icon: "📊",
+            icon: "/icons/icon-saham.svg",
             color: "var(--brand-sage)",
           },
           {
             title: "Perbandingan Instrumen",
             description: "Bandingkan berbagai instrumen investasi sesuai profil risiko Anda.",
-            icon: "⚖️",
+            icon: "/icons/icon-insight.svg",
             color: "var(--brand-blue)",
           },
           {
             title: "Proyeksi Jangka Panjang",
             description: "Lihat proyeksi pertumbuhan aset Anda dalam 5, 10, hingga 20 tahun.",
-            icon: "🔮",
+            icon: "/icons/icon-trending.svg",
             color: "var(--brand-sage)",
           },
         ].map((feature, index) => (
