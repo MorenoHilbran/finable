@@ -3,9 +3,9 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FeatureCard from "@/components/FeatureCard";
-import UserCard from "@/components/UserCard";
 import LearningModulesSection from "@/components/LearningModulesSection";
 import Squares from "@/components/Squares";
+import WhyFinableSection from "@/components/WhyFinableSection";
 import Link from "next/link";
 
 export default function Home() {
@@ -227,7 +227,7 @@ export default function Home() {
                 href="/belajar"
                 className="group btn flex items-center gap-3 text-base pl-8 pr-2 py-2 rounded-full font-bold transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(80,217,144,0.5)] active:scale-95"
                 style={{ backgroundColor: "var(--brand-sage)", color: "white" }}>
-                <span>Belajar Sekarang</span> 
+                <span>Belajar Sekarang</span>
                 <div className="w-10 h-10 bg-white text-[var(--brand-sage)] rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1 group-hover:-rotate-45">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -249,49 +249,55 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section id="features" className="section bg-gradient-light drop-shadow-xl">
+        {/* Features Section - Split View */}
+        <section id="features" className="section bg-gradient-light drop-shadow-xl overflow-hidden">
           <div className="container mx-auto px-6">
-            <h2 className="section-title">Fitur Utama Finable</h2>
-            <p className="section-subtitle">
-              Dirancang khusus untuk memberikan pengalaman belajar investasi yang
-              adaptif, inklusif, dan mudah dipahami.
-            </p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {features.map((feature, index) => (
-                <FeatureCard
-                  key={index}
-                  icon={feature.icon}
-                  title={feature.title}
-                  description={feature.description}
-                  highlights={feature.highlights}
-                  accentColor={feature.accentColor}
+            <div className="text-center mb-12">
+              <h2 className="section-title">Fitur Utama Finable</h2>
+              <p className="section-subtitle">
+                Dirancang khusus untuk memberikan pengalaman belajar investasi yang
+                adaptif, inklusif, dan mudah dipahami.
+              </p>
+            </div>
+
+            <div className="flex flex-col lg:flex-row items-center gap-12">
+              {/* Left: Animation */}
+              <div className="flex-1 w-full max-w-lg lg:max-w-xl">
+                <img
+                  src="/animations/Money_Management.gif"
+                  alt="Money Management Animation"
+                  className="w-full h-auto object-cover"
                 />
-              ))}
+              </div>
+
+              {/* Right: Features Compact List */}
+              <div className="flex-1 w-full">
+                <div className="flex flex-col gap-3">
+                  {features.map((feature, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-4 bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+                    >
+                      <div
+                        className="w-12 h-12 rounded-lg flex items-center justify-center shrink-0"
+                        style={{ background: `${feature.accentColor}20` }}
+                      >
+                        <img src={feature.icon} alt="" className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900 text-sm">{feature.title}</h3>
+                        <p className="text-gray-500 text-xs mt-0.5 line-clamp-1">{feature.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Users Section */}
-        <section id="users" className="section">
-          <div className="container mx-auto px-6">
-            <h2 className="section-title">Pengguna Utama</h2>
-            <p className="section-subtitle">
-              Finable mendukung berbagai jenis disabilitas dengan fitur khusus
-              yang disesuaikan untuk setiap kebutuhan.
-            </p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {userTypes.map((user, index) => (
-                <UserCard
-                  key={index}
-                  icon={user.icon}
-                  title={user.title}
-                  features={user.features}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Why Finable Section (Replacing Users) */}
+        <WhyFinableSection />
 
         {/* Learning Modules Section - Dynamic */}
         <LearningModulesSection />
@@ -336,7 +342,7 @@ export default function Home() {
               <div className="flex justify-center">
                 <div
                   className="relative w-72 h-72 rounded-3xl flex items-center justify-center"
-                  // style={{ backgroundColor: "var(--brand-sage)" }}
+                // style={{ backgroundColor: "var(--brand-sage)" }}
                 >
                   <div className="text-center text-white">
                     <div className="mb-4 animate-float flex justify-center"><img src="/mascot/owi-mascot-5.svg" alt="OWI" className="w-[300px] h-[300px]" /></div>
@@ -362,18 +368,16 @@ export default function Home() {
               investasi. Karena setiap orang berhak cerdas secara finansial.
             </p>
             <div className="flex flex-wrap justify-center gap-2">
-              <Link href="#features" className="btn btn-primary text-lg px-4 py-2"
+              <Link href="#features" className="btn text-lg px-8 py-4 rounded-xl font-bold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                 style={{
                   color: "var(--brand-white)",
                   backgroundColor: "var(--brand-sage)"
                 }}>
-                <span></span>
                 Mulai Belajar Sekarang
               </Link>
-              <Link href="#owi" className="text-lg px-8 py-4 rounded-xl border transition-all hover:opacity-90 inline-flex items-center gap-2"
-                style={{ borderColor: "var(--brand-black)", color: "var(--brand-black)", background: "var(--brand-white)" }}>
-                <span></span>
-                Tanya OWI
+              <Link href="#owi" className="btn text-lg px-8 py-4 rounded-xl font-bold border-2 hover:bg-gray-50 hover:-translate-y-1 transition-all duration-300 inline-flex items-center gap-2"
+                style={{ borderColor: "var(--brand-sage)", color: "var(--brand-sage)", background: "transparent" }}>
+                <span>Tanya OWI</span>
               </Link>
             </div>
             <div className="mt-8 text-sm text-gray-500">
