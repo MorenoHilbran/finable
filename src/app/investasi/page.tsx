@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import VoiceSimulationInput, { VoiceCommand } from "@/components/VoiceSimulationInput";
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -16,6 +15,25 @@ import {
   AreaChart,
 } from "recharts";
 
+// Asset price type
+interface AssetPrice {
+  id: string;
+  name: string;
+  symbol: string;
+  price: number;
+  priceChange24h: number;
+  unit: string;
+  lastUpdated: string;
+}
+
+interface MarketData {
+  gold: AssetPrice[];
+  stocks: AssetPrice[];
+  crypto: AssetPrice[];
+  mutualFunds: AssetPrice[];
+  lastUpdated: string;
+}
+
 // Investment categories
 const investmentCategories = [
   {
@@ -23,45 +41,34 @@ const investmentCategories = [
     name: "Emas",
     icon: "/icons/icon-emas.svg",
     color: "#FFD700",
-    unit: "gram",
     description: "Logam mulia sebagai aset safe haven",
-    currentPrice: 1050000, // per gram dalam IDR
-    priceChange: 2.5,
   },
   {
     id: "stock",
     name: "Saham",
     icon: "/icons/icon-saham.svg",
     color: "#3B82F6",
-    unit: "lot",
     description: "Kepemilikan bagian dari perusahaan",
-    currentPrice: 4500, // per saham dalam IDR
-    priceChange: 1.8,
   },
   {
     id: "crypto",
     name: "Cryptocurrency",
     icon: "/icons/icon-crypto.svg",
     color: "#F7931A",
-    unit: "koin",
     description: "Aset digital terdesentralisasi",
-    currentPrice: 650000000, // Bitcoin in IDR
-    priceChange: -0.5,
   },
   {
     id: "mutual-fund",
     name: "Reksa Dana",
     icon: "/icons/icon-reksadana.svg",
     color: "#10B981",
-    unit: "unit",
     description: "Investasi kolektif yang dikelola profesional",
-    currentPrice: 1500, // per unit
-    priceChange: 1.2,
   },
 ];
 
 export default function SimulasiPage() {
   const [selectedCategory, setSelectedCategory] = useState(investmentCategories[0]);
+  const [selectedAsset, setSelectedAsset] = useState<AssetPrice | null>(null);
   const [investmentAmount, setInvestmentAmount] = useState("");
   const [investmentPeriod, setInvestmentPeriod] = useState("12");
   const [riskProfile, setRiskProfile] = useState("moderate");
@@ -71,18 +78,98 @@ export default function SimulasiPage() {
   const [estimatedReturn, setEstimatedReturn] = useState(0);
   const [units, setUnits] = useState(0);
 
+  // Market data state
+  const [marketData, setMarketData] = useState<MarketData | null>(null);
+  const [loadingPrices, setLoadingPrices] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+
+  // Fetch market data on mount
+  useEffect(() => {
+    fetchMarketData();
+  }, []);
+
+  // Update selected asset when category or market data changes
+  useEffect(() => {
+    if (marketData) {
+      const assets = getAssetsForCategory(selectedCategory.id);
+      if (assets.length > 0) {
+        setSelectedAsset(assets[0]);
+      }
+    }
+  }, [selectedCategory, marketData]);
+
+  const fetchMarketData = async () => {
+    try {
+      setLoadingPrices(true);
+      const response = await fetch("/api/market-data");
+      const data = await response.json();
+      setMarketData(data);
+      setLastUpdated(data.lastUpdated);
+    } catch (error) {
+      console.error("Failed to fetch market data:", error);
+    } finally {
+      setLoadingPrices(false);
+    }
+  };
+
+  const getAssetsForCategory = (categoryId: string): AssetPrice[] => {
+    if (!marketData) return [];
+    switch (categoryId) {
+      case "gold": return marketData.gold;
+      case "stock": return marketData.stocks;
+      case "crypto": return marketData.crypto;
+      case "mutual-fund": return marketData.mutualFunds;
+      default: return [];
+    }
+  };
+
+  // Handle voice command
+  const handleVoiceCommand = useCallback((command: VoiceCommand) => {
+    // Set investment type
+    if (command.investmentType) {
+      const category = investmentCategories.find(c => c.id === command.investmentType);
+      if (category) {
+        setSelectedCategory(category);
+
+        // Set specific asset if mentioned
+        if (command.assetId && marketData) {
+          const assets = getAssetsForCategory(command.investmentType);
+          const asset = assets.find(a => a.id === command.assetId);
+          if (asset) {
+            setSelectedAsset(asset);
+          }
+        }
+      }
+    }
+
+    // Set amount
+    if (command.amount) {
+      setInvestmentAmount(command.amount.toString());
+    }
+
+    // Set period
+    if (command.period) {
+      setInvestmentPeriod(command.period.toString());
+    }
+
+    // Set risk profile
+    if (command.riskProfile) {
+      setRiskProfile(command.riskProfile);
+    }
+  }, [marketData]);
+
   // Simulate investment calculation
   const calculateSimulation = () => {
     const amount = parseFloat(investmentAmount);
     const months = parseInt(investmentPeriod);
 
-    if (!amount || amount <= 0 || !months) {
+    if (!amount || amount <= 0 || !months || !selectedAsset) {
       alert("Mohon isi semua field dengan benar");
       return;
     }
 
     // Calculate units purchased
-    const purchasedUnits = amount / selectedCategory.currentPrice;
+    const purchasedUnits = amount / selectedAsset.price;
     setUnits(purchasedUnits);
     setTotalInvested(amount);
 
@@ -146,26 +233,39 @@ export default function SimulasiPage() {
     setSimulationData([]);
   };
 
+  const formatDate = (isoString: string) => {
+    return new Date(isoString).toLocaleString("id-ID", {
+      dateStyle: "long",
+      timeStyle: "short",
+    });
+  };
+
   return (
     <>
       <Navbar />
       <main id="main-content" className="pt-20">
         {/* Hero Section */}
         <section
-          className="py-30 "
+          className="py-16"
           style={{ background: "var(--brand-black)" }}
         >
           <div className="container mx-auto px-6">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-4"
-              style={{color: "var(--brand-sage)"}}>
+                style={{ color: "var(--brand-sage)" }}>
                 Simulasi Investasi Real-Time
               </h1>
-              <p className="text-lg md:text-xl "
-              style={{color: "var(--brand-white)"}}>
+              <p className="text-lg md:text-xl mb-6"
+                style={{ color: "var(--brand-white)" }}>
                 Pelajari potensi keuntungan investasi Anda dengan simulator berbasis
                 harga pasar real-time
               </p>
+              {lastUpdated && (
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full text-sm text-white/80">
+                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                  Data terakhir diperbarui: {formatDate(lastUpdated)}
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -174,6 +274,12 @@ export default function SimulasiPage() {
         <section className="py-12 bg-gray-50">
           <div className="container mx-auto px-6">
             <div className="max-w-7xl mx-auto">
+
+              {/* Voice Input Section */}
+              <div className="mb-8">
+                <VoiceSimulationInput onVoiceCommand={handleVoiceCommand} />
+              </div>
+
               {/* Investment Categories */}
               <div className="mb-8">
                 <h2
@@ -190,24 +296,13 @@ export default function SimulasiPage() {
                         setSelectedCategory(category);
                         setShowResults(false);
                       }}
-                      className={`p-6 rounded-2xl border-2 transition-all duration-200 text-left ${
-                        selectedCategory.id === category.id
+                      className={`p-6 rounded-2xl border-2 transition-all duration-200 text-left ${selectedCategory.id === category.id
                           ? "border-cyan-500 bg-cyan-50 shadow-lg"
                           : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-md"
-                      }`}
+                        }`}
                     >
                       <div className="flex items-start justify-between mb-3">
                         <img src={category.icon} alt="" className="w-10 h-10" />
-                        <span
-                          className={`text-sm font-semibold px-2 py-1 rounded ${
-                            category.priceChange >= 0
-                              ? "bg-green-100 text-green-700"
-                              : "bg-red-100 text-red-700"
-                          }`}
-                        >
-                          {category.priceChange >= 0 ? "+" : ""}
-                          {category.priceChange}%
-                        </span>
                       </div>
                       <h3
                         className="font-bold text-lg mb-2"
@@ -215,22 +310,58 @@ export default function SimulasiPage() {
                       >
                         {category.name}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-3">
+                      <p className="text-sm text-gray-600">
                         {category.description}
                       </p>
-                      <div className="text-sm">
-                        <span className="text-gray-500">Harga saat ini:</span>
-                        <div className="font-bold text-lg mt-1" style={{ color: category.color }}>
-                          {formatCurrency(category.currentPrice)}
-                          <span className="text-xs text-gray-500 ml-1">
-                            /{category.unit}
-                          </span>
-                        </div>
-                      </div>
                     </button>
                   ))}
                 </div>
               </div>
+
+              {/* Asset Selector */}
+              {!loadingPrices && marketData && (
+                <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
+                  <h2
+                    className="text-2xl font-bold mb-6"
+                    style={{ color: "var(--brand-dark-blue)" }}
+                  >
+                    Pilih Aset {selectedCategory.name}
+                  </h2>
+
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {getAssetsForCategory(selectedCategory.id).map((asset) => (
+                      <button
+                        key={asset.id}
+                        onClick={() => setSelectedAsset(asset)}
+                        className={`p-4 rounded-xl border-2 transition-all text-left ${selectedAsset?.id === asset.id
+                            ? "border-cyan-500 bg-cyan-50"
+                            : "border-gray-200 bg-white hover:border-gray-300"
+                          }`}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-bold text-lg" style={{ color: selectedCategory.color }}>
+                            {asset.symbol}
+                          </span>
+                          <span
+                            className={`text-sm font-semibold px-2 py-1 rounded ${asset.priceChange24h >= 0
+                                ? "bg-green-100 text-green-700"
+                                : "bg-red-100 text-red-700"
+                              }`}
+                          >
+                            {asset.priceChange24h >= 0 ? "+" : ""}
+                            {asset.priceChange24h}%
+                          </span>
+                        </div>
+                        <div className="text-sm text-gray-600 mb-2">{asset.name}</div>
+                        <div className="font-bold text-gray-900">
+                          {formatCurrency(asset.price)}
+                          <span className="text-xs text-gray-500 ml-1">/{asset.unit}</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Input Form */}
               <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
@@ -291,11 +422,10 @@ export default function SimulasiPage() {
                         <button
                           key={profile.value}
                           onClick={() => setRiskProfile(profile.value)}
-                          className={`p-4 rounded-xl border-2 transition-all text-left ${
-                            riskProfile === profile.value
+                          className={`p-4 rounded-xl border-2 transition-all text-left ${riskProfile === profile.value
                               ? "border-cyan-500 bg-cyan-50"
                               : "border-gray-200 bg-white hover:border-gray-300"
-                          }`}
+                            }`}
                         >
                           <div className="font-semibold text-gray-900 mb-1">
                             {profile.label}
@@ -311,10 +441,11 @@ export default function SimulasiPage() {
                 <div className="flex gap-4 mt-8">
                   <button
                     onClick={calculateSimulation}
-                    className="flex-1 py-4 rounded-xl font-bold text-white text-lg transition-all hover:opacity-90 hover:shadow-lg"
+                    disabled={!selectedAsset}
+                    className="flex-1 py-4 rounded-xl font-bold text-white text-lg transition-all hover:opacity-90 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{ background: "var(--brand-sage)" }}
                   >
-                  Jalankan Simulasi
+                    Jalankan Simulasi
                   </button>
                   {showResults && (
                     <button
@@ -329,7 +460,7 @@ export default function SimulasiPage() {
               </div>
 
               {/* Results */}
-              {showResults && simulationData.length > 0 && (
+              {showResults && simulationData.length > 0 && selectedAsset && (
                 <div className="space-y-6">
                   {/* Summary Cards */}
                   <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -358,11 +489,11 @@ export default function SimulasiPage() {
                     </div>
 
                     <div className="bg-white rounded-2xl p-6 shadow-md">
-                      <div className="text-sm text-gray-600 mb-1">Unit Dibeli</div>
+                      <div className="text-sm text-gray-600 mb-1">Unit {selectedAsset.symbol}</div>
                       <div className="text-2xl font-bold" style={{ color: selectedCategory.color }}>
                         {formatNumber(units)}
                       </div>
-                      <div className="text-sm text-gray-500 mt-1">{selectedCategory.unit}</div>
+                      <div className="text-sm text-gray-500 mt-1">{selectedAsset.unit}</div>
                     </div>
                   </div>
 
@@ -372,7 +503,7 @@ export default function SimulasiPage() {
                       className="text-xl font-bold mb-6"
                       style={{ color: "var(--brand-black)" }}
                     >
-                      Proyeksi Pertumbuhan Investasi
+                      Proyeksi Pertumbuhan Investasi {selectedAsset.symbol}
                     </h3>
                     <ResponsiveContainer width="100%" height={400}>
                       <AreaChart data={simulationData}>
@@ -439,8 +570,8 @@ export default function SimulasiPage() {
                           Hasil simulasi ini hanya untuk tujuan edukasi dan tidak menjamin
                           keuntungan aktual. Investasi mengandung risiko kerugian modal.
                           Selalu lakukan riset mendalam dan konsultasi dengan penasihat
-                          keuangan sebelum berinvestasi. Harga dan return yang ditampilkan
-                          adalah estimasi berbasis data historis dan asumsi pasar.
+                          keuangan sebelum berinvestasi. Harga {selectedAsset.symbol} yang ditampilkan
+                          ({formatCurrency(selectedAsset.price)}/{selectedAsset.unit}) adalah data per {lastUpdated ? formatDate(lastUpdated) : "hari ini"}.
                         </p>
                       </div>
                     </div>
@@ -464,11 +595,14 @@ export default function SimulasiPage() {
                         </h4>
                         <div className="grid md:grid-cols-2 gap-4 text-sm">
                           <div className="flex justify-between items-center py-2 border-b border-blue-100">
-                            <span className="text-gray-600">Jenis Investasi:</span>
-                            <span className="font-semibold flex items-center gap-2">
-                              <img src={selectedCategory.icon} alt="" className="w-5 h-5" />
-                              {selectedCategory.name}
+                            <span className="text-gray-600">Aset:</span>
+                            <span className="font-semibold">
+                              {selectedAsset.name} ({selectedAsset.symbol})
                             </span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-blue-100">
+                            <span className="text-gray-600">Harga per {selectedAsset.unit}:</span>
+                            <span className="font-semibold">{formatCurrency(selectedAsset.price)}</span>
                           </div>
                           <div className="flex justify-between items-center py-2 border-b border-blue-100">
                             <span className="text-gray-600">Modal Awal:</span>
@@ -482,133 +616,9 @@ export default function SimulasiPage() {
                             <span className="text-gray-600">Profil Risiko:</span>
                             <span className="font-semibold capitalize">{riskProfile === "conservative" ? "Konservatif" : riskProfile === "moderate" ? "Moderat" : "Agresif"}</span>
                           </div>
-                        </div>
-                      </div>
-
-                      {/* Performance Analysis */}
-                      <div>
-                        <h4 className="font-bold text-lg mb-4" style={{ color: "var(--brand-dark-blue)" }}>
-                          Analisis Performa
-                        </h4>
-                        <div className="space-y-3">
-                          {/* ROI Analysis */}
-                          <div className="flex items-start gap-3 p-4 bg-green-50 rounded-xl">
-                            <img src="/icons/icon-money.svg" alt="" className="w-8 h-8" />
-                            <div className="flex-1">
-                              <div className="font-semibold text-gray-900 mb-1">Return on Investment (ROI)</div>
-                              <div className="text-sm text-gray-600">
-                                Investasi Anda berpotensi menghasilkan keuntungan sebesar{" "}
-                                <span className="font-bold text-green-700">
-                                  {formatCurrency(estimatedReturn - totalInvested)}
-                                </span>
-                                {" "}atau{" "}
-                                <span className="font-bold text-green-700">
-                                  {(((estimatedReturn - totalInvested) / totalInvested) * 100).toFixed(2)}%
-                                </span>
-                                {" "}dalam {investmentPeriod} bulan.
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Risk Assessment */}
-                          <div className="flex items-start gap-3 p-4 bg-orange-50 rounded-xl">
-                            <img src="/icons/icon-lightning.svg" alt="" className="w-8 h-8" />
-                            <div className="flex-1">
-                              <div className="font-semibold text-gray-900 mb-1">Penilaian Risiko</div>
-                              <div className="text-sm text-gray-600">
-                                {riskProfile === "conservative" && (
-                                  <>Dengan profil <span className="font-bold">konservatif</span>, investasi ini cocok untuk pemula yang ingin risiko minimal dengan return stabil sekitar 6-8% per tahun.</>
-                                )}
-                                {riskProfile === "moderate" && (
-                                  <>Profil <span className="font-bold">moderat</span> menawarkan keseimbangan antara risiko dan return, cocok untuk investor dengan pengalaman menengah yang menargetkan 10-15% return per tahun.</>
-                                )}
-                                {riskProfile === "aggressive" && (
-                                  <>Profil <span className="font-bold">agresif</span> memiliki potensi return tinggi (15-25% per tahun) namun dengan volatilitas dan risiko kerugian yang lebih besar. Cocok untuk investor berpengalaman.</>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Time Horizon */}
-                          <div className="flex items-start gap-3 p-4 bg-purple-50 rounded-xl">
-                            <img src="/icons/icon-clock.svg" alt="" className="w-8 h-8" />
-                            <div className="flex-1">
-                              <div className="font-semibold text-gray-900 mb-1">Horizon Waktu</div>
-                              <div className="text-sm text-gray-600">
-                                {parseInt(investmentPeriod) <= 12 && (
-                                  <>Investasi jangka pendek (≤1 tahun) cocok untuk tujuan finansial mendesak, namun potensi pertumbuhan terbatas.</>
-                                )}
-                                {parseInt(investmentPeriod) > 12 && parseInt(investmentPeriod) <= 36 && (
-                                  <>Investasi jangka menengah (1-3 tahun) memberikan waktu cukup untuk pertumbuhan dengan risiko yang lebih terkelola.</>
-                                )}
-                                {parseInt(investmentPeriod) > 36 && (
-                                  <>Investasi jangka panjang (&gt;3 tahun) memberikan potensi compound interest maksimal dan dapat meredam volatilitas pasar.</>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Category Specific Insight */}
-                          <div className="flex items-start gap-3 p-4 bg-cyan-50 rounded-xl">
-                            <img src="/icons/icon-target.svg" alt="" className="w-8 h-8" />
-                            <div className="flex-1">
-                              <div className="font-semibold text-gray-900 mb-1">Insight untuk {selectedCategory.name}</div>
-                              <div className="text-sm text-gray-600">
-                                {selectedCategory.id === "gold" && (
-                                  <>Emas adalah safe haven asset yang cenderung stabil di masa krisis. Cocok untuk diversifikasi portofolio dan lindung nilai inflasi.</>
-                                )}
-                                {selectedCategory.id === "stock" && (
-                                  <>Saham menawarkan potensi pertumbuhan tinggi melalui capital gain dan dividen. Lakukan riset fundamental dan teknikal sebelum membeli.</>
-                                )}
-                                {selectedCategory.id === "crypto" && (
-                                  <>Cryptocurrency sangat volatile dengan potensi return tinggi. Investasi hanya dengan dana yang siap hilang dan pahami teknologi blockchain.</>
-                                )}
-                                {selectedCategory.id === "mutual-fund" && (
-                                  <>Reksa dana dikelola profesional dan cocok untuk investor pasif. Perhatikan expense ratio dan track record manajer investasi.</>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Recommendations */}
-                      <div className="border-t-2 border-gray-100 pt-6">
-                        <h4 className="font-bold text-lg mb-4" style={{ color: "var(--brand-dark-blue)" }}>
-                          📌 Rekomendasi Langkah Selanjutnya
-                        </h4>
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <div className="flex items-start gap-3">
-                            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                              <span className="text-sm font-bold text-blue-700">1</span>
-                            </div>
-                            <div className="text-sm text-gray-700">
-                              Pelajari lebih dalam tentang {selectedCategory.name} melalui modul pembelajaran kami
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-3">
-                            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                              <span className="text-sm font-bold text-blue-700">2</span>
-                            </div>
-                            <div className="text-sm text-gray-700">
-                              Konsultasikan dengan OWI AI Assistant untuk strategi investasi personal
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-3">
-                            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                              <span className="text-sm font-bold text-blue-700">3</span>
-                            </div>
-                            <div className="text-sm text-gray-700">
-                              Diversifikasi portofolio dengan mencoba simulasi di kategori investasi lain
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-3">
-                            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                              <span className="text-sm font-bold text-blue-700">4</span>
-                            </div>
-                            <div className="text-sm text-gray-700">
-                              Mulai dengan jumlah kecil dan tingkatkan seiring bertambahnya pengetahuan
-                            </div>
+                          <div className="flex justify-between items-center py-2 border-b border-blue-100">
+                            <span className="text-gray-600">Jumlah {selectedAsset.unit}:</span>
+                            <span className="font-semibold">{formatNumber(units)}</span>
                           </div>
                         </div>
                       </div>
@@ -620,10 +630,10 @@ export default function SimulasiPage() {
                           className="flex-1 min-w-50 py-3 px-6 rounded-xl font-semibold text-center transition-all hover:shadow-lg"
                           style={{ background: "var(--brand-blue)", color: "white" }}
                         >
-                          Pelajari Lebih Lanjut
+                          Pelajari {selectedCategory.name}
                         </a>
                         <a
-                          href="#owi"
+                          href="/owi"
                           className="flex-1 min-w-50 py-3 px-6 rounded-xl font-semibold text-center border-2 transition-all hover:bg-gray-50"
                           style={{ borderColor: "var(--brand-dark-blue)", color: "var(--brand-dark-blue)" }}
                         >
