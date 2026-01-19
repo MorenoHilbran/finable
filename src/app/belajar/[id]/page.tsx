@@ -124,10 +124,10 @@ export default async function ModuleDetailPage({
 
   const getContentTypeLabel = (type: string) => {
     switch (type) {
-      case "text": return "📖 Teks";
-      case "audio": return "🎧 Audio";
-      case "visual": return "🎬 Visual";
-      case "mixed": return "📦 Campuran";
+      case "text": return "Teks";
+      case "audio": return "Audio";
+      case "visual": return "Visual";
+      case "mixed": return "Campuran";
       default: return type;
     }
   };
@@ -185,7 +185,7 @@ export default async function ModuleDetailPage({
                   />
                 ) : (
                   <div className="w-full h-64 bg-white/10 rounded-2xl flex items-center justify-center">
-                    <span className="text-6xl">📚</span>
+                    <img src="/icons/learn.svg" alt="" className="w-16 h-16 opacity-70" />
                   </div>
                 )}
               </div>
@@ -252,7 +252,7 @@ export default async function ModuleDetailPage({
                     </div>
                   ) : (
                     <div className="text-center py-12 text-gray-500">
-                      <div className="text-4xl mb-4">📝</div>
+                      <img src="/icons/icon-edit.svg" alt="" className="w-12 h-12 mx-auto mb-4 opacity-50" />
                       <p>Konten modul sedang dalam pengembangan</p>
                     </div>
                   )}
@@ -333,7 +333,7 @@ export default async function ModuleDetailPage({
                     {/* Difficulty Level */}
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
-                        <span className="text-xl">📊</span>
+                        <img src="/icons/icon-chart.svg" alt="" className="w-5 h-5" />
                       </div>
                       <div>
                         <p className="text-xs text-gray-500 uppercase tracking-wide">Tingkat Kesulitan</p>
@@ -352,7 +352,7 @@ export default async function ModuleDetailPage({
                     {module.duration && (
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
-                          <span className="text-xl">⏱️</span>
+                          <img src="/icons/icon-clock.svg" alt="" className="w-5 h-5" />
                         </div>
                         <div>
                           <p className="text-xs text-gray-500 uppercase tracking-wide">Durasi</p>
@@ -366,7 +366,7 @@ export default async function ModuleDetailPage({
                     {/* Total Lessons */}
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
-                        <span className="text-xl">📚</span>
+                        <img src="/icons/learn.svg" alt="" className="w-5 h-5" />
                       </div>
                       <div>
                         <p className="text-xs text-gray-500 uppercase tracking-wide">Total Materi</p>
@@ -379,17 +379,12 @@ export default async function ModuleDetailPage({
                     {/* Content Type */}
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
-                        <span className="text-xl">
-                          {module.content_type === "text" ? "📖"
-                            : module.content_type === "audio" ? "🎧"
-                              : module.content_type === "visual" ? "🎬"
-                                : "📦"}
-                        </span>
+                        <img src="/icons/icon-note.svg" alt="" className="w-5 h-5" />
                       </div>
                       <div>
                         <p className="text-xs text-gray-500 uppercase tracking-wide">Tipe Konten</p>
                         <p className="font-medium" style={{ color: "var(--brand-black)" }}>
-                          {getContentTypeLabel(module.content_type).replace(/^[^\s]+\s/, '')}
+                          {getContentTypeLabel(module.content_type)}
                         </p>
                       </div>
                     </div>
@@ -398,7 +393,7 @@ export default async function ModuleDetailPage({
                     {module.category && (
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
-                          <span className="text-xl">📁</span>
+                          <img src="/icons/icon-folder.svg" alt="" className="w-5 h-5" />
                         </div>
                         <div>
                           <p className="text-xs text-gray-500 uppercase tracking-wide">Kategori</p>
@@ -458,7 +453,7 @@ export default async function ModuleDetailPage({
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                            <span className="text-3xl">📚</span>
+                            <img src="/icons/learn.svg" alt="" className="w-10 h-10 opacity-50" />
                           </div>
                         )}
                         {recModule.category && (
@@ -489,8 +484,8 @@ export default async function ModuleDetailPage({
                             {getLevelLabel(recModule.difficulty_level)}
                           </span>
                           {recModule.duration && (
-                            <span className="text-xs text-gray-500">
-                              ⏱️ {recModule.duration}
+                            <span className="text-xs text-gray-500 flex items-center gap-1">
+                              <img src="/icons/icon-clock.svg" alt="" className="w-3 h-3" /> {recModule.duration}
                             </span>
                           )}
                         </div>
@@ -505,6 +500,6 @@ export default async function ModuleDetailPage({
       </main>
       <TextReader />
       <Footer />
-    </div>
+    </div >
   );
 }

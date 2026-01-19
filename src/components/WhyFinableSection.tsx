@@ -106,13 +106,20 @@ export default function WhyFinableSection() {
                     {reasons.map((reason, index) => (
                         <div
                             key={index}
-                            className="group bg-white rounded-3xl p-6 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-100 flex flex-col items-center text-center overflow-hidden relative"
+                            className="group relative rounded-3xl p-6 hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center overflow-hidden"
+                            style={{
+                                background: "rgba(255, 255, 255, 0.6)",
+                                backdropFilter: "blur(20px)",
+                                WebkitBackdropFilter: "blur(20px)",
+                                border: "1px solid rgba(255, 255, 255, 0.8)",
+                                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8)"
+                            }}
                         >
-                            {/* Top Shine Effect */}
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--brand-sage)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            {/* Inner glow on hover */}
+                            <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%)" }}></div>
 
                             {/* Visual Area */}
-                            <div className="h-40 w-full flex items-center justify-center mb-6 bg-gray-50/50 rounded-2xl group-hover:bg-white transition-colors">
+                            <div className="h-40 w-full flex items-center justify-center mb-6 rounded-2xl transition-colors relative z-10" style={{ background: "rgba(248, 250, 252, 0.5)" }}>
                                 {reason.visual}
                             </div>
 
@@ -128,9 +135,6 @@ export default function WhyFinableSection() {
                                     {reason.description}
                                 </p>
                             </div>
-
-                            {/* Bottom Decorative Curve */}
-                            <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-20"></div>
                         </div>
                     ))}
                 </div>
