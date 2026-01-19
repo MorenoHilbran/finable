@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import LessonSidebar from "@/components/learning/LessonSidebar";
 import LessonNavigation from "@/components/learning/LessonNavigation";
+import ListenButton from "@/components/ListenButton";
+import SummarizeButton from "@/components/SummarizeButton";
 import type { LearningModule, ModuleLesson } from "@/lib/supabase/database.types";
 
 interface LessonTreeItem {
@@ -58,23 +60,23 @@ export default function LessonContent({
     }
     return ids;
   };
-  
+
   const allLessonIds = getAllLessonIdsFromTree();
   const currentCompletedCount = completed.filter((id) => allLessonIds.includes(id)).length;
-  
-  const currentProgress = totalLessonsForProgress > 0 
-    ? Math.round((currentCompletedCount / totalLessonsForProgress) * 100) 
+
+  const currentProgress = totalLessonsForProgress > 0
+    ? Math.round((currentCompletedCount / totalLessonsForProgress) * 100)
     : 0;
 
   const handleComplete = async () => {
     if (completed.includes(lesson.id)) return;
-    
+
     setIsCompleting(true);
     try {
       const res = await fetch(`/api/lessons/${lesson.id}/progress`, {
         method: "POST",
       });
-      
+
       if (res.ok) {
         setCompleted([...completed, lesson.id]);
       }
@@ -94,6 +96,17 @@ export default function LessonContent({
     router.push(`/dashboard/belajar/${module.module_id}`);
   };
 
+  // Helper to strip HTML tags and get plain text for TTS
+  const getPlainTextContent = (content: string | null): string => {
+    if (!content) return "";
+    // Remove HTML tags
+    const strippedHtml = content.replace(/<[^>]*>/g, " ");
+    // Clean up whitespace
+    return strippedHtml.replace(/\s+/g, " ").trim();
+  };
+
+  const plainTextContent = getPlainTextContent(lesson.content);
+
   // Parse and render content
   const renderContent = (content: string | null) => {
     if (!content) {
@@ -108,7 +121,7 @@ export default function LessonContent({
     // Check if content is HTML (from rich text editor)
     if (content.trim().startsWith('<')) {
       return (
-        <div 
+        <div
           className="prose prose-lg max-w-none"
           dangerouslySetInnerHTML={{ __html: content }}
           style={{
@@ -170,9 +183,9 @@ export default function LessonContent({
           <div className="flex-1 max-w-md mx-4">
             <div className="flex items-center gap-3">
               <div className="flex-1 bg-gray-200 rounded-full h-2">
-                <div 
+                <div
                   className="h-full rounded-full transition-all duration-500"
-                  style={{ 
+                  style={{
                     width: `${currentProgress}%`,
                     backgroundColor: "var(--brand-sage)"
                   }}
@@ -215,7 +228,7 @@ export default function LessonContent({
           <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
             {/* Lesson Title */}
             <div className="mb-6">
-              <h1 
+              <h1
                 className="text-xl sm:text-2xl md:text-3xl font-bold"
                 style={{ color: "var(--brand-black)" }}
               >
@@ -227,6 +240,20 @@ export default function LessonContent({
                 </span>
               )}
             </div>
+
+            {/* Accessibility Toolbar */}
+            {plainTextContent && (
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-4 mb-6 border border-blue-100">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="text-sm text-gray-600 font-medium">Fitur Aksesibilitas:</span>
+                  <ListenButton
+                    text={plainTextContent}
+                    title={lesson.title}
+                  />
+                  <SummarizeButton content={plainTextContent} />
+                </div>
+              </div>
+            )}
 
             {/* Content */}
             <div className="bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-sm">
