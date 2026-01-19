@@ -36,8 +36,13 @@ export default function Footer() {
 
   return (
     <footer
-      className="py-12 md:py-16"
-      style={{ backgroundColor: "var(--brand-black)" }}
+      className="pt-96 pb-12 md:pt-[500px] md:pb-16 -mt-[420px] md:-mt-[420px] relative -z-2"
+      style={{ 
+        backgroundImage: "url('/footer.svg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat"
+      }}
       role="contentinfo"
     >
       <div className="container mx-auto px-6">
