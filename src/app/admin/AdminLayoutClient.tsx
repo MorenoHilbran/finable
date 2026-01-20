@@ -75,8 +75,8 @@ export default function AdminLayoutClient({
             style={{ color: "var(--brand-black)" }}
           >
             <img src="/icons/logo-finable.svg" alt="Finable" className="w-8 h-8 group-hover:scale-110 transition-transform" />
-            <span className="bg-clip-text">
-              FINABLE <span className="text-sm font-normal text-gray-500">Admin</span>
+            <span>
+              F<span style={{ color: "#61a1ad" }}>i</span><span style={{ color: "#61a1ad" }}>n</span>able <span className="text-sm font-normal text-gray-500">Admin</span>
             </span>
           </Link>
 
@@ -130,7 +130,7 @@ export default function AdminLayoutClient({
                       }),
                     }}
                   >
-                    <img src={link.icon} alt={link.label} className="w-5 h-5" style={{ filter: active ? 'brightness(0) invert(1)' : 'none' }} />
+                    <img src={link.icon} alt={link.label} className="w-5 h-5" style={{ filter: active ? 'brightness(0) invert(1)' : 'brightness(0)' }} />
                     {link.label}
                   </Link>
                 </li>
@@ -146,7 +146,7 @@ export default function AdminLayoutClient({
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-100 mb-2"
             style={{ color: "var(--brand-blue)" }}
           >
-            <img src="/icons/icon-globe.svg" alt="" className="w-5 h-5" />
+            <img src="/icons/icon-globe.svg" alt="" className="w-5 h-5" style={{ filter: 'brightness(0)' }} />
             Ke Halaman Utama
           </Link>
           <Link
@@ -154,7 +154,7 @@ export default function AdminLayoutClient({
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-100 mb-2"
             style={{ color: "var(--brand-black)" }}
           >
-            <img src="/icons/icon-user.svg" alt="" className="w-5 h-5" />
+            <img src="/icons/icon-user.svg" alt="" className="w-5 h-5" style={{ filter: 'brightness(0)' }} />
             Dashboard User
           </Link>
           <LogoutButton
@@ -181,7 +181,7 @@ export default function AdminLayoutClient({
                   ...(!active && { color: "var(--brand-black)" }),
                 }}
               >
-                <img src={link.icon} alt={link.label} className="w-5 h-5" />
+                <img src={link.icon} alt={link.label} className="w-5 h-5" style={{ filter: 'brightness(0)' }} />
                 <span className="text-xs mt-1 font-medium">{link.label}</span>
               </Link>
             );

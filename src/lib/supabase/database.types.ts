@@ -162,6 +162,7 @@ export interface Database {
           disability_type: DisabilityType | null;
           accessibility_profile: AccessibilityProfile[] | null;
           role: UserRole;
+          total_badges: number;
           created_at: string;
         };
         Insert: {
@@ -172,6 +173,7 @@ export interface Database {
           disability_type?: DisabilityType | null;
           accessibility_profile?: AccessibilityProfile[] | null;
           role?: UserRole;
+          total_badges?: number;
           created_at?: string;
         };
         Update: {
@@ -182,6 +184,7 @@ export interface Database {
           disability_type?: DisabilityType | null;
           accessibility_profile?: AccessibilityProfile[] | null;
           role?: UserRole;
+          total_badges?: number;
           created_at?: string;
         };
       };

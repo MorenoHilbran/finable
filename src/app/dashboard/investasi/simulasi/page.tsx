@@ -1,47 +1,236 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import {
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  Area,
+  AreaChart,
+} from "recharts";
+
+// Asset price type
+interface AssetPrice {
+  id: string;
+  name: string;
+  symbol: string;
+  price: number;
+  priceChange24h: number;
+  unit: string;
+  lastUpdated: string;
+}
+
+interface MarketData {
+  gold: AssetPrice[];
+  stocks: AssetPrice[];
+  crypto: AssetPrice[];
+  mutualFunds: AssetPrice[];
+  lastUpdated: string;
+}
+
+// Investment categories
+const investmentCategories = [
+  {
+    id: "gold",
+    name: "Emas",
+    icon: "/icons/icon-emas.svg",
+    color: "#FFD700",
+    description: "Logam mulia sebagai aset safe haven",
+  },
+  {
+    id: "stock",
+    name: "Saham",
+    icon: "/icons/icon-saham.svg",
+    color: "#3B82F6",
+    description: "Kepemilikan bagian dari perusahaan",
+  },
+  {
+    id: "crypto",
+    name: "Cryptocurrency",
+    icon: "/icons/icon-crypto.svg",
+    color: "#F7931A",
+    description: "Aset digital terdesentralisasi",
+  },
+  {
+    id: "mutual-fund",
+    name: "Reksa Dana",
+    icon: "/icons/icon-reksadana.svg",
+    color: "#10B981",
+    description: "Investasi kolektif yang dikelola profesional",
+  },
+];
 
 export default function SimulasiPage() {
+  const [selectedCategory, setSelectedCategory] = useState(investmentCategories[0]);
+  const [selectedAsset, setSelectedAsset] = useState<AssetPrice | null>(null);
+  const [investmentAmount, setInvestmentAmount] = useState("");
+  const [investmentPeriod, setInvestmentPeriod] = useState("12");
+  const [riskProfile, setRiskProfile] = useState("moderate");
+  const [simulationData, setSimulationData] = useState<any[]>([]);
+  const [showResults, setShowResults] = useState(false);
+  const [totalInvested, setTotalInvested] = useState(0);
+  const [estimatedReturn, setEstimatedReturn] = useState(0);
+  const [units, setUnits] = useState(0);
+
+  // Market data state
+  const [marketData, setMarketData] = useState<MarketData | null>(null);
+  const [loadingPrices, setLoadingPrices] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+
+  // Fetch market data on mount
+  useEffect(() => {
+    fetchMarketData();
+  }, []);
+
+  // Update selected asset when category or market data changes
+  useEffect(() => {
+    if (marketData) {
+      const assets = getAssetsForCategory(selectedCategory.id);
+      if (assets.length > 0) {
+        setSelectedAsset(assets[0]);
+      }
+    }
+  }, [selectedCategory, marketData]);
+
+  const fetchMarketData = async () => {
+    try {
+      setLoadingPrices(true);
+      const response = await fetch("/api/market-data");
+      const data = await response.json();
+      setMarketData(data);
+      setLastUpdated(data.lastUpdated);
+    } catch (error) {
+      console.error("Failed to fetch market data:", error);
+    } finally {
+      setLoadingPrices(false);
+    }
+  };
+
+  const getAssetsForCategory = useCallback((categoryId: string): AssetPrice[] => {
+    if (!marketData) return [];
+    switch (categoryId) {
+      case "gold": return marketData.gold;
+      case "stock": return marketData.stocks;
+      case "crypto": return marketData.crypto;
+      case "mutual-fund": return marketData.mutualFunds;
+      default: return [];
+    }
+  }, [marketData]);
+
+  // Simulate investment calculation
+  const calculateSimulation = () => {
+    const amount = parseFloat(investmentAmount);
+    const months = parseInt(investmentPeriod);
+
+    if (!amount || amount <= 0 || !months || !selectedAsset) {
+      alert("Mohon isi semua field dengan benar");
+      return;
+    }
+
+    // Calculate units purchased
+    const purchasedUnits = amount / selectedAsset.price;
+    setUnits(purchasedUnits);
+    setTotalInvested(amount);
+
+    // Risk-adjusted return rates (annual %)
+    const returnRates: Record<string, number> = {
+      conservative: 0.06,
+      moderate: 0.12,
+      aggressive: 0.20,
+    };
+
+    const annualReturn = returnRates[riskProfile];
+    const monthlyReturn = annualReturn / 12;
+
+    // Generate projection data
+    const data = [];
+    let currentValue = amount;
+
+    for (let i = 0; i <= months; i++) {
+      // Add volatility based on risk profile
+      const volatility = riskProfile === "aggressive" ? 0.15 : riskProfile === "moderate" ? 0.08 : 0.03;
+      const randomFactor = 1 + (Math.random() - 0.5) * volatility;
+
+      if (i > 0) {
+        currentValue = currentValue * (1 + monthlyReturn) * randomFactor;
+      }
+
+      data.push({
+        month: i,
+        value: Math.round(currentValue),
+        invested: amount,
+        profit: Math.round(currentValue - amount),
+      });
+    }
+
+    setSimulationData(data);
+    setEstimatedReturn(data[data.length - 1].value);
+    setShowResults(true);
+  };
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(value);
+  };
+
+  const formatNumber = (value: number) => {
+    return new Intl.NumberFormat("id-ID", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 4,
+    }).format(value);
+  };
+
+  const resetSimulation = () => {
+    setInvestmentAmount("");
+    setInvestmentPeriod("12");
+    setRiskProfile("moderate");
+    setShowResults(false);
+    setSimulationData([]);
+  };
+
+  const formatDate = (isoString: string) => {
+    return new Date(isoString).toLocaleString("id-ID", {
+      dateStyle: "long",
+      timeStyle: "short",
+    });
+  };
+
   return (
     <div className="p-6">
       {/* Navigation Bar */}
       <div className="flex items-center justify-between mb-6">
-        {/* Back Button - Top Left */}
         <Link
           href="/dashboard/investasi"
           className="flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-80"
-          style={{ color: "var(--brand-cyan)" }}
+          style={{ color: "var(--brand-sage)" }}
         >
           <span>←</span>
           <span>Kembali ke Investasi</span>
         </Link>
 
-        {/* Breadcrumb - Top Right */}
         <nav aria-label="Breadcrumb">
           <ol className="flex items-center gap-2 text-sm">
             <li>
-              <Link
-                href="/dashboard"
-                className="transition-colors hover:underline"
-                style={{ color: "var(--text-muted)" }}
-              >
+              <Link href="/dashboard" className="hover:underline" style={{ color: "var(--text-muted)" }}>
                 Dashboard
               </Link>
             </li>
             <li style={{ color: "var(--text-muted)" }}>/</li>
             <li>
-              <Link
-                href="/dashboard/investasi"
-                className="transition-colors hover:underline"
-                style={{ color: "var(--text-muted)" }}
-              >
+              <Link href="/dashboard/investasi" className="hover:underline" style={{ color: "var(--text-muted)" }}>
                 Investasi
               </Link>
             </li>
             <li style={{ color: "var(--text-muted)" }}>/</li>
-            <li
-              className="font-medium"
-              style={{ color: "var(--brand-dark-blue)" }}
-            >
+            <li className="font-medium" style={{ color: "var(--brand-dark-blue)" }}>
               Simulasi
             </li>
           </ol>
@@ -49,174 +238,288 @@ export default function SimulasiPage() {
       </div>
 
       {/* Header */}
-      <div className="mb-8">
-        <h1
-          className="text-2xl md:text-3xl font-bold mb-2"
-          style={{ color: "var(--brand-dark-blue)" }}
-        >
+      <div className="mb-6">
+        <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: "var(--brand-dark-blue)" }}>
           Simulasi Investasi
         </h1>
         <p className="text-gray-600">
-          Latih kemampuan investasi Anda dengan simulasi tanpa risiko finansial nyata.
+          Latih kemampuan investasi Anda dengan simulator berbasis harga pasar real-time.
         </p>
+        {lastUpdated && (
+          <div className="inline-flex items-center gap-2 px-3 py-1 mt-2 bg-green-50 rounded-full text-sm text-green-700">
+            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+            Data terakhir: {formatDate(lastUpdated)}
+          </div>
+        )}
       </div>
 
-      {/* Coming Soon Hero */}
-      <div
-        className="card text-center py-16 relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg, rgba(72, 189, 208, 0.08) 0%, rgba(70, 185, 131, 0.08) 100%)" }}
-      >
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div
-            className="absolute top-10 left-10 w-20 h-20 rounded-full animate-pulse"
-            style={{ background: "rgba(72, 189, 208, 0.1)" }}
-          />
-          <div
-            className="absolute bottom-10 right-10 w-32 h-32 rounded-full animate-pulse"
-            style={{ background: "rgba(70, 185, 131, 0.1)", animationDelay: "1s" }}
-          />
-          <div
-            className="absolute top-1/2 left-1/4 w-16 h-16 rounded-full animate-pulse"
-            style={{ background: "rgba(184, 48, 139, 0.05)", animationDelay: "0.5s" }}
-          />
+      {/* Loading State */}
+      {loadingPrices && (
+        <div className="card text-center py-12">
+          <img src="/icons/icon-loading.svg" alt="" className="w-12 h-12 mb-4 mx-auto animate-spin" style={{ animationDuration: "2s" }} />
+          <p className="text-gray-500">Memuat data pasar...</p>
         </div>
+      )}
 
-        <div className="relative z-10">
-          <div className="mb-6">
-            <img src="/icons/icon-rocket.svg" alt="" className="w-20 h-20 mx-auto animate-bounce" style={{ animationDuration: "2s" }} />
-          </div>
-          <h2
-            className="text-2xl md:text-3xl font-bold mb-3"
-            style={{ color: "var(--brand-dark-blue)" }}
-          >
-            Segera Hadir!
-          </h2>
-          <p className="text-gray-600 mb-8 max-w-lg mx-auto">
-            Kami sedang mengembangkan fitur simulasi investasi yang akan membantu Anda 
-            mempraktikkan strategi tanpa risiko uang nyata.
-          </p>
-          <div
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold"
-            style={{
-              background: "var(--gradient-cta)",
-              color: "var(--brand-sage)",
-              boxShadow: "0 4px 14px rgba(72, 189, 208, 0.3)",
-            }}
-          >
-            <img src="/icons/icon-clock.svg" alt="" className="w-5 h-5 animate-spin" style={{ animationDuration: "3s" }} />
-            Dalam Pengembangan
-          </div>
-        </div>
-      </div>
-
-      {/* Feature Preview */}
-      <h3
-        className="text-lg font-semibold mt-8 mb-4"
-        style={{ color: "var(--brand-dark-blue)" }}
-      >
-        Fitur yang Sedang Dikembangkan
-      </h3>
-      <div className="grid md:grid-cols-2 gap-4">
-        {[
-          {
-            title: "Simulasi Reksa Dana",
-            description: "Simulasikan investasi reksa dana dengan data historis nyata.",
-            icon: "/icons/icon-trending.svg",
-            color: "var(--brand-cyan)",
-            progress: 65,
-          },
-          {
-            title: "Simulasi Saham",
-            description: "Beli dan jual saham virtual untuk belajar analisis pasar.",
-            icon: "/icons/icon-bar-chart.svg",
-            color: "var(--brand-green)",
-            progress: 45,
-          },
-          {
-            title: "Paper Trading",
-            description: "Trading dengan uang virtual, pengalaman nyata tanpa risiko.",
-            icon: "/icons/icon-chart.svg",
-            color: "var(--brand-orange)",
-            progress: 30,
-          },
-          {
-            title: "Skenario Challenge",
-            description: "Tantangan investasi dengan skenario ekonomi yang berbeda.",
-            icon: "/icons/icon-certificate.svg",
-            color: "var(--brand-magenta)",
-            progress: 20,
-          },
-        ].map((feature, index) => (
-          <div
-            key={index}
-            className="card flex items-start gap-4"
-            style={{ opacity: 0.8 }}
-          >
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
-              style={{ background: `${feature.color}20` }}
-            >
-              <img src={feature.icon} alt="" className="w-6 h-6" />
+      {/* Main Content */}
+      {!loadingPrices && (
+        <div className="space-y-6">
+          {/* Investment Categories */}
+          <div className="card">
+            <h2 className="font-semibold mb-4" style={{ color: "var(--brand-dark-blue)" }}>
+              Pilih Jenis Investasi
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {investmentCategories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    setShowResults(false);
+                  }}
+                  className={`p-4 rounded-xl border-2 transition-all text-left ${
+                    selectedCategory.id === category.id
+                      ? "border-[var(--brand-sage)] bg-green-50"
+                      : "border-gray-200 hover:border-gray-300"
+                  }`}
+                >
+                  <img src={category.icon} alt="" className="w-8 h-8 mb-2" />
+                  <div className="font-semibold text-sm" style={{ color: "var(--brand-dark-blue)" }}>
+                    {category.name}
+                  </div>
+                  <div className="text-xs text-gray-500">{category.description}</div>
+                </button>
+              ))}
             </div>
-            <div className="flex-1">
-              <h4
-                className="font-semibold mb-1"
-                style={{ color: "var(--brand-dark-blue)" }}
-              >
-                {feature.title}
-              </h4>
-              <p className="text-sm text-gray-600 mb-2">
-                {feature.description}
-              </p>
-              {/* Progress Bar */}
-              <div className="flex items-center gap-2">
-                <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all"
-                    style={{
-                      width: `${feature.progress}%`,
-                      background: feature.color,
-                    }}
-                  />
-                </div>
-                <span className="text-xs text-gray-500">{feature.progress}%</span>
+          </div>
+
+          {/* Asset Selector */}
+          {marketData && (
+            <div className="card">
+              <h2 className="font-semibold mb-4" style={{ color: "var(--brand-dark-blue)" }}>
+                Pilih Aset {selectedCategory.name}
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {getAssetsForCategory(selectedCategory.id).map((asset) => (
+                  <button
+                    key={asset.id}
+                    onClick={() => setSelectedAsset(asset)}
+                    className={`p-3 rounded-xl border-2 transition-all text-left ${
+                      selectedAsset?.id === asset.id
+                        ? "border-[var(--brand-sage)] bg-green-50"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-bold" style={{ color: selectedCategory.color }}>
+                        {asset.symbol}
+                      </span>
+                      <span
+                        className={`text-xs font-semibold px-2 py-0.5 rounded ${
+                          asset.priceChange24h >= 0
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        {asset.priceChange24h >= 0 ? "+" : ""}
+                        {asset.priceChange24h}%
+                      </span>
+                    </div>
+                    <div className="text-xs text-gray-600 mb-1">{asset.name}</div>
+                    <div className="font-semibold text-sm">
+                      {formatCurrency(asset.price)}
+                      <span className="text-xs text-gray-500 ml-1">/{asset.unit}</span>
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          )}
 
-      {/* Notification Sign Up */}
-      <div
-        className="mt-8 p-6 rounded-xl"
-        style={{
-          background: "rgba(72, 189, 208, 0.05)",
-          border: "1px solid rgba(72, 189, 208, 0.2)",
-        }}
-      >
-        <div className="flex items-start gap-4">
-          <img src="/icons/icon-bell.svg" alt="" className="w-6 h-6" />
-          <div>
-            <h4
-              className="font-semibold mb-1"
-              style={{ color: "var(--brand-dark-blue)" }}
-            >
-              Ingin Diberitahu Saat Tersedia?
-            </h4>
-            <p className="text-sm text-gray-600 mb-3">
-              Kami akan mengirimkan pemberitahuan saat fitur simulasi siap digunakan.
-            </p>
-            <button
-              className="btn btn-primary text-sm py-2 px-4"
-              disabled
-              style={{ opacity: 0.6, cursor: "not-allowed" }}
-            >
-              Notifikasi (Segera Hadir)
-            </button>
+          {/* Input Form */}
+          <div className="card">
+            <h2 className="font-semibold mb-4" style={{ color: "var(--brand-dark-blue)" }}>
+              Parameter Simulasi
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Jumlah Investasi Awal (IDR)
+                </label>
+                <input
+                  type="number"
+                  value={investmentAmount}
+                  onChange={(e) => setInvestmentAmount(e.target.value)}
+                  placeholder="Contoh: 10000000"
+                  className="w-full px-4 py-2 rounded-xl border-2 border-gray-200 focus:border-[var(--brand-sage)] focus:outline-none"
+                />
+                <p className="text-xs text-gray-500 mt-1">Minimal: {formatCurrency(1000000)}</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Jangka Waktu (Bulan)
+                </label>
+                <select
+                  value={investmentPeriod}
+                  onChange={(e) => setInvestmentPeriod(e.target.value)}
+                  className="w-full px-4 py-2 rounded-xl border-2 border-gray-200 focus:border-[var(--brand-sage)] focus:outline-none"
+                >
+                  <option value="6">6 Bulan</option>
+                  <option value="12">12 Bulan (1 Tahun)</option>
+                  <option value="24">24 Bulan (2 Tahun)</option>
+                  <option value="36">36 Bulan (3 Tahun)</option>
+                  <option value="60">60 Bulan (5 Tahun)</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Risk Profile */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Profil Risiko</label>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { value: "conservative", label: "Konservatif", desc: "6-8%" },
+                  { value: "moderate", label: "Moderat", desc: "10-15%" },
+                  { value: "aggressive", label: "Agresif", desc: "15-25%" },
+                ].map((profile) => (
+                  <button
+                    key={profile.value}
+                    onClick={() => setRiskProfile(profile.value)}
+                    className={`p-3 rounded-xl border-2 transition-all text-center ${
+                      riskProfile === profile.value
+                        ? "border-[var(--brand-sage)] bg-green-50"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <div className="font-semibold text-sm">{profile.label}</div>
+                    <div className="text-xs text-gray-500">Return {profile.desc}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={calculateSimulation}
+                disabled={!selectedAsset}
+                className="flex-1 py-3 rounded-xl font-semibold text-white transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ background: "var(--brand-sage)" }}
+              >
+                Jalankan Simulasi
+              </button>
+              {showResults && (
+                <button
+                  onClick={resetSimulation}
+                  className="px-4 py-3 rounded-xl font-semibold border-2 transition-all hover:bg-gray-50"
+                  style={{ borderColor: "var(--brand-dark-blue)", color: "var(--brand-dark-blue)" }}
+                >
+                  Reset
+                </button>
+              )}
+            </div>
           </div>
+
+          {/* Results */}
+          {showResults && simulationData.length > 0 && selectedAsset && (
+            <>
+              {/* Summary Cards */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="card text-center">
+                  <div className="text-xs text-gray-500 mb-1">Total Investasi</div>
+                  <div className="font-bold" style={{ color: "var(--brand-dark-blue)" }}>
+                    {formatCurrency(totalInvested)}
+                  </div>
+                </div>
+                <div className="card text-center">
+                  <div className="text-xs text-gray-500 mb-1">Estimasi Nilai Akhir</div>
+                  <div className="font-bold" style={{ color: "var(--brand-sage)" }}>
+                    {formatCurrency(estimatedReturn)}
+                  </div>
+                </div>
+                <div className="card text-center">
+                  <div className="text-xs text-gray-500 mb-1">Potensi Keuntungan</div>
+                  <div className="font-bold text-amber-600">
+                    {formatCurrency(estimatedReturn - totalInvested)}
+                  </div>
+                  <div className="text-xs text-green-600">
+                    +{(((estimatedReturn - totalInvested) / totalInvested) * 100).toFixed(2)}%
+                  </div>
+                </div>
+                <div className="card text-center">
+                  <div className="text-xs text-gray-500 mb-1">Unit {selectedAsset.symbol}</div>
+                  <div className="font-bold" style={{ color: selectedCategory.color }}>
+                    {formatNumber(units)}
+                  </div>
+                </div>
+              </div>
+
+              {/* Chart */}
+              <div className="card">
+                <h3 className="font-semibold mb-4" style={{ color: "var(--brand-dark-blue)" }}>
+                  Proyeksi Pertumbuhan
+                </h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <AreaChart data={simulationData}>
+                    <defs>
+                      <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#50D990" stopOpacity={0.8} />
+                        <stop offset="95%" stopColor="#50D990" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                    <XAxis dataKey="month" stroke="#6B7280" />
+                    <YAxis
+                      tickFormatter={(value: number) => `${(value / 1000000).toFixed(1)}jt`}
+                      stroke="#6B7280"
+                    />
+                    <Tooltip
+                      formatter={(value: number | undefined) => value !== undefined ? formatCurrency(value) : ''}
+                      contentStyle={{
+                        backgroundColor: "white",
+                        border: "2px solid #E5E7EB",
+                        borderRadius: "12px",
+                      }}
+                    />
+                    <Legend />
+                    <Area
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#50D990"
+                      fillOpacity={1}
+                      fill="url(#colorValue)"
+                      name="Nilai Investasi"
+                      strokeWidth={2}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Disclaimer */}
+              <div
+                className="p-4 rounded-xl"
+                style={{
+                  background: "rgba(245, 158, 11, 0.1)",
+                  border: "1px solid rgba(245, 158, 11, 0.3)",
+                }}
+              >
+                <div className="flex items-start gap-3">
+                  <img src="/icons/icon-warning.svg" alt="" className="w-6 h-6" />
+                  <div>
+                    <h4 className="font-semibold text-amber-800 mb-1">Disclaimer</h4>
+                    <p className="text-sm text-amber-700">
+                      Hasil simulasi ini hanya untuk tujuan edukasi dan tidak menjamin keuntungan aktual.
+                      Investasi mengandung risiko kerugian modal.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
-      </div>
+      )}
     </div>
   );
 }

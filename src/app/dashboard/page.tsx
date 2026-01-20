@@ -49,18 +49,28 @@ export default async function DashboardPage() {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-3 gap-4 mb-8">
         {[
           { label: "Modul Selesai", value: "0", icon: "/icons/icon-check.svg", color: "var(--brand-sage)" },
           { label: "Dalam Proses", value: "0", icon: "/icons/icon-progress.svg", color: "var(--brand-blue)" },
-          { label: "Sertifikat", value: "0", icon: "/icons/icon-certificate.svg", color: "var(--brand-sage)" },
-          { label: "Poin", value: "0", icon: "/icons/icon-star.svg", color: "var(--brand-blue)" },
+          { label: "Badges", value: "0", icon: "/icons/icon-trophy.svg", color: "var(--brand-sage)" },
         ].map((stat, index) => (
           <div
             key={index}
             className="card text-center"
           >
-            <img src={stat.icon} alt={stat.label} className="w-10 h-10 mb-2 mx-auto" />
+            <img 
+              src={stat.icon} 
+              alt={stat.label} 
+              className="w-10 h-10 mb-2 mx-auto" 
+              style={{ 
+                filter: stat.color === "var(--brand-sage)" 
+                  ? "brightness(0) saturate(100%) invert(67%) sepia(52%) saturate(405%) hue-rotate(93deg) brightness(92%) contrast(87%)" 
+                  : stat.color === "var(--brand-blue)" 
+                    ? "brightness(0) saturate(100%) invert(52%) sepia(98%) saturate(234%) hue-rotate(166deg) brightness(94%) contrast(86%)"
+                    : undefined 
+              }}
+            />
             <div
               className="text-2xl font-bold"
               style={{ color: stat.color }}

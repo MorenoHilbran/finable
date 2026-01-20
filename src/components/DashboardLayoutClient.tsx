@@ -56,9 +56,7 @@ export default function DashboardLayoutClient({
             style={{ color: "var(--brand-black)" }}
           >
             <img src="/icons/logo-finable.svg" alt="Finable" className="w-8 h-8 group-hover:scale-110 transition-transform" />
-            <span className="bg-clip-text">
-              FINABLE
-            </span>
+            <span>F<span style={{ color: "#61a1ad" }}>i</span><span style={{ color: "#61a1ad" }}>n</span>able</span>
           </Link>
 
           {/* User Menu */}
