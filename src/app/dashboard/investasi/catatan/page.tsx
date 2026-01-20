@@ -926,7 +926,7 @@ export default function PortfolioPage() {
         }}
       >
         <div className="flex items-start gap-4">
-          <img src="/icons/icon-cloud.svg" alt="" className="w-8 h-8" />
+          <img src="/icons/icon-cloud.png" alt="" className="w-8 h-8" />
           <div>
             <h4 className="font-semibold mb-2" style={{ color: "var(--brand-dark-blue)" }}>
               Data Tersinkron
