@@ -36,7 +36,7 @@ export default function Footer() {
 
   return (
     <footer
-      className="pt-96 pb-12 md:pt-[500px] md:pb-16 -mt-[420px] md:-mt-[420px] relative -z-2"
+      className="pt-96 pb-12 md:pt-[500px] md:pb-16 -mt-[420px] md:-mt-[420px] relative z-0"
       style={{ 
         backgroundImage: "url('/footer.svg')",
         backgroundSize: "cover",

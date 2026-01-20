@@ -63,7 +63,7 @@ export default function BelajarClient({ modules }: BelajarClientProps) {
   return (
     <>
       <Navbar />
-      <main id="main-content" className="pt-20">
+      <main id="main-content" className="pt-20 relative z-10">
         {/* Hero Section */}
         <section
           className="py-16 text-white text-center"

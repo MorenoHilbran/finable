@@ -105,7 +105,7 @@ export default function InvestasiPage() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 relative z-10">
       {/* Navigation Bar */}
       <div className="flex items-center justify-between mb-6">
         <Link

@@ -95,7 +95,7 @@ export default function OWIPage() {
   return (
     <>
       <Navbar />
-      <main id="main-content" className="pt-28 pb-16 min-h-screen bg-linear-to-b from-slate-50 to-white">
+      <main id="main-content" className="pt-28 pb-16 min-h-screen bg-linear-to-b from-slate-50 to-white relative z-10">
         <div className="container mx-auto px-4 py-8 max-w-4xl">
           {/* Compact Header */}
           <div className="text-center mb-6">
