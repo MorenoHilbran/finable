@@ -7,29 +7,28 @@ export default function Footer() {
 
   const footerLinks = [
     {
-      title: "Fitur",
+      title: "Halaman",
       links: [
-        { href: "#features", label: "Adaptive Accessibility" },
-        { href: "#features", label: "AI Assistant OWI" },
-        { href: "#features", label: "Micro-Learning" },
-        { href: "#features", label: "Simulasi Investasi" },
+        { href: "/", label: "Beranda" },
+        { href: "/belajar", label: "Modul Belajar" },
+        { href: "/investasi", label: "Simulasi Investasi" },
+        { href: "/owi", label: "AI Assistant OWI" },
       ],
     },
     {
-      title: "Aksesibilitas",
+      title: "Dashboard",
       links: [
-        { href: "#accessibility", label: "WCAG 2.2" },
-        { href: "#users", label: "Tunanetra" },
-        { href: "#users", label: "Tunarungu" },
-        { href: "#users", label: "Disabilitas Daksa" },
+        { href: "/dashboard", label: "Dashboard Saya" },
+        { href: "/dashboard/kelas-saya", label: "Kelas Saya" },
+        { href: "/dashboard/investasi", label: "Portofolio Investasi" },
+        { href: "/dashboard/profile", label: "Profil" },
       ],
     },
     {
-      title: "Tentang",
+      title: "Akun",
       links: [
-        { href: "#owi", label: "Filosofi OWI" },
-        { href: "#technology", label: "Teknologi" },
-        { href: "#impact", label: "Dampak Sosial" },
+        { href: "/login", label: "Masuk" },
+        { href: "/register", label: "Daftar" },
       ],
     },
   ];
