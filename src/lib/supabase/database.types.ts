@@ -532,3 +532,47 @@ export interface UserLessonProgressInsert {
   lesson_id: number;
   is_completed?: boolean;
 }
+
+// User Portfolio types
+export type PortfolioType = "gold" | "stock" | "crypto" | "mutual-fund";
+
+export interface UserPortfolio {
+  id: string;
+  user_id: number;
+  asset_id: string;
+  asset_name: string;
+  symbol: string;
+  type: PortfolioType;
+  purchase_date: string | null;
+  quantity: number;
+  purchase_price: number;
+  unit: string;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UserPortfolioInsert {
+  user_id: number;
+  asset_id: string;
+  asset_name: string;
+  symbol: string;
+  type: PortfolioType;
+  purchase_date?: string | null;
+  quantity: number;
+  purchase_price: number;
+  unit: string;
+  notes?: string | null;
+}
+
+export interface UserPortfolioUpdate {
+  asset_id?: string;
+  asset_name?: string;
+  symbol?: string;
+  type?: PortfolioType;
+  purchase_date?: string | null;
+  quantity?: number;
+  purchase_price?: number;
+  unit?: string;
+  notes?: string | null;
+}

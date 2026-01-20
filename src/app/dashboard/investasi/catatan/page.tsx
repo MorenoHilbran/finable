@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
+import { createClient } from "@/lib/supabase/client";
+import type { UserPortfolio, PortfolioType } from "@/lib/supabase/database.types";
 
 // Types
 interface AssetPrice {
@@ -22,38 +24,23 @@ interface MarketData {
   lastUpdated: string;
 }
 
-interface PortfolioItem {
-  id: string;
-  assetId: string;
-  assetName: string;
-  symbol: string;
-  type: "gold" | "stock" | "crypto" | "mutual-fund";
-  purchaseDate: string;
-  quantity: number;
-  purchasePrice: number;
-  unit: string;
-  notes: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-type InvestmentType = PortfolioItem["type"];
-
-const INVESTMENT_TYPES: { value: InvestmentType; label: string; icon: string; color: string }[] = [
-  { value: "gold", label: "Emas", icon: "/icons/icon-emas.svg", color: "#FFD700" },
-  { value: "stock", label: "Saham", icon: "/icons/icon-saham.svg", color: "#3B82F6" },
-  { value: "crypto", label: "Cryptocurrency", icon: "/icons/icon-crypto.svg", color: "#F7931A" },
-  { value: "mutual-fund", label: "Reksa Dana", icon: "/icons/icon-reksadana.svg", color: "#10B981" },
+const INVESTMENT_TYPES: { value: PortfolioType; label: string; icon: string; color: string; inputUnit: string }[] = [
+  { value: "gold", label: "Emas", icon: "/icons/icon-emas.svg", color: "#FFD700", inputUnit: "gram" },
+  { value: "stock", label: "Saham", icon: "/icons/icon-saham.svg", color: "#3B82F6", inputUnit: "lot" },
+  { value: "crypto", label: "Cryptocurrency", icon: "/icons/icon-crypto.svg", color: "#F7931A", inputUnit: "dual" },
+  { value: "mutual-fund", label: "Reksa Dana", icon: "/icons/icon-reksadana.svg", color: "#10B981", inputUnit: "idr" },
 ];
 
-const STORAGE_KEY = "finable_portfolio_v2";
-
 export default function PortfolioPage() {
-  const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
+  const supabase = createClient();
+  
+  const [portfolio, setPortfolio] = useState<UserPortfolio[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [editingItem, setEditingItem] = useState<PortfolioItem | null>(null);
-  const [filterType, setFilterType] = useState<InvestmentType | "all">("all");
+  const [editingItem, setEditingItem] = useState<UserPortfolio | null>(null);
+  const [filterType, setFilterType] = useState<PortfolioType | "all">("all");
+  const [userId, setUserId] = useState<number | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
   
   // Market data
   const [marketData, setMarketData] = useState<MarketData | null>(null);
@@ -62,33 +49,46 @@ export default function PortfolioPage() {
 
   // Form state
   const [formData, setFormData] = useState({
-    type: "stock" as InvestmentType,
+    type: "stock" as PortfolioType,
     assetId: "",
     purchaseDate: "",
     quantity: "",
+    inputIdr: "",
     purchasePrice: "",
     notes: "",
   });
+
+  // Get current user and their portfolio
+  useEffect(() => {
+    const initUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // Get user_id from users table
+        const { data: userData } = await supabase
+          .from("users")
+          .select("user_id")
+          .eq("auth_id", user.id)
+          .single();
+        
+        if (userData) {
+          setUserId(userData.user_id);
+        }
+      }
+    };
+    initUser();
+  }, []);
 
   // Fetch market data
   useEffect(() => {
     fetchMarketData();
   }, []);
 
-  // Load portfolio from localStorage after market data is loaded
+  // Load portfolio from database after user is loaded
   useEffect(() => {
-    if (!loadingMarket) {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        try {
-          setPortfolio(JSON.parse(stored));
-        } catch {
-          setPortfolio([]);
-        }
-      }
-      setIsLoading(false);
+    if (userId && !loadingMarket) {
+      loadPortfolio();
     }
-  }, [loadingMarket]);
+  }, [userId, loadingMarket]);
 
   // Update selected asset when type changes
   useEffect(() => {
@@ -114,7 +114,27 @@ export default function PortfolioPage() {
     }
   };
 
-  const getAssetsForType = useCallback((type: InvestmentType): AssetPrice[] => {
+  const loadPortfolio = async () => {
+    if (!userId) return;
+    
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("user_portfolio")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
+      
+      if (error) throw error;
+      setPortfolio(data || []);
+    } catch (error) {
+      console.error("Failed to load portfolio:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getAssetsForType = useCallback((type: PortfolioType): AssetPrice[] => {
     if (!marketData) return [];
     switch (type) {
       case "gold": return marketData.gold;
@@ -125,94 +145,162 @@ export default function PortfolioPage() {
     }
   }, [marketData]);
 
-  const getAssetById = useCallback((type: InvestmentType, assetId: string): AssetPrice | null => {
+  const getAssetById = useCallback((type: PortfolioType, assetId: string): AssetPrice | null => {
     const assets = getAssetsForType(type);
     return assets.find(a => a.id === assetId) || null;
   }, [getAssetsForType]);
 
   // Get current price for a portfolio item
-  const getCurrentPrice = useCallback((item: PortfolioItem): number => {
-    const asset = getAssetById(item.type, item.assetId);
-    return asset?.price || item.purchasePrice;
+  const getCurrentPrice = useCallback((item: UserPortfolio): number => {
+    const asset = getAssetById(item.type, item.asset_id);
+    return asset?.price || item.purchase_price;
   }, [getAssetById]);
 
-  // Save portfolio to localStorage
-  const savePortfolio = (newPortfolio: PortfolioItem[]) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newPortfolio));
-    setPortfolio(newPortfolio);
+  // Get type info
+  const getTypeInfo = (type: PortfolioType) => {
+    return INVESTMENT_TYPES.find(t => t.value === type) || INVESTMENT_TYPES[0];
+  };
+
+  // Get selected form asset
+  const selectedFormAsset = getAssetById(formData.type, formData.assetId);
+
+  // Handle IDR input change for crypto (dual input)
+  const handleIdrInputChange = (value: string) => {
+    setFormData(prev => ({ ...prev, inputIdr: value }));
+    if (selectedFormAsset && value) {
+      const idrAmount = parseFloat(value);
+      if (!isNaN(idrAmount) && idrAmount > 0) {
+        const quantity = idrAmount / selectedFormAsset.price;
+        setFormData(prev => ({ ...prev, quantity: quantity.toFixed(8) }));
+      }
+    } else {
+      setFormData(prev => ({ ...prev, quantity: "" }));
+    }
+  };
+
+  // Handle quantity input change for crypto (dual input)
+  const handleQuantityInputChange = (value: string) => {
+    setFormData(prev => ({ ...prev, quantity: value }));
+    if (selectedFormAsset && value) {
+      const quantity = parseFloat(value);
+      if (!isNaN(quantity) && quantity > 0) {
+        const idrAmount = quantity * selectedFormAsset.price;
+        setFormData(prev => ({ ...prev, inputIdr: Math.round(idrAmount).toString() }));
+      }
+    } else {
+      setFormData(prev => ({ ...prev, inputIdr: "" }));
+    }
+  };
+
+  // Get final quantity based on type
+  const getFinalQuantity = (): number => {
+    const typeInfo = getTypeInfo(formData.type);
+    if (typeInfo.inputUnit === "idr" && selectedFormAsset) {
+      const idr = parseFloat(formData.inputIdr) || 0;
+      return idr / selectedFormAsset.price;
+    }
+    return parseFloat(formData.quantity) || 0;
   };
 
   // Create/Update item
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const selectedAsset = getAssetById(formData.type, formData.assetId);
-    if (!selectedAsset) {
+    if (!selectedFormAsset || !userId) {
       alert("Mohon pilih aset terlebih dahulu");
       return;
     }
 
-    const now = new Date().toISOString();
-
-    if (editingItem) {
-      // Update existing item
-      const updatedPortfolio = portfolio.map(item =>
-        item.id === editingItem.id
-          ? {
-              ...item,
-              assetId: formData.assetId,
-              assetName: selectedAsset.name,
-              symbol: selectedAsset.symbol,
-              type: formData.type,
-              purchaseDate: formData.purchaseDate,
-              quantity: parseFloat(formData.quantity) || 0,
-              purchasePrice: parseFloat(formData.purchasePrice) || selectedAsset.price,
-              unit: selectedAsset.unit,
-              notes: formData.notes,
-              updatedAt: now,
-            }
-          : item
-      );
-      savePortfolio(updatedPortfolio);
-    } else {
-      // Create new item
-      const newItem: PortfolioItem = {
-        id: crypto.randomUUID(),
-        assetId: formData.assetId,
-        assetName: selectedAsset.name,
-        symbol: selectedAsset.symbol,
-        type: formData.type,
-        purchaseDate: formData.purchaseDate,
-        quantity: parseFloat(formData.quantity) || 0,
-        purchasePrice: parseFloat(formData.purchasePrice) || selectedAsset.price,
-        unit: selectedAsset.unit,
-        notes: formData.notes,
-        createdAt: now,
-        updatedAt: now,
-      };
-      savePortfolio([newItem, ...portfolio]);
+    const quantity = getFinalQuantity();
+    if (quantity <= 0) {
+      alert("Jumlah harus lebih dari 0");
+      return;
     }
 
-    resetForm();
+    setIsSaving(true);
+    const purchasePrice = parseFloat(formData.purchasePrice) || selectedFormAsset.price;
+
+    try {
+      if (editingItem) {
+        // Update existing item
+        const { error } = await supabase
+          .from("user_portfolio")
+          .update({
+            asset_id: formData.assetId,
+            asset_name: selectedFormAsset.name,
+            symbol: selectedFormAsset.symbol,
+            type: formData.type,
+            purchase_date: formData.purchaseDate || null,
+            quantity: quantity,
+            purchase_price: purchasePrice,
+            unit: selectedFormAsset.unit,
+            notes: formData.notes || null,
+          })
+          .eq("id", editingItem.id);
+        
+        if (error) throw error;
+      } else {
+        // Create new item
+        const { error } = await supabase
+          .from("user_portfolio")
+          .insert({
+            user_id: userId,
+            asset_id: formData.assetId,
+            asset_name: selectedFormAsset.name,
+            symbol: selectedFormAsset.symbol,
+            type: formData.type,
+            purchase_date: formData.purchaseDate || null,
+            quantity: quantity,
+            purchase_price: purchasePrice,
+            unit: selectedFormAsset.unit,
+            notes: formData.notes || null,
+          });
+        
+        if (error) throw error;
+      }
+
+      await loadPortfolio();
+      resetForm();
+    } catch (error) {
+      console.error("Failed to save portfolio:", error);
+      alert("Gagal menyimpan data. Silakan coba lagi.");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   // Delete item
-  const handleDelete = (id: string) => {
-    if (confirm("Apakah Anda yakin ingin menghapus item ini?")) {
-      savePortfolio(portfolio.filter(item => item.id !== id));
+  const handleDelete = async (id: string) => {
+    if (!confirm("Apakah Anda yakin ingin menghapus item ini?")) return;
+    
+    try {
+      const { error } = await supabase
+        .from("user_portfolio")
+        .delete()
+        .eq("id", id);
+      
+      if (error) throw error;
+      await loadPortfolio();
+    } catch (error) {
+      console.error("Failed to delete portfolio item:", error);
+      alert("Gagal menghapus data. Silakan coba lagi.");
     }
   };
 
   // Edit item
-  const handleEdit = (item: PortfolioItem) => {
+  const handleEdit = (item: UserPortfolio) => {
     setEditingItem(item);
+    const typeInfo = getTypeInfo(item.type);
     setFormData({
       type: item.type,
-      assetId: item.assetId,
-      purchaseDate: item.purchaseDate,
+      assetId: item.asset_id,
+      purchaseDate: item.purchase_date || "",
       quantity: item.quantity.toString(),
-      purchasePrice: item.purchasePrice.toString(),
-      notes: item.notes,
+      inputIdr: typeInfo.inputUnit === "idr" || typeInfo.inputUnit === "dual" 
+        ? Math.round(item.quantity * item.purchase_price).toString()
+        : "",
+      purchasePrice: item.purchase_price.toString(),
+      notes: item.notes || "",
     });
     setShowForm(true);
   };
@@ -225,6 +313,7 @@ export default function PortfolioPage() {
       assetId: assets.length > 0 ? assets[0].id : "",
       purchaseDate: "",
       quantity: "",
+      inputIdr: "",
       purchasePrice: "",
       notes: "",
     });
@@ -237,13 +326,8 @@ export default function PortfolioPage() {
     return filterType === "all" || item.type === filterType;
   });
 
-  // Get type info
-  const getTypeInfo = (type: InvestmentType) => {
-    return INVESTMENT_TYPES.find(t => t.value === type) || INVESTMENT_TYPES[0];
-  };
-
   // Calculate totals with real-time prices
-  const totalInvestment = portfolio.reduce((sum, item) => sum + (item.purchasePrice * item.quantity), 0);
+  const totalInvestment = portfolio.reduce((sum, item) => sum + (item.purchase_price * item.quantity), 0);
   const totalCurrentValue = portfolio.reduce((sum, item) => sum + (getCurrentPrice(item) * item.quantity), 0);
   const totalProfitLoss = totalCurrentValue - totalInvestment;
   const profitLossPercentage = totalInvestment > 0 ? ((totalProfitLoss / totalInvestment) * 100) : 0;
@@ -259,7 +343,7 @@ export default function PortfolioPage() {
   };
 
   // Format date
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | null) => {
     if (!dateString) return "-";
     return new Date(dateString).toLocaleDateString("id-ID", {
       day: "numeric",
@@ -275,8 +359,129 @@ export default function PortfolioPage() {
     });
   };
 
-  // Get selected asset in form
-  const selectedFormAsset = getAssetById(formData.type, formData.assetId);
+  // Render dynamic input based on type
+  const renderQuantityInput = () => {
+    if (!selectedFormAsset) return null;
+    const typeInfo = getTypeInfo(formData.type);
+
+    if (typeInfo.inputUnit === "gram" || typeInfo.inputUnit === "lot") {
+      return (
+        <div>
+          <label className="block text-sm font-medium mb-1" style={{ color: "var(--brand-dark-blue)" }}>
+            Jumlah ({typeInfo.inputUnit}) *
+          </label>
+          <input
+            type="number"
+            value={formData.quantity}
+            onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+            required
+            min="0"
+            step={typeInfo.inputUnit === "gram" ? "0.01" : "1"}
+            className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-[var(--brand-sage)]"
+            placeholder={typeInfo.inputUnit === "gram" ? "5" : "10"}
+          />
+          {formData.quantity && (
+            <p className="text-sm text-gray-600 mt-1">
+              = {formatCurrency(parseFloat(formData.quantity || "0") * selectedFormAsset.price)}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    if (typeInfo.inputUnit === "dual") {
+      return (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-sm font-medium mb-1" style={{ color: "var(--brand-dark-blue)" }}>
+              Jumlah (IDR)
+            </label>
+            <input
+              type="number"
+              value={formData.inputIdr}
+              onChange={(e) => handleIdrInputChange(e.target.value)}
+              min="0"
+              className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-[var(--brand-sage)]"
+              placeholder="10000000"
+            />
+          </div>
+          <div className="text-center text-xs text-gray-500">atau</div>
+          <div>
+            <label className="block text-sm font-medium mb-1" style={{ color: "var(--brand-dark-blue)" }}>
+              Jumlah ({selectedFormAsset.unit}) *
+            </label>
+            <input
+              type="number"
+              value={formData.quantity}
+              onChange={(e) => handleQuantityInputChange(e.target.value)}
+              required
+              min="0"
+              step="0.00000001"
+              className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-[var(--brand-sage)]"
+              placeholder="0.001"
+            />
+          </div>
+          <div className="p-2 bg-blue-50 rounded-lg text-xs text-blue-700">
+            <strong>Tip:</strong> Isi salah satu, yang lain otomatis terisi.
+          </div>
+        </div>
+      );
+    }
+
+    if (typeInfo.inputUnit === "idr") {
+      return (
+        <div>
+          <label className="block text-sm font-medium mb-1" style={{ color: "var(--brand-dark-blue)" }}>
+            Jumlah Investasi (IDR) *
+          </label>
+          <input
+            type="number"
+            value={formData.inputIdr}
+            onChange={(e) => {
+              setFormData({ ...formData, inputIdr: e.target.value });
+              if (selectedFormAsset && e.target.value) {
+                const idr = parseFloat(e.target.value);
+                if (!isNaN(idr) && idr > 0) {
+                  setFormData(prev => ({ ...prev, quantity: (idr / selectedFormAsset.price).toString() }));
+                }
+              }
+            }}
+            required
+            min="0"
+            className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-[var(--brand-sage)]"
+            placeholder="10000000"
+          />
+          {formData.inputIdr && (
+            <p className="text-sm text-gray-600 mt-1">
+              = {(parseFloat(formData.inputIdr || "0") / selectedFormAsset.price).toFixed(4)} {selectedFormAsset.unit}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    return null;
+  };
+
+  // Show login prompt if no user
+  if (!userId && !isLoading) {
+    return (
+      <div className="p-6">
+        <div className="card text-center py-12">
+          <img src="/icons/icon-user.svg" alt="" className="w-16 h-16 mb-4 mx-auto opacity-50" />
+          <h2 className="text-xl font-semibold mb-2" style={{ color: "var(--brand-dark-blue)" }}>
+            Login Diperlukan
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Silakan login untuk mengakses dan menyimpan portofolio investasi Anda.
+          </p>
+          <Link href="/login" className="btn btn-primary">
+            Login Sekarang
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">
@@ -336,6 +541,7 @@ export default function PortfolioPage() {
               assetId: assets.length > 0 ? assets[0].id : "",
               purchaseDate: "",
               quantity: "",
+              inputIdr: "",
               purchasePrice: "",
               notes: "",
             });
@@ -452,7 +658,9 @@ export default function PortfolioPage() {
                           setFormData({ 
                             ...formData, 
                             type: type.value, 
-                            assetId: assets.length > 0 ? assets[0].id : "" 
+                            assetId: assets.length > 0 ? assets[0].id : "",
+                            quantity: "",
+                            inputIdr: "",
                           });
                         }}
                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2`}
@@ -476,7 +684,7 @@ export default function PortfolioPage() {
                   </label>
                   <select
                     value={formData.assetId}
-                    onChange={(e) => setFormData({ ...formData, assetId: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, assetId: e.target.value, quantity: "", inputIdr: "" })}
                     required
                     className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-[var(--brand-sage)]"
                   >
@@ -515,40 +723,25 @@ export default function PortfolioPage() {
                   />
                 </div>
 
-                {/* Quantity and Purchase Price */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-sm font-medium mb-1" style={{ color: "var(--brand-dark-blue)" }}>
-                      Jumlah (Lot) *
-                    </label>
-                    <input
-                      type="number"
-                      value={formData.quantity}
-                      onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-                      required
-                      min="0"
-                      step="0.01"
-                      className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-[var(--brand-sage)]"
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1" style={{ color: "var(--brand-dark-blue)" }}>
-                      Harga Beli *
-                    </label>
-                    <input
-                      type="number"
-                      value={formData.purchasePrice}
-                      onChange={(e) => setFormData({ ...formData, purchasePrice: e.target.value })}
-                      required
-                      min="0"
-                      className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-[var(--brand-sage)]"
-                      placeholder={selectedFormAsset ? selectedFormAsset.price.toString() : "0"}
-                    />
-                    <p className="text-xs text-gray-500 mt-1">
-                      Harga saat beli (per {selectedFormAsset?.unit || "unit"})
-                    </p>
-                  </div>
+                {/* Dynamic Quantity Input */}
+                {renderQuantityInput()}
+
+                {/* Purchase Price */}
+                <div>
+                  <label className="block text-sm font-medium mb-1" style={{ color: "var(--brand-dark-blue)" }}>
+                    Harga Beli (per {selectedFormAsset?.unit || "unit"})
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.purchasePrice}
+                    onChange={(e) => setFormData({ ...formData, purchasePrice: e.target.value })}
+                    min="0"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-[var(--brand-sage)]"
+                    placeholder={selectedFormAsset ? selectedFormAsset.price.toString() : "0"}
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Kosongkan untuk menggunakan harga saat ini: {selectedFormAsset ? formatCurrency(selectedFormAsset.price) : "-"}
+                  </p>
                 </div>
 
                 {/* Notes */}
@@ -571,14 +764,16 @@ export default function PortfolioPage() {
                     type="button"
                     onClick={resetForm}
                     className="btn btn-secondary flex-1"
+                    disabled={isSaving}
                   >
                     Batal
                   </button>
                   <button
                     type="submit"
                     className="btn btn-primary flex-1"
+                    disabled={isSaving}
                   >
-                    {editingItem ? "Simpan Perubahan" : "Tambah Investasi"}
+                    {isSaving ? "Menyimpan..." : editingItem ? "Simpan Perubahan" : "Tambah Investasi"}
                   </button>
                 </div>
               </form>
@@ -616,6 +811,7 @@ export default function PortfolioPage() {
                   assetId: assets.length > 0 ? assets[0].id : "",
                   purchaseDate: "",
                   quantity: "",
+                  inputIdr: "",
                   purchasePrice: "",
                   notes: "",
                 });
@@ -633,15 +829,14 @@ export default function PortfolioPage() {
             const typeInfo = getTypeInfo(item.type);
             const currentPrice = getCurrentPrice(item);
             const itemValue = currentPrice * item.quantity;
-            const itemInvestment = item.purchasePrice * item.quantity;
+            const itemInvestment = item.purchase_price * item.quantity;
             const itemProfitLoss = itemValue - itemInvestment;
             const itemProfitLossPercent = itemInvestment > 0 ? ((itemProfitLoss / itemInvestment) * 100) : 0;
-            const priceChange = getAssetById(item.type, item.assetId)?.priceChange24h || 0;
+            const priceChange = getAssetById(item.type, item.asset_id)?.priceChange24h || 0;
 
             return (
               <div key={item.id} className="card">
                 <div className="flex items-start gap-4">
-                  {/* Type Icon */}
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
                     style={{ background: `${typeInfo.color}20` }}
@@ -649,14 +844,13 @@ export default function PortfolioPage() {
                     <img src={typeInfo.icon} alt="" className="w-6 h-6" />
                   </div>
 
-                  {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <div>
                         <h3 className="font-semibold" style={{ color: "var(--brand-dark-blue)" }}>
                           {item.symbol}
                         </h3>
-                        <div className="text-sm text-gray-500">{item.assetName}</div>
+                        <div className="text-sm text-gray-500">{item.asset_name}</div>
                         <span
                           className="px-2 py-0.5 rounded-full text-xs font-medium"
                           style={{ background: `${typeInfo.color}20`, color: typeInfo.color }}
@@ -680,28 +874,25 @@ export default function PortfolioPage() {
                       </div>
                     </div>
 
-                    {/* Details */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm text-gray-600 mb-2">
                       <div>
-                        <span className="text-gray-400">Jumlah:</span> {item.quantity} <span className="text-gray-400">{item.unit}</span>
+                        <span className="text-gray-400">Jumlah:</span> {item.quantity.toFixed(item.type === "crypto" ? 8 : 2)} <span className="text-gray-400">{item.unit}</span>
                       </div>
                       <div>
-                        <span className="text-gray-400">Harga Beli:</span> {formatCurrency(item.purchasePrice)}
+                        <span className="text-gray-400">Harga Beli:</span> {formatCurrency(item.purchase_price)}
                       </div>
                       <div>
                         <span className="text-gray-400">Harga Sekarang:</span> {formatCurrency(currentPrice)}
                       </div>
                       <div>
-                        <span className="text-gray-400">Tanggal Beli:</span> {formatDate(item.purchaseDate)}
+                        <span className="text-gray-400">Tanggal Beli:</span> {formatDate(item.purchase_date)}
                       </div>
                     </div>
 
-                    {/* Notes */}
                     {item.notes && (
                       <p className="text-sm text-gray-500 mb-2">{item.notes}</p>
                     )}
 
-                    {/* Actions */}
                     <div className="flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
                       <button
                         onClick={() => handleEdit(item)}
@@ -726,7 +917,7 @@ export default function PortfolioPage() {
         </div>
       )}
 
-      {/* Tips Section */}
+      {/* Database Sync Info */}
       <div
         className="mt-8 p-6 rounded-xl"
         style={{
@@ -735,16 +926,15 @@ export default function PortfolioPage() {
         }}
       >
         <div className="flex items-start gap-4">
-          <img src="/icons/icon-insight.svg" alt="" className="w-8 h-8" />
+          <img src="/icons/icon-cloud.svg" alt="" className="w-8 h-8" />
           <div>
             <h4 className="font-semibold mb-2" style={{ color: "var(--brand-dark-blue)" }}>
-              Tips Mengelola Portofolio
+              Data Tersinkron
             </h4>
             <ul className="text-sm text-gray-600 space-y-1">
+              <li>• Data portofolio Anda tersimpan di <strong>cloud</strong> dan tersinkron dengan akun</li>
+              <li>• Akses portofolio dari <strong>perangkat manapun</strong> dengan login yang sama</li>
               <li>• <strong>Harga real-time</strong> diperbarui secara otomatis dari data pasar</li>
-              <li>• <strong>Diversifikasi</strong> investasi Anda ke berbagai jenis aset</li>
-              <li>• Gunakan <strong>catatan</strong> untuk mencatat alasan dan strategi investasi</li>
-              <li>• Pantau <strong>profit/loss</strong> untuk mengevaluasi keputusan investasi</li>
             </ul>
           </div>
         </div>

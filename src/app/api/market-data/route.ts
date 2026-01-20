@@ -51,7 +51,7 @@ const stockPrices: AssetPrice[] = [
         symbol: "BBRI",
         price: 5850,
         priceChange24h: 1.74,
-        unit: "lembar",
+        unit: "lot",
         lastUpdated: new Date().toISOString(),
     },
     {
@@ -60,7 +60,7 @@ const stockPrices: AssetPrice[] = [
         symbol: "BBCA",
         price: 10250,
         priceChange24h: 0.98,
-        unit: "lembar",
+        unit: "lot",
         lastUpdated: new Date().toISOString(),
     },
     {
@@ -69,7 +69,7 @@ const stockPrices: AssetPrice[] = [
         symbol: "TLKM",
         price: 3980,
         priceChange24h: -0.50,
-        unit: "lembar",
+        unit: "lot",
         lastUpdated: new Date().toISOString(),
     },
     {
@@ -78,7 +78,7 @@ const stockPrices: AssetPrice[] = [
         symbol: "ASII",
         price: 5425,
         priceChange24h: 2.15,
-        unit: "lembar",
+        unit: "lot",
         lastUpdated: new Date().toISOString(),
     },
     {
@@ -87,7 +87,7 @@ const stockPrices: AssetPrice[] = [
         symbol: "UNVR",
         price: 2890,
         priceChange24h: -1.02,
-        unit: "lembar",
+        unit: "lot",
         lastUpdated: new Date().toISOString(),
     },
     {
@@ -96,7 +96,7 @@ const stockPrices: AssetPrice[] = [
         symbol: "GOTO",
         price: 78,
         priceChange24h: 3.95,
-        unit: "lembar",
+        unit: "lot",
         lastUpdated: new Date().toISOString(),
     },
     {
@@ -105,7 +105,7 @@ const stockPrices: AssetPrice[] = [
         symbol: "BUKA",
         price: 142,
         priceChange24h: -2.07,
-        unit: "lembar",
+        unit: "lot",
         lastUpdated: new Date().toISOString(),
     },
 ];

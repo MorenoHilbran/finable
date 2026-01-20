@@ -40,6 +40,8 @@ const investmentCategories = [
     icon: "/icons/icon-emas.svg",
     color: "#FFD700",
     description: "Logam mulia sebagai aset safe haven",
+    inputUnit: "gram",
+    inputLabel: "Jumlah (gram)",
   },
   {
     id: "stock",
@@ -47,6 +49,8 @@ const investmentCategories = [
     icon: "/icons/icon-saham.svg",
     color: "#3B82F6",
     description: "Kepemilikan bagian dari perusahaan",
+    inputUnit: "lot",
+    inputLabel: "Jumlah (lot)",
   },
   {
     id: "crypto",
@@ -54,6 +58,8 @@ const investmentCategories = [
     icon: "/icons/icon-crypto.svg",
     color: "#F7931A",
     description: "Aset digital terdesentralisasi",
+    inputUnit: "dual", // Special: IDR or koin
+    inputLabel: "Jumlah",
   },
   {
     id: "mutual-fund",
@@ -61,13 +67,20 @@ const investmentCategories = [
     icon: "/icons/icon-reksadana.svg",
     color: "#10B981",
     description: "Investasi kolektif yang dikelola profesional",
+    inputUnit: "idr",
+    inputLabel: "Jumlah Investasi (IDR)",
   },
 ];
 
 export default function SimulasiPage() {
   const [selectedCategory, setSelectedCategory] = useState(investmentCategories[0]);
   const [selectedAsset, setSelectedAsset] = useState<AssetPrice | null>(null);
-  const [investmentAmount, setInvestmentAmount] = useState("");
+  
+  // Input states for different input types
+  const [inputUnit, setInputUnit] = useState(""); // gram, lot, koin, idr
+  const [inputIdr, setInputIdr] = useState(""); // For IDR input
+  const [inputQuantity, setInputQuantity] = useState(""); // For unit input (gram, lot, koin)
+  
   const [investmentPeriod, setInvestmentPeriod] = useState("12");
   const [riskProfile, setRiskProfile] = useState("moderate");
   const [simulationData, setSimulationData] = useState<any[]>([]);
@@ -96,6 +109,13 @@ export default function SimulasiPage() {
     }
   }, [selectedCategory, marketData]);
 
+  // Reset inputs when category changes
+  useEffect(() => {
+    setInputIdr("");
+    setInputQuantity("");
+    setShowResults(false);
+  }, [selectedCategory]);
+
   const fetchMarketData = async () => {
     try {
       setLoadingPrices(true);
@@ -121,9 +141,72 @@ export default function SimulasiPage() {
     }
   }, [marketData]);
 
+  // Handle IDR input change (for crypto dual input)
+  const handleIdrChange = (value: string) => {
+    setInputIdr(value);
+    if (selectedAsset && value) {
+      const idrAmount = parseFloat(value);
+      if (!isNaN(idrAmount) && idrAmount > 0) {
+        const quantity = idrAmount / selectedAsset.price;
+        setInputQuantity(quantity.toFixed(8));
+      }
+    } else {
+      setInputQuantity("");
+    }
+  };
+
+  // Handle quantity input change (for crypto dual input)
+  const handleQuantityChange = (value: string) => {
+    setInputQuantity(value);
+    if (selectedAsset && value) {
+      const quantity = parseFloat(value);
+      if (!isNaN(quantity) && quantity > 0) {
+        const idrAmount = quantity * selectedAsset.price;
+        setInputIdr(Math.round(idrAmount).toString());
+      }
+    } else {
+      setInputIdr("");
+    }
+  };
+
+  // Get investment amount in IDR based on category type
+  const getInvestmentAmount = (): number => {
+    if (!selectedAsset) return 0;
+    
+    if (selectedCategory.inputUnit === "idr") {
+      // Reksa Dana: input is already in IDR
+      return parseFloat(inputIdr) || 0;
+    } else if (selectedCategory.inputUnit === "dual") {
+      // Crypto: use IDR input
+      return parseFloat(inputIdr) || 0;
+    } else {
+      // Gold & Stock: convert quantity to IDR
+      const quantity = parseFloat(inputQuantity) || 0;
+      return quantity * selectedAsset.price;
+    }
+  };
+
+  // Get quantity based on category type
+  const getQuantity = (): number => {
+    if (!selectedAsset) return 0;
+    
+    if (selectedCategory.inputUnit === "idr") {
+      // Reksa Dana: calculate units from IDR
+      const idr = parseFloat(inputIdr) || 0;
+      return idr / selectedAsset.price;
+    } else if (selectedCategory.inputUnit === "dual") {
+      // Crypto: use quantity input
+      return parseFloat(inputQuantity) || 0;
+    } else {
+      // Gold & Stock: use quantity input directly
+      return parseFloat(inputQuantity) || 0;
+    }
+  };
+
   // Simulate investment calculation
   const calculateSimulation = () => {
-    const amount = parseFloat(investmentAmount);
+    const amount = getInvestmentAmount();
+    const quantity = getQuantity();
     const months = parseInt(investmentPeriod);
 
     if (!amount || amount <= 0 || !months || !selectedAsset) {
@@ -131,9 +214,7 @@ export default function SimulasiPage() {
       return;
     }
 
-    // Calculate units purchased
-    const purchasedUnits = amount / selectedAsset.price;
-    setUnits(purchasedUnits);
+    setUnits(quantity);
     setTotalInvested(amount);
 
     // Risk-adjusted return rates (annual %)
@@ -184,12 +265,13 @@ export default function SimulasiPage() {
   const formatNumber = (value: number) => {
     return new Intl.NumberFormat("id-ID", {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 4,
+      maximumFractionDigits: 8,
     }).format(value);
   };
 
   const resetSimulation = () => {
-    setInvestmentAmount("");
+    setInputIdr("");
+    setInputQuantity("");
     setInvestmentPeriod("12");
     setRiskProfile("moderate");
     setShowResults(false);
@@ -201,6 +283,101 @@ export default function SimulasiPage() {
       dateStyle: "long",
       timeStyle: "short",
     });
+  };
+
+  // Render input based on category type
+  const renderInvestmentInput = () => {
+    if (!selectedAsset) return null;
+
+    if (selectedCategory.id === "gold" || selectedCategory.id === "stock") {
+      // Emas: gram, Saham: lot
+      return (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            {selectedCategory.inputLabel} *
+          </label>
+          <input
+            type="number"
+            value={inputQuantity}
+            onChange={(e) => setInputQuantity(e.target.value)}
+            placeholder={`Contoh: ${selectedCategory.id === "gold" ? "5" : "10"}`}
+            min="0"
+            step={selectedCategory.id === "gold" ? "0.01" : "1"}
+            className="w-full px-4 py-2 rounded-xl border-2 border-gray-200 focus:border-[var(--brand-sage)] focus:outline-none"
+          />
+          {inputQuantity && (
+            <p className="text-sm text-gray-600 mt-2">
+              = {formatCurrency(parseFloat(inputQuantity || "0") * selectedAsset.price)}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    if (selectedCategory.id === "crypto") {
+      // Crypto: IDR atau Koin (dual input)
+      return (
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Jumlah (IDR)
+            </label>
+            <input
+              type="number"
+              value={inputIdr}
+              onChange={(e) => handleIdrChange(e.target.value)}
+              placeholder="Contoh: 10000000"
+              min="0"
+              className="w-full px-4 py-2 rounded-xl border-2 border-gray-200 focus:border-[var(--brand-sage)] focus:outline-none"
+            />
+          </div>
+          <div className="text-center text-sm text-gray-500 font-medium">atau</div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Jumlah ({selectedAsset.unit})
+            </label>
+            <input
+              type="number"
+              value={inputQuantity}
+              onChange={(e) => handleQuantityChange(e.target.value)}
+              placeholder="Contoh: 0.001"
+              min="0"
+              step="0.00000001"
+              className="w-full px-4 py-2 rounded-xl border-2 border-gray-200 focus:border-[var(--brand-sage)] focus:outline-none"
+            />
+          </div>
+          <div className="p-3 bg-blue-50 rounded-lg text-sm text-blue-700">
+            <strong>Tip:</strong> Isi salah satu, yang lain akan terisi otomatis.
+          </div>
+        </div>
+      );
+    }
+
+    if (selectedCategory.id === "mutual-fund") {
+      // Reksa Dana: IDR
+      return (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            {selectedCategory.inputLabel} *
+          </label>
+          <input
+            type="number"
+            value={inputIdr}
+            onChange={(e) => setInputIdr(e.target.value)}
+            placeholder="Contoh: 10000000"
+            min="0"
+            className="w-full px-4 py-2 rounded-xl border-2 border-gray-200 focus:border-[var(--brand-sage)] focus:outline-none"
+          />
+          {inputIdr && (
+            <p className="text-sm text-gray-600 mt-2">
+              = {formatNumber(parseFloat(inputIdr || "0") / selectedAsset.price)} {selectedAsset.unit}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -303,7 +480,11 @@ export default function SimulasiPage() {
                 {getAssetsForCategory(selectedCategory.id).map((asset) => (
                   <button
                     key={asset.id}
-                    onClick={() => setSelectedAsset(asset)}
+                    onClick={() => {
+                      setSelectedAsset(asset);
+                      setInputIdr("");
+                      setInputQuantity("");
+                    }}
                     className={`p-3 rounded-xl border-2 transition-all text-left ${
                       selectedAsset?.id === asset.id
                         ? "border-[var(--brand-sage)] bg-green-50"
@@ -343,19 +524,8 @@ export default function SimulasiPage() {
             </h2>
 
             <div className="grid md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Jumlah Investasi Awal (IDR)
-                </label>
-                <input
-                  type="number"
-                  value={investmentAmount}
-                  onChange={(e) => setInvestmentAmount(e.target.value)}
-                  placeholder="Contoh: 10000000"
-                  className="w-full px-4 py-2 rounded-xl border-2 border-gray-200 focus:border-[var(--brand-sage)] focus:outline-none"
-                />
-                <p className="text-xs text-gray-500 mt-1">Minimal: {formatCurrency(1000000)}</p>
-              </div>
+              {/* Dynamic Investment Input */}
+              {renderInvestmentInput()}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -404,7 +574,7 @@ export default function SimulasiPage() {
             <div className="flex gap-3">
               <button
                 onClick={calculateSimulation}
-                disabled={!selectedAsset}
+                disabled={!selectedAsset || (getInvestmentAmount() <= 0)}
                 className="flex-1 py-3 rounded-xl font-semibold text-white transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ background: "var(--brand-sage)" }}
               >
@@ -449,10 +619,11 @@ export default function SimulasiPage() {
                   </div>
                 </div>
                 <div className="card text-center">
-                  <div className="text-xs text-gray-500 mb-1">Unit {selectedAsset.symbol}</div>
+                  <div className="text-xs text-gray-500 mb-1">{selectedAsset.symbol}</div>
                   <div className="font-bold" style={{ color: selectedCategory.color }}>
                     {formatNumber(units)}
                   </div>
+                  <div className="text-xs text-gray-500">{selectedAsset.unit}</div>
                 </div>
               </div>
 
