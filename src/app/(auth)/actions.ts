@@ -21,17 +21,17 @@ export async function login(formData: FormData) {
 
   // Check if user is admin
   if (authData.user) {
-    const { data: profile } = await supabase
-      .from("users" as any)
+    const { data: profile } = await (supabase
+      .from("users" as any) as any)
       .select("role")
       .eq("auth_id", authData.user.id)
       .single();
-    
+
     // Force revalidation to ensure fresh session data
     revalidatePath("/", "layout");
-    
+
     // Redirect admin to admin panel, regular user to dashboard
-    if (profile && profile.role === "admin") {
+    if (profile && (profile as any).role === "admin") {
       redirect("/admin");
     } else {
       redirect("/dashboard");
@@ -72,12 +72,12 @@ export async function signup(formData: FormData) {
   }
 
   // Insert user profile to public.users table
-  const { error: profileError } = await supabase.from("users" as any).insert({
+  const { error: profileError } = await (supabase.from("users" as any) as any).insert({
     auth_id: authData.user.id,
     email: email,
     full_name: fullName,
     disability_type: disabilityType || null,
-    accessibility_profile: accessibilityProfileRaw.length > 0 
+    accessibility_profile: accessibilityProfileRaw.length > 0
       ? accessibilityProfileRaw as AccessibilityProfile[]
       : null,
   });
@@ -101,7 +101,7 @@ export async function logout() {
 
 export async function updateProfile(formData: FormData) {
   const supabase = await createClient();
-  
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -122,20 +122,20 @@ export async function updateProfile(formData: FormData) {
   });
 
   // Check if profile exists
-  const { data: existingProfile } = await supabase
-    .from("users" as any)
+  const { data: existingProfile } = await (supabase
+    .from("users" as any) as any)
     .select("user_id")
     .eq("auth_id", user.id)
     .single();
 
   if (existingProfile) {
     // Update existing profile
-    const { error } = await supabase
-      .from("users" as any)
+    const { error } = await (supabase
+      .from("users" as any) as any)
       .update({
         full_name: fullName,
         disability_type: disabilityType || null,
-        accessibility_profile: accessibilityProfileRaw.length > 0 
+        accessibility_profile: accessibilityProfileRaw.length > 0
           ? accessibilityProfileRaw as AccessibilityProfile[]
           : null,
       })
@@ -146,12 +146,12 @@ export async function updateProfile(formData: FormData) {
     }
   } else {
     // Create profile if doesn't exist
-    const { error } = await supabase.from("users" as any).insert({
+    const { error } = await (supabase.from("users" as any) as any).insert({
       auth_id: user.id,
       email: user.email!,
       full_name: fullName,
       disability_type: disabilityType || null,
-      accessibility_profile: accessibilityProfileRaw.length > 0 
+      accessibility_profile: accessibilityProfileRaw.length > 0
         ? accessibilityProfileRaw as AccessibilityProfile[]
         : null,
     });
@@ -167,7 +167,7 @@ export async function updateProfile(formData: FormData) {
 
 export async function getUserProfile() {
   const supabase = await createClient();
-  
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -176,8 +176,8 @@ export async function getUserProfile() {
     return null;
   }
 
-  const { data: profile } = await supabase
-    .from("users" as any)
+  const { data: profile } = await (supabase
+    .from("users" as any) as any)
     .select("*")
     .eq("auth_id", user.id)
     .single();
