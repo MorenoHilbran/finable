@@ -8,6 +8,7 @@ export default function TextReader() {
     const { isReading, setIsReading, readingText, readingTitle } = useAccessibility();
     const [isPaused, setIsPaused] = useState(false);
     const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
     // Helper to strip markdown (basic)
     const cleanText = (md: string) => {
@@ -26,6 +27,9 @@ export default function TextReader() {
         return () => {
             window.speechSynthesis.cancel();
             setIsReading(false);
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
         };
     }, []);
 
@@ -66,17 +70,55 @@ export default function TextReader() {
             setIsReading(false);
             utteranceRef.current = null;
             setIsPaused(false);
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
         };
 
         utterance.onerror = (e) => {
-            console.error("TTS Error:", e);
+            // Ignore "interrupted" and "canceled" errors as they're normal
+            // when user stops or switches text
+            if (e.error === "interrupted" || e.error === "canceled") {
+                return;
+            }
+            
+            // Only log actual errors
+            if (e.error && e.error !== "interrupted" && e.error !== "canceled") {
+                console.error("TTS Error:", e.error, e);
+            }
+            
             setIsReading(false);
             utteranceRef.current = null;
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
         };
 
         utteranceRef.current = utterance;
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
         window.speechSynthesis.speak(utterance);
         setIsPaused(false);
+
+        // Workaround for Chrome bug where speech stops after ~15 seconds
+        // Keep the speech synthesis alive
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+        }
+        intervalRef.current = setInterval(() => {
+            if (!window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+                clearInterval(intervalRef.current!);
+            } else if (window.speechSynthesis.paused) {
+                // Don't do anything when paused
+            } else {
+                window.speechSynthesis.pause();
+                window.speechSynthesis.resume();
+            }
+        }, 10000);
     };
 
     const cancelReading = () => {
@@ -86,10 +128,23 @@ export default function TextReader() {
     };
 
     const togglePause = () => {
-        if (window.speechSynthesis.paused) {
+        if (!window.speechSynthesis) return;
+        
+        if (isPaused) {
+            // Resume
             window.speechSynthesis.resume();
             setIsPaused(false);
+            
+            // Workaround for browsers where resume doesn't work
+            // Check if it's actually speaking after a short delay
+            setTimeout(() => {
+                if (window.speechSynthesis.paused) {
+                    // Still paused, force resume again
+                    window.speechSynthesis.resume();
+                }
+            }, 100);
         } else {
+            // Pause
             window.speechSynthesis.pause();
             setIsPaused(true);
         }

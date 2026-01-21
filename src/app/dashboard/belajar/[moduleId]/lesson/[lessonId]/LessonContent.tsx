@@ -7,6 +7,7 @@ import LessonSidebar from "@/components/learning/LessonSidebar";
 import LessonNavigation from "@/components/learning/LessonNavigation";
 import ListenButton from "@/components/ListenButton";
 import SummarizeButton from "@/components/SummarizeButton";
+import TextReader from "@/components/TextReader";
 import type { LearningModule, ModuleLesson } from "@/lib/supabase/database.types";
 
 interface LessonTreeItem {
@@ -271,6 +272,7 @@ export default function LessonContent({
           </div>
         </main>
       </div>
+      <TextReader />
     </div>
   );
 }

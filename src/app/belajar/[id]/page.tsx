@@ -32,6 +32,15 @@ interface LocalModuleLesson {
   is_published: boolean;
 }
 
+// Helper to strip HTML tags and get plain text for TTS
+function getPlainText(content: string | null): string {
+  if (!content) return "";
+  // Remove HTML tags
+  const strippedHtml = content.replace(/<[^>]*>/g, " ");
+  // Clean up whitespace
+  return strippedHtml.replace(/\s+/g, " ").trim();
+}
+
 export default async function ModuleDetailPage({
   params,
 }: {
@@ -135,7 +144,7 @@ export default async function ModuleDetailPage({
   return (
     <div className="min-h-screen relative">
       <Navbar />
-      <main id="main-content" className="pt-20">
+      <main id="main-content" className="pt-20 pb-[450px]">
         {/* Hero Section */}
         <section
           className="py-12 text-white"
@@ -216,8 +225,8 @@ export default async function ModuleDetailPage({
                       Tentang Modul
                     </h2>
                     <div className="flex gap-2">
-                      <SummarizeButton content={module.content || ""} />
-                      <ListenButton text={module.content || ""} title={module.title} />
+                      <SummarizeButton content={getPlainText(module.content)} />
+                      <ListenButton text={getPlainText(module.content)} title={module.title} />
                     </div>
                   </div>
 
@@ -283,7 +292,7 @@ export default async function ModuleDetailPage({
                                 </h4>
                                 {lesson.content && (
                                   <div className="shrink-0">
-                                    <ListenButton text={lesson.content} title={lesson.title} variant="icon" />
+                                    <ListenButton text={getPlainText(lesson.content)} title={lesson.title} variant="icon" />
                                   </div>
                                 )}
                               </div>
@@ -297,7 +306,7 @@ export default async function ModuleDetailPage({
                                       </div>
                                       {child.content && (
                                         <div className="shrink-0">
-                                          <ListenButton text={child.content} title={child.title} variant="icon" />
+                                          <ListenButton text={getPlainText(child.content)} title={child.title} variant="icon" />
                                         </div>
                                       )}
                                     </div>
