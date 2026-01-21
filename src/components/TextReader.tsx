@@ -82,12 +82,12 @@ export default function TextReader() {
             if (e.error === "interrupted" || e.error === "canceled") {
                 return;
             }
-            
+
             // Only log actual errors
-            if (e.error && e.error !== "interrupted" && e.error !== "canceled") {
+            if (e.error && (e.error as any) !== "interrupted" && (e.error as any) !== "canceled") {
                 console.error("TTS Error:", e.error, e);
             }
-            
+
             setIsReading(false);
             utteranceRef.current = null;
             if (intervalRef.current) {
@@ -129,12 +129,12 @@ export default function TextReader() {
 
     const togglePause = () => {
         if (!window.speechSynthesis) return;
-        
+
         if (isPaused) {
             // Resume
             window.speechSynthesis.resume();
             setIsPaused(false);
-            
+
             // Workaround for browsers where resume doesn't work
             // Check if it's actually speaking after a short delay
             setTimeout(() => {
