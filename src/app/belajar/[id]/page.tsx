@@ -55,8 +55,8 @@ export default async function ModuleDetailPage({
     notFound();
   }
 
-  const { data: moduleData, error } = await supabase
-    .from("learning_modules")
+  const { data: moduleData, error } = await (supabase
+    .from("learning_modules" as any) as any)
     .select("*")
     .eq("module_id", moduleId)
     .eq("is_published", true)
@@ -73,8 +73,8 @@ export default async function ModuleDetailPage({
   let isEnrolled = false;
 
   if (user) {
-    const { data: userDataResponse } = await supabase
-      .from("users")
+    const { data: userDataResponse } = await (supabase
+      .from("users" as any) as any)
       .select("user_id")
       .eq("auth_id", user.id)
       .single();
@@ -82,8 +82,8 @@ export default async function ModuleDetailPage({
     const userData = userDataResponse as unknown as { user_id: number } | null;
 
     if (userData) {
-      const { data: enrollment } = await supabase
-        .from("user_enrollments")
+      const { data: enrollment } = await (supabase
+        .from("user_enrollments" as any) as any)
         .select("id")
         .eq("user_id", userData.user_id)
         .eq("module_id", moduleId)
@@ -94,8 +94,8 @@ export default async function ModuleDetailPage({
   }
 
   // Fetch recommended modules (other published modules, excluding current one)
-  const { data: recommendedModulesData } = await supabase
-    .from("learning_modules")
+  const { data: recommendedModulesData } = await (supabase
+    .from("learning_modules" as any) as any)
     .select("*")
     .eq("is_published", true)
     .neq("module_id", moduleId)
@@ -105,8 +105,8 @@ export default async function ModuleDetailPage({
   const recommendedModules = recommendedModulesData as unknown as LocalLearningModule[] | null;
 
   // Fetch lessons for this module (published only)
-  const { data: lessonsData } = await supabase
-    .from("module_lessons")
+  const { data: lessonsData } = await (supabase
+    .from("module_lessons" as any) as any)
     .select("*")
     .eq("module_id", moduleId)
     .eq("is_published", true)

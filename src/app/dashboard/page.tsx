@@ -28,9 +28,9 @@ export default async function DashboardPage() {
   let enrolledCount = 0;
 
   if (user) {
-    const { data: userData } = await supabase
-      .from("users")
-      .select("user_id")
+    const { data: userData } = await (supabase
+      .from("users" as any) as any)
+      .select("user_id, full_name, disability_type")
       .eq("auth_id", user.id)
       .single();
 
@@ -132,16 +132,16 @@ export default async function DashboardPage() {
             key={index}
             className="card text-center"
           >
-            <img 
-              src={stat.icon} 
-              alt={stat.label} 
-              className="w-10 h-10 mb-2 mx-auto" 
-              style={{ 
-                filter: stat.color === "var(--brand-sage)" 
-                  ? "brightness(0) saturate(100%) invert(67%) sepia(52%) saturate(405%) hue-rotate(93deg) brightness(92%) contrast(87%)" 
-                  : stat.color === "var(--brand-blue)" 
+            <img
+              src={stat.icon}
+              alt={stat.label}
+              className="w-10 h-10 mb-2 mx-auto"
+              style={{
+                filter: stat.color === "var(--brand-sage)"
+                  ? "brightness(0) saturate(100%) invert(67%) sepia(52%) saturate(405%) hue-rotate(93deg) brightness(92%) contrast(87%)"
+                  : stat.color === "var(--brand-blue)"
                     ? "brightness(0) saturate(100%) invert(52%) sepia(98%) saturate(234%) hue-rotate(166deg) brightness(94%) contrast(86%)"
-                    : undefined 
+                    : undefined
               }}
             />
             <div

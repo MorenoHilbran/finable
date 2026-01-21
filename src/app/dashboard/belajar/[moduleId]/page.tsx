@@ -39,56 +39,56 @@ export default async function ModuleLearningPage({
 }) {
   const { moduleId } = await params;
   const supabase = await createClient();
-  
+
   // Get current user
   const { data: { user } } = await supabase.auth.getUser();
-  
+
   if (!user) {
     redirect("/login");
   }
-  
+
   // Get user_id
-  const { data: userData } = await supabase
-    .from("users")
+  const { data: userData } = await (supabase
+    .from("users" as any) as any)
     .select("user_id")
     .eq("auth_id", user.id)
     .single();
-  
+
   if (!userData) {
     redirect("/login");
   }
-  
+
   // Get module data
-  const { data: module, error: moduleError } = await supabase
-    .from("learning_modules")
+  const { data: module, error: moduleError } = await (supabase
+    .from("learning_modules" as any) as any)
     .select("*")
     .eq("module_id", moduleId)
     .single();
-  
+
   if (moduleError || !module) {
     notFound();
   }
-  
+
   // Check if enrolled
-  const { data: enrollment } = await supabase
-    .from("user_enrollments")
+  const { data: enrollment } = await (supabase
+    .from("user_enrollments" as any) as any)
     .select("*")
     .eq("user_id", userData.user_id)
     .eq("module_id", moduleId)
     .single();
-  
+
   if (!enrollment) {
     redirect(`/belajar/${moduleId}`);
   }
-  
+
   // Get lessons (only parent and first-level children, no deeper nesting)
-  const { data: lessons } = await supabase
-    .from("module_lessons")
+  const { data: lessons } = await (supabase
+    .from("module_lessons" as any) as any)
     .select("*")
     .eq("module_id", moduleId)
     .eq("is_published", true)
     .order("order_index", { ascending: true });
-  
+
   // Build lesson tree (max 2 levels: parent and children)
   const lessonTree = (lessons || [])
     .filter((l: any) => l.parent_id === null)
@@ -99,40 +99,40 @@ export default async function ModuleLearningPage({
         .sort((a: any, b: any) => a.order_index - b.order_index),
     }))
     .sort((a: any, b: any) => a.order_index - b.order_index);
-  
+
   // Get all lesson IDs for progress tracking
   const allLessonIds = getAllLessonIds(lessonTree);
   // Top-level count for display
   const totalTopLevelMaterials = countTopLevelMaterials(lessonTree);
   // Total lessons for percentage calculation
   const totalLessonsForProgress = allLessonIds.length;
-  
+
   // Get completed lessons
-  const { data: progress } = await supabase
-    .from("user_lesson_progress")
+  const { data: progress } = await (supabase
+    .from("user_lesson_progress" as any) as any)
     .select("*")
     .eq("user_id", userData.user_id)
     .in("lesson_id", allLessonIds.length > 0 ? allLessonIds : [0]);
-  
+
   const completedLessonIds = (progress || [])
     .filter((p: any) => p.is_completed)
     .map((p: any) => p.lesson_id);
-  
+
   // Count completed lessons
-  const completedCount = completedLessonIds.filter((id: number) => 
+  const completedCount = completedLessonIds.filter((id: number) =>
     allLessonIds.includes(id)
   ).length;
-  
-  const progressPercentage = totalLessonsForProgress > 0 
-    ? Math.round((completedCount / totalLessonsForProgress) * 100) 
+
+  const progressPercentage = totalLessonsForProgress > 0
+    ? Math.round((completedCount / totalLessonsForProgress) * 100)
     : 0;
-  
+
   // Find first uncompleted lesson
   const orderedLessons = getOrderedLessons(lessonTree);
   const nextLesson = orderedLessons.find(
     (l: any) => !completedLessonIds.includes(l.id)
   ) || orderedLessons[0];
-  
+
   // Determine which lessons are unlocked (sequential access)
   const unlockedLessonIds: number[] = [];
   for (let i = 0; i < orderedLessons.length; i++) {
@@ -152,7 +152,7 @@ export default async function ModuleLearningPage({
       unlockedLessonIds.push(id);
     }
   });
-  
+
   const getLevelLabel = (level: string) => {
     switch (level) {
       case "basic": return "Pemula";
@@ -176,7 +176,7 @@ export default async function ModuleLearningPage({
               <span>←</span>
               <span>Kembali ke Kelas Saya</span>
             </Link>
-            
+
             <div className="flex items-center gap-3">
               <span className="text-sm text-gray-500">
                 {totalTopLevelMaterials} materi
@@ -188,16 +188,16 @@ export default async function ModuleLearningPage({
           </div>
         </div>
       </div>
-      
+
       {/* Hero */}
-      <div 
+      <div
         className="py-8 sm:py-12 text-white"
         style={{ backgroundColor: "var(--brand-black)" }}
       >
         <div className="px-4 sm:px-6">
           <div className="max-w-4xl">
             {module.category && (
-              <span 
+              <span
                 className="inline-block px-4 py-1 rounded-full text-sm font-semibold mb-4"
                 style={{ backgroundColor: "var(--brand-blue)" }}
               >
@@ -208,12 +208,12 @@ export default async function ModuleLearningPage({
               {module.title}
             </h1>
             <p className="text-gray-300 mb-6">{module.description}</p>
-            
+
             {/* Progress Bar */}
             <div className="bg-white/10 rounded-full h-3 mb-2">
-              <div 
+              <div
                 className="h-full rounded-full transition-all duration-500"
-                style={{ 
+                style={{
                   width: `${progressPercentage}%`,
                   backgroundColor: "var(--brand-sage)"
                 }}
@@ -225,7 +225,7 @@ export default async function ModuleLearningPage({
           </div>
         </div>
       </div>
-      
+
       {/* Content */}
       <div className="px-4 sm:px-6 py-6 sm:py-8">
         <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
@@ -235,30 +235,28 @@ export default async function ModuleLearningPage({
               <h2 className="text-xl font-bold mb-6" style={{ color: "var(--brand-black)" }}>
                 Daftar Materi
               </h2>
-              
+
               {lessonTree.length > 0 ? (
                 <div className="space-y-4">
                   {lessonTree.map((lesson: any, idx: number) => {
                     const hasChildren = lesson.children && lesson.children.length > 0;
                     const isParentCompleted = completedLessonIds.includes(lesson.id);
                     const isParentUnlocked = unlockedLessonIds.includes(lesson.id);
-                    
+
                     return (
                       <div key={lesson.id}>
                         {/* Parent Lesson - Always clickable now */}
                         {isParentUnlocked ? (
                           <Link
                             href={`/dashboard/belajar/${moduleId}/lesson/${lesson.id}`}
-                            className={`flex items-start gap-4 p-4 rounded-xl transition-all hover:bg-gray-50 ${
-                              isParentCompleted ? "opacity-80" : ""
-                            }`}
-                          >
-                            <div 
-                              className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shrink-0 ${
-                                isParentCompleted ? "bg-green-500" : ""
+                            className={`flex items-start gap-4 p-4 rounded-xl transition-all hover:bg-gray-50 ${isParentCompleted ? "opacity-80" : ""
                               }`}
-                              style={{ 
-                                backgroundColor: isParentCompleted ? undefined : "var(--brand-sage)" 
+                          >
+                            <div
+                              className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shrink-0 ${isParentCompleted ? "bg-green-500" : ""
+                                }`}
+                              style={{
+                                backgroundColor: isParentCompleted ? undefined : "var(--brand-sage)"
                               }}
                             >
                               {isParentCompleted ? "✓" : idx + 1}
@@ -292,29 +290,27 @@ export default async function ModuleLearningPage({
                             </div>
                           </div>
                         )}
-                        
+
                         {/* Children */}
                         {hasChildren && (
                           <div className="ml-14 space-y-2 mt-2">
                             {lesson.children.map((child: any, childIdx: number) => {
                               const isCompleted = completedLessonIds.includes(child.id);
                               const isUnlocked = unlockedLessonIds.includes(child.id);
-                              
+
                               return isUnlocked ? (
                                 <Link
                                   key={child.id}
                                   href={`/dashboard/belajar/${moduleId}/lesson/${child.id}`}
-                                  className={`flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-gray-50 border-l-2 ${
-                                    isCompleted 
-                                      ? "border-green-500" 
-                                      : "border-gray-200"
-                                  }`}
+                                  className={`flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-gray-50 border-l-2 ${isCompleted
+                                    ? "border-green-500"
+                                    : "border-gray-200"
+                                    }`}
                                 >
-                                  <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium ${
-                                    isCompleted
-                                      ? "bg-green-500 text-white"
-                                      : "bg-gray-100 text-gray-600"
-                                  }`}>
+                                  <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium ${isCompleted
+                                    ? "bg-green-500 text-white"
+                                    : "bg-gray-100 text-gray-600"
+                                    }`}>
                                     {isCompleted ? <img src="/icons/icon-check.svg" alt="" className="w-4 h-4 invert brightness-0" /> : `${idx + 1}.${childIdx + 1}`}
                                   </span>
                                   <span className="flex-1 text-sm" style={{ color: "var(--brand-black)" }}>
@@ -350,14 +346,14 @@ export default async function ModuleLearningPage({
               )}
             </div>
           </div>
-          
+
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm sticky top-24">
               <h3 className="font-bold mb-4" style={{ color: "var(--brand-black)" }}>
                 Informasi Kelas
               </h3>
-              
+
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
@@ -370,7 +366,7 @@ export default async function ModuleLearningPage({
                     </p>
                   </div>
                 </div>
-                
+
                 {module.duration && (
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
@@ -384,7 +380,7 @@ export default async function ModuleLearningPage({
                     </div>
                   </div>
                 )}
-                
+
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
                     <img src="/icons/learn.svg" alt="" className="w-6 h-6" />
@@ -397,13 +393,13 @@ export default async function ModuleLearningPage({
                   </div>
                 </div>
               </div>
-              
+
               {/* CTA */}
               {nextLesson && completedCount < totalLessonsForProgress && (
                 <Link
                   href={`/dashboard/belajar/${moduleId}/lesson/${nextLesson.id}`}
                   className="mt-6 w-full block text-center py-3 px-4 rounded-xl text-white font-medium transition-all hover:opacity-90"
-                  style={{ 
+                  style={{
                     backgroundColor: "var(--brand-sage)",
                     boxShadow: "0 4px 14px rgba(80, 217, 144, 0.3)"
                   }}
@@ -411,7 +407,7 @@ export default async function ModuleLearningPage({
                   {completedCount === 0 ? "Mulai Belajar" : "Lanjutkan Belajar"}
                 </Link>
               )}
-              
+
               {completedCount === totalLessonsForProgress && totalLessonsForProgress > 0 && (
                 <div className="mt-6 text-center p-4 rounded-xl bg-green-50">
                   <div className="text-3xl mb-2">🎉</div>

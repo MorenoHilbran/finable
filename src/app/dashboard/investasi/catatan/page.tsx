@@ -33,7 +33,7 @@ const INVESTMENT_TYPES: { value: PortfolioType; label: string; icon: string; col
 
 export default function PortfolioPage() {
   const supabase = createClient();
-  
+
   const [portfolio, setPortfolio] = useState<UserPortfolio[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -41,7 +41,7 @@ export default function PortfolioPage() {
   const [filterType, setFilterType] = useState<PortfolioType | "all">("all");
   const [userId, setUserId] = useState<number | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-  
+
   // Market data
   const [marketData, setMarketData] = useState<MarketData | null>(null);
   const [loadingMarket, setLoadingMarket] = useState(true);
@@ -64,12 +64,12 @@ export default function PortfolioPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         // Get user_id from users table
-        const { data: userData } = await supabase
-          .from("users")
+        const { data: userData } = await (supabase
+          .from("users" as any) as any)
           .select("user_id")
           .eq("auth_id", user.id)
           .single();
-        
+
         if (userData) {
           setUserId(userData.user_id);
         }
@@ -116,15 +116,15 @@ export default function PortfolioPage() {
 
   const loadPortfolio = async () => {
     if (!userId) return;
-    
+
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("user_portfolio")
+      const { data, error } = await (supabase
+        .from("user_portfolio" as any) as any)
         .select("*")
         .eq("user_id", userId)
         .order("created_at", { ascending: false });
-      
+
       if (error) throw error;
       setPortfolio(data || []);
     } catch (error) {
@@ -205,7 +205,7 @@ export default function PortfolioPage() {
   // Create/Update item
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!selectedFormAsset || !userId) {
       alert("Mohon pilih aset terlebih dahulu");
       return;
@@ -223,8 +223,8 @@ export default function PortfolioPage() {
     try {
       if (editingItem) {
         // Update existing item
-        const { error } = await supabase
-          .from("user_portfolio")
+        const { error } = await (supabase
+          .from("user_portfolio" as any) as any)
           .update({
             asset_id: formData.assetId,
             asset_name: selectedFormAsset.name,
@@ -237,12 +237,12 @@ export default function PortfolioPage() {
             notes: formData.notes || null,
           })
           .eq("id", editingItem.id);
-        
+
         if (error) throw error;
       } else {
         // Create new item
-        const { error } = await supabase
-          .from("user_portfolio")
+        const { error } = await (supabase
+          .from("user_portfolio" as any) as any)
           .insert({
             user_id: userId,
             asset_id: formData.assetId,
@@ -255,7 +255,7 @@ export default function PortfolioPage() {
             unit: selectedFormAsset.unit,
             notes: formData.notes || null,
           });
-        
+
         if (error) throw error;
       }
 
@@ -272,13 +272,13 @@ export default function PortfolioPage() {
   // Delete item
   const handleDelete = async (id: string) => {
     if (!confirm("Apakah Anda yakin ingin menghapus item ini?")) return;
-    
+
     try {
-      const { error } = await supabase
-        .from("user_portfolio")
+      const { error } = await (supabase
+        .from("user_portfolio" as any) as any)
         .delete()
         .eq("id", id);
-      
+
       if (error) throw error;
       await loadPortfolio();
     } catch (error) {
@@ -296,7 +296,7 @@ export default function PortfolioPage() {
       assetId: item.asset_id,
       purchaseDate: item.purchase_date || "",
       quantity: item.quantity.toString(),
-      inputIdr: typeInfo.inputUnit === "idr" || typeInfo.inputUnit === "dual" 
+      inputIdr: typeInfo.inputUnit === "idr" || typeInfo.inputUnit === "dual"
         ? Math.round(item.quantity * item.purchase_price).toString()
         : "",
       purchasePrice: item.purchase_price.toString(),
@@ -571,7 +571,7 @@ export default function PortfolioPage() {
           </div>
           <div className="card">
             <div className="text-sm text-gray-500 mb-1">Profit/Loss</div>
-            <div 
+            <div
               className="text-xl font-bold"
               style={{ color: totalProfitLoss >= 0 ? "var(--brand-sage)" : "#dc2626" }}
             >
@@ -580,7 +580,7 @@ export default function PortfolioPage() {
           </div>
           <div className="card">
             <div className="text-sm text-gray-500 mb-1">Persentase</div>
-            <div 
+            <div
               className="text-xl font-bold"
               style={{ color: profitLossPercentage >= 0 ? "var(--brand-sage)" : "#dc2626" }}
             >
@@ -595,9 +595,8 @@ export default function PortfolioPage() {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setFilterType("all")}
-            className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-              filterType === "all" ? "" : "hover:bg-gray-100"
-            }`}
+            className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${filterType === "all" ? "" : "hover:bg-gray-100"
+              }`}
             style={{
               background: filterType === "all" ? "var(--brand-sage)" : "transparent",
               color: filterType === "all" ? "white" : "var(--brand-dark-blue)",
@@ -609,9 +608,8 @@ export default function PortfolioPage() {
             <button
               key={type.value}
               onClick={() => setFilterType(type.value)}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1 ${
-                filterType === type.value ? "" : "hover:bg-gray-100"
-              }`}
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1 ${filterType === type.value ? "" : "hover:bg-gray-100"
+                }`}
               style={{
                 background: filterType === type.value ? `${type.color}20` : "transparent",
                 color: filterType === type.value ? type.color : "var(--brand-dark-blue)",
@@ -655,9 +653,9 @@ export default function PortfolioPage() {
                         type="button"
                         onClick={() => {
                           const assets = getAssetsForType(type.value);
-                          setFormData({ 
-                            ...formData, 
-                            type: type.value, 
+                          setFormData({
+                            ...formData,
+                            type: type.value,
                             assetId: assets.length > 0 ? assets[0].id : "",
                             quantity: "",
                             inputIdr: "",
@@ -803,7 +801,7 @@ export default function PortfolioPage() {
               : "Coba ubah filter untuk melihat investasi lainnya."}
           </p>
           {portfolio.length === 0 && (
-            <button 
+            <button
               onClick={() => {
                 const assets = getAssetsForType("stock");
                 setFormData({
@@ -816,7 +814,7 @@ export default function PortfolioPage() {
                   notes: "",
                 });
                 setShowForm(true);
-              }} 
+              }}
               className="btn btn-primary"
             >
               + Tambah Investasi Pertama
@@ -862,7 +860,7 @@ export default function PortfolioPage() {
                         <div className="font-semibold" style={{ color: "var(--brand-dark-blue)" }}>
                           {formatCurrency(itemValue)}
                         </div>
-                        <div 
+                        <div
                           className="text-sm font-medium"
                           style={{ color: itemProfitLoss >= 0 ? "var(--brand-sage)" : "#dc2626" }}
                         >

@@ -115,7 +115,7 @@ export default function ProfilePage() {
     async function loadProfile() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
-      
+
       if (user) {
         setEmail(user.email || "");
         const { data } = await supabase
@@ -123,7 +123,7 @@ export default function ProfilePage() {
           .select("*")
           .eq("auth_id", user.id)
           .single();
-        
+
         if (data) {
           setProfile(data as User);
           setSelectedAccessibility((data as User).accessibility_profile || []);
@@ -144,15 +144,15 @@ export default function ProfilePage() {
         // Get completed MODULES count - a module is complete when all its lessons are done
         if (data) {
           const userData = data as User;
-          
+
           // Get user's enrollments
           const { data: enrollments } = await supabase
             .from("user_enrollments")
             .select("module_id")
             .eq("user_id", userData.user_id);
-          
+
           let completedCount = 0;
-          
+
           if (enrollments && enrollments.length > 0) {
             // Check each module's completion status
             for (const enrollment of enrollments as { module_id: number }[]) {
@@ -162,10 +162,10 @@ export default function ProfilePage() {
                 .select("id")
                 .eq("module_id", enrollment.module_id)
                 .eq("is_published", true);
-              
+
               if (lessons && lessons.length > 0) {
                 const lessonIds = (lessons as { id: number }[]).map(l => l.id);
-                
+
                 // Get completed lessons for this user in this module
                 const { data: completedLessons } = await supabase
                   .from("user_lesson_progress")
@@ -173,20 +173,20 @@ export default function ProfilePage() {
                   .eq("user_id", userData.user_id)
                   .eq("is_completed", true)
                   .in("lesson_id", lessonIds);
-                
+
                 // Check if all lessons are completed
                 const completedLessonIds = ((completedLessons || []) as { lesson_id: number }[]).map(cl => cl.lesson_id);
                 const allCompleted = lessonIds.every(id => completedLessonIds.includes(id));
-                
+
                 if (allCompleted) {
                   completedCount++;
                 }
               }
             }
           }
-          
+
           setCompletedModules(completedCount);
-          
+
           // Calculate badges based on completed MODULES (1 badge per module, max 20)
           const earnedBadges = Math.min(completedCount, TOTAL_BADGES);
           setTotalBadges(earnedBadges);
@@ -251,13 +251,13 @@ export default function ProfilePage() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        const { data } = await supabase
-          .from("users")
+        const { data: profile, error: profileError } = await (supabase
+          .from("users" as any) as any)
           .select("*")
           .eq("auth_id", user.id)
           .single();
-        if (data) {
-          setProfile(data);
+        if (profile) {
+          setProfile(profile);
         }
       }
     }
@@ -318,7 +318,7 @@ export default function ProfilePage() {
         // Start fresh if corrupted
       }
     }
-    
+
     // Add unlock date for any new badges
     const now = new Date().toISOString();
     for (let i = 1; i <= currentBadges; i++) {
@@ -326,7 +326,7 @@ export default function ProfilePage() {
         dates[i.toString()] = now;
       }
     }
-    
+
     localStorage.setItem("finable_badge_unlock_dates", JSON.stringify(dates));
   }
 
@@ -350,7 +350,7 @@ export default function ProfilePage() {
       {/* Milestone Celebration Modal */}
       {showMilestone && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div 
+          <div
             className="bg-white rounded-3xl p-8 max-w-md w-full text-center animate-bounce-in relative overflow-hidden"
             style={{ animation: "bounceIn 0.5s ease-out" }}
           >
@@ -377,9 +377,9 @@ export default function ProfilePage() {
             <p className="text-gray-600 mb-4">
               Kamu telah mencapai <span className="font-bold text-[var(--brand-sage)]">{showMilestone} Badge</span>!
             </p>
-            
+
             <div className="flex justify-center mb-6">
-              <div 
+              <div
                 className={`w-24 h-24 rounded-2xl ${TIER_STYLES[BADGE_DATA[showMilestone - 1].tier as keyof typeof TIER_STYLES].bg} p-3 shadow-lg`}
               >
                 <img
@@ -405,11 +405,11 @@ export default function ProfilePage() {
 
       {/* Badge Detail Modal */}
       {selectedBadge && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
           onClick={() => setSelectedBadge(null)}
         >
-          <div 
+          <div
             className="bg-white rounded-2xl p-6 max-w-sm w-full text-center"
             onClick={(e) => e.stopPropagation()}
           >
@@ -491,11 +491,11 @@ export default function ProfilePage() {
         <div
           className="p-4 rounded-xl mb-6"
           style={{
-            background: message.type === "success" 
-              ? "rgba(70, 185, 131, 0.1)" 
+            background: message.type === "success"
+              ? "rgba(70, 185, 131, 0.1)"
               : "rgba(176, 24, 62, 0.1)",
-            color: message.type === "success" 
-              ? "var(--brand-sage)" 
+            color: message.type === "success"
+              ? "var(--brand-sage)"
               : "#dc2626",
           }}
         >
@@ -505,18 +505,18 @@ export default function ProfilePage() {
       )}
 
       {/* Profile Header Card */}
-      <div 
+      <div
         className="rounded-2xl p-8 mb-8 text-white relative overflow-hidden"
         style={{ background: "linear-gradient(135deg, var(--brand-sage) 0%, #3d9e6e 100%)" }}
       >
         <div className="flex flex-col md:flex-row items-center gap-6">
           {/* Avatar */}
-          <div 
+          <div
             className="w-24 h-24 rounded-full flex items-center justify-center text-4xl font-bold bg-white/20 backdrop-blur-sm border-4 border-white/30"
           >
             {profile?.full_name?.charAt(0).toUpperCase() || "U"}
           </div>
-          
+
           {/* Info */}
           <div className="text-center md:text-left flex-1">
             <h1 className="text-2xl md:text-3xl font-bold mb-1">
@@ -565,11 +565,11 @@ export default function ProfilePage() {
           </div>
 
           <div className="relative h-4 bg-gray-200 rounded-full overflow-hidden mb-3">
-            <div 
+            <div
               className="absolute inset-y-0 left-0 bg-gradient-to-r from-[var(--brand-sage)] to-emerald-400 rounded-full transition-all duration-500"
               style={{ width: `${nextProgress.progress}%` }}
             />
-            <div 
+            <div
               className="absolute inset-y-0 left-0 bg-gradient-to-r from-white/30 to-transparent rounded-full animate-shimmer"
               style={{ width: `${nextProgress.progress}%` }}
             />
@@ -609,7 +609,7 @@ export default function ProfilePage() {
         {/* Tier Legend */}
         <div className="flex flex-wrap gap-2 mb-6">
           {Object.entries(TIER_STYLES).map(([key, style]) => (
-            <div 
+            <div
               key={key}
               className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium ${style.bg} ${style.text}`}
             >
@@ -617,22 +617,21 @@ export default function ProfilePage() {
             </div>
           ))}
         </div>
-        
+
         <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-10 gap-3">
           {BADGE_DATA.map((badge) => {
             const isEarned = badge.id <= totalBadges;
             const isNew = badge.id === newBadgeId;
             const tierStyle = TIER_STYLES[badge.tier as keyof typeof TIER_STYLES];
-            
+
             return (
               <button
                 key={badge.id}
                 onClick={() => setSelectedBadge(badge)}
-                className={`relative aspect-square rounded-xl p-2 transition-all hover:scale-105 cursor-pointer border-2 ${
-                  isEarned 
-                    ? `${tierStyle.bg} ${tierStyle.border} shadow-md hover:shadow-lg` 
+                className={`relative aspect-square rounded-xl p-2 transition-all hover:scale-105 cursor-pointer border-2 ${isEarned
+                    ? `${tierStyle.bg} ${tierStyle.border} shadow-md hover:shadow-lg`
                     : "bg-gray-100 border-gray-200 opacity-60 hover:opacity-80"
-                } ${isNew ? "animate-pulse ring-2 ring-yellow-400 ring-offset-2" : ""}`}
+                  } ${isNew ? "animate-pulse ring-2 ring-yellow-400 ring-offset-2" : ""}`}
                 title={`${badge.name} - ${isEarned ? "Unlocked!" : "Locked"}`}
               >
                 <img
@@ -680,7 +679,7 @@ export default function ProfilePage() {
           <h2 className="text-xl font-bold mb-6" style={{ color: "var(--brand-black)" }}>
             Edit Profil
           </h2>
-          
+
           <form action={handleSubmit} className="space-y-6">
             {/* Email (readonly) */}
             <div>
@@ -827,7 +826,7 @@ export default function ProfilePage() {
           <h2 className="text-xl font-bold mb-6" style={{ color: "var(--brand-black)" }}>
             Informasi Profil
           </h2>
-          
+
           <div className="space-y-4">
             <div className="flex justify-between py-3 border-b border-gray-100">
               <span className="text-gray-600">Email</span>

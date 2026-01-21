@@ -8,33 +8,33 @@ export async function GET(
 ) {
   const { id } = await params;
   const supabase = await createClient();
-  
+
   // Get current user
   const { data: { user }, error: authError } = await supabase.auth.getUser();
-  
+
   if (authError || !user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  
+
   // Get user_id
-  const { data: userData } = await supabase
-    .from("users")
+  const { data: userData } = await (supabase
+    .from("users" as any) as any)
     .select("user_id")
     .eq("auth_id", user.id)
     .single();
-  
+
   if (!userData) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
-  
+
   // Get progress for this lesson
-  const { data: progress } = await supabase
-    .from("user_lesson_progress")
+  const { data: progress } = await (supabase
+    .from("user_lesson_progress" as any) as any)
     .select("*")
     .eq("user_id", userData.user_id)
     .eq("lesson_id", id)
     .single();
-  
+
   return NextResponse.json({
     lesson_id: parseInt(id),
     is_completed: progress?.is_completed || false,
@@ -49,57 +49,57 @@ export async function POST(
 ) {
   const { id } = await params;
   const supabase = await createClient();
-  
+
   // Get current user
   const { data: { user }, error: authError } = await supabase.auth.getUser();
-  
+
   if (authError || !user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  
+
   // Get user_id
   const { data: userData } = await supabase
     .from("users")
     .select("user_id")
     .eq("auth_id", user.id)
     .single();
-  
+
   if (!userData) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
-  
+
   // Check if lesson exists
-  const { data: lesson, error: lessonError } = await supabase
-    .from("module_lessons")
+  const { data: lesson, error: lessonError } = await (supabase
+    .from("module_lessons" as any) as any)
     .select("id, module_id")
     .eq("id", id)
     .single();
-  
+
   if (lessonError || !lesson) {
     return NextResponse.json({ error: "Lesson not found" }, { status: 404 });
   }
-  
+
   // Check if user is enrolled in the module
-  const { data: enrollment } = await supabase
-    .from("user_enrollments")
+  const { data: enrollment } = await (supabase
+    .from("user_enrollments" as any) as any)
     .select("id")
     .eq("user_id", userData.user_id)
     .eq("module_id", lesson.module_id)
     .single();
-  
+
   if (!enrollment) {
     return NextResponse.json({ error: "Not enrolled in this course" }, { status: 403 });
   }
-  
+
   // Update last_accessed_at in enrollment
-  await supabase
-    .from("user_enrollments")
+  await (supabase
+    .from("user_enrollments" as any) as any)
     .update({ last_accessed_at: new Date().toISOString() })
     .eq("id", enrollment.id);
-  
+
   // Upsert progress
-  const { data: progress, error } = await supabase
-    .from("user_lesson_progress")
+  const { data: progress, error } = await (supabase
+    .from("user_lesson_progress" as any) as any)
     .upsert({
       user_id: userData.user_id,
       lesson_id: parseInt(id),
@@ -110,10 +110,10 @@ export async function POST(
     })
     .select()
     .single();
-  
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-  
+
   return NextResponse.json(progress);
 }
