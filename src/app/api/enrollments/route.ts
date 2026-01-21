@@ -111,11 +111,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "module_id is required" }, { status: 400 });
   }
 
-  const { data: userData, error: userError } = await supabase
-    .from("users")
+  const { data: userDataResponse, error: userError } = await (supabase
+    .from("users" as any) as any)
     .select("user_id")
     .eq("auth_id", user.id)
     .single();
+
+  const userData = userDataResponse as any;
 
   if (userError || !userData) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });

@@ -58,11 +58,13 @@ export async function POST(
   }
 
   // Get user_id
-  const { data: userData } = await supabase
-    .from("users")
+  const { data: userDataResponse } = await (supabase
+    .from("users" as any) as any)
     .select("user_id")
     .eq("auth_id", user.id)
     .single();
+
+  const userData = userDataResponse as any;
 
   if (!userData) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });
