@@ -9,17 +9,17 @@ export async function GET(
 ) {
   const { id } = await params;
   const supabase = await createClient();
-  
-  const { data, error } = await supabase
-    .from("module_lessons")
+
+  const { data, error } = await (supabase
+    .from("module_lessons" as any) as any)
     .select("*")
     .eq("module_id", id)
     .order("order_index", { ascending: true });
-  
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-  
+
   // Build tree structure
   const buildTree = (items: any[], parentId: number | null = null): any[] => {
     return items
@@ -29,9 +29,9 @@ export async function GET(
         children: buildTree(items, item.id),
       }));
   };
-  
+
   const tree = buildTree(data || []);
-  
+
   return NextResponse.json({ lessons: data, tree });
 }
 
@@ -41,30 +41,30 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { isAdmin, error: authError } = await requireAdmin();
-  
+
   if (!isAdmin) {
     return NextResponse.json({ error: authError }, { status: 401 });
   }
-  
+
   const { id } = await params;
   const supabase = await createClient();
   const body = await request.json();
-  
+
   // Get max order_index for this module/parent
-  const { data: existingLessons } = await supabase
-    .from("module_lessons")
+  const { data: existingLessons } = await (supabase
+    .from("module_lessons" as any) as any)
     .select("order_index")
     .eq("module_id", id)
     .eq("parent_id", body.parent_id ?? null)
     .order("order_index", { ascending: false })
     .limit(1);
-  
-  const nextOrder = existingLessons && existingLessons.length > 0 
-    ? (existingLessons[0] as any).order_index + 1 
+
+  const nextOrder = existingLessons && existingLessons.length > 0
+    ? (existingLessons[0] as any).order_index + 1
     : 0;
-  
-  const { data, error } = await supabase
-    .from("module_lessons")
+
+  const { data, error } = await (supabase
+    .from("module_lessons" as any) as any)
     .insert({
       module_id: parseInt(id),
       parent_id: body.parent_id || null,
@@ -75,10 +75,10 @@ export async function POST(
     } as any)
     .select()
     .single();
-  
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-  
+
   return NextResponse.json(data, { status: 201 });
 }

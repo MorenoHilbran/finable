@@ -7,10 +7,10 @@ export async function GET(request: NextRequest) {
   const supabase = await createClient();
   const { searchParams } = new URL(request.url);
   const all = searchParams.get("all") === "true";
-  
+
   // Select with joined master data
-  let query = supabase
-    .from("learning_modules")
+  let query = (supabase
+    .from("learning_modules" as any) as any)
     .select(`
       *,
       categories(*),
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
       duration_units(*)
     `)
     .order("order_index", { ascending: true });
-  
+
   // If not requesting all, only show published
   if (!all) {
     query = query.eq("is_published", true);
@@ -30,37 +30,37 @@ export async function GET(request: NextRequest) {
       query = query.eq("is_published", true);
     }
   }
-  
+
   const { data, error } = await query;
-  
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-  
+
   return NextResponse.json(data);
 }
 
 // POST - Create new module (admin only)
 export async function POST(request: NextRequest) {
   const { isAdmin, error: authError } = await requireAdmin();
-  
+
   if (!isAdmin) {
     return NextResponse.json({ error: authError }, { status: 401 });
   }
-  
+
   const supabase = await createClient();
   const body = await request.json();
-  
+
   // Build duration string from value and unit
   let durationString = body.duration;
   if (body.duration_value && body.duration_unit_id) {
     // Fetch duration unit name for the duration string
-    const { data: unitData } = await supabase
-      .from("duration_units")
+    const { data: unitData } = await (supabase
+      .from("duration_units" as any) as any)
       .select("name")
       .eq("id", body.duration_unit_id)
       .single();
-    
+
     if (unitData) {
       durationString = `${body.duration_value} ${unitData.name}`;
     }
@@ -69,19 +69,19 @@ export async function POST(request: NextRequest) {
   // Get category name if category_id is provided
   let categoryName = body.category;
   if (body.category_id) {
-    const { data: catData } = await supabase
-      .from("categories")
+    const { data: catData } = await (supabase
+      .from("categories" as any) as any)
       .select("name")
       .eq("id", body.category_id)
       .single();
-    
+
     if (catData) {
       categoryName = catData.name;
     }
   }
-  
-  const { data, error } = await supabase
-    .from("learning_modules")
+
+  const { data, error } = await (supabase
+    .from("learning_modules" as any) as any)
     .insert({
       title: body.title,
       description: body.description,
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
       content: body.content,
       is_published: body.is_published || false,
       order_index: body.order_index || 0,
-    })
+    } as any)
     .select(`
       *,
       categories(*),
@@ -110,10 +110,10 @@ export async function POST(request: NextRequest) {
       duration_units(*)
     `)
     .single();
-  
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-  
+
   return NextResponse.json(data, { status: 201 });
 }

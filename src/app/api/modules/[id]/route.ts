@@ -9,9 +9,9 @@ export async function GET(
 ) {
   const { id } = await params;
   const supabase = await createClient();
-  
-  const { data, error } = await supabase
-    .from("learning_modules")
+
+  const { data, error } = await (supabase
+    .from("learning_modules" as any) as any)
     .select(`
       *,
       categories(*),
@@ -21,11 +21,11 @@ export async function GET(
     `)
     .eq("module_id", id)
     .single();
-  
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 404 });
   }
-  
+
   return NextResponse.json(data);
 }
 
@@ -35,24 +35,24 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { isAdmin, error: authError } = await requireAdmin();
-  
+
   if (!isAdmin) {
     return NextResponse.json({ error: authError }, { status: 401 });
   }
-  
+
   const { id } = await params;
   const supabase = await createClient();
   const body = await request.json();
-  
+
   // Build duration string from value and unit
   let durationString = body.duration;
   if (body.duration_value && body.duration_unit_id) {
-    const { data: unitData } = await supabase
-      .from("duration_units")
+    const { data: unitData } = await (supabase
+      .from("duration_units" as any) as any)
       .select("name")
       .eq("id", body.duration_unit_id)
       .single();
-    
+
     if (unitData) {
       durationString = `${body.duration_value} ${unitData.name}`;
     }
@@ -61,19 +61,19 @@ export async function PUT(
   // Get category name if category_id is provided
   let categoryName = body.category;
   if (body.category_id) {
-    const { data: catData } = await supabase
-      .from("categories")
+    const { data: catData } = await (supabase
+      .from("categories" as any) as any)
       .select("name")
       .eq("id", body.category_id)
       .single();
-    
+
     if (catData) {
       categoryName = catData.name;
     }
   }
-  
-  const { data, error } = await supabase
-    .from("learning_modules")
+
+  const { data, error } = await (supabase
+    .from("learning_modules" as any) as any)
     .update({
       title: body.title,
       description: body.description,
@@ -104,11 +104,11 @@ export async function PUT(
       duration_units(*)
     `)
     .single();
-  
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-  
+
   return NextResponse.json(data);
 }
 
@@ -118,22 +118,22 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { isAdmin, error: authError } = await requireAdmin();
-  
+
   if (!isAdmin) {
     return NextResponse.json({ error: authError }, { status: 401 });
   }
-  
+
   const { id } = await params;
   const supabase = await createClient();
-  
-  const { error } = await supabase
-    .from("learning_modules")
+
+  const { error } = await (supabase
+    .from("learning_modules" as any) as any)
     .delete()
     .eq("module_id", id);
-  
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-  
+
   return NextResponse.json({ success: true });
 }
