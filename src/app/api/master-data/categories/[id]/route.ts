@@ -9,17 +9,17 @@ export async function GET(
 ) {
   const { id } = await params;
   const supabase = await createClient();
-  
-  const { data, error } = await supabase
-    .from("categories")
+
+  const { data, error } = await (supabase
+    .from("categories" as any) as any)
     .select("*")
     .eq("id", id)
     .single();
-  
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 404 });
   }
-  
+
   return NextResponse.json(data);
 }
 
@@ -29,17 +29,17 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { isAdmin, error: authError } = await requireAdmin();
-  
+
   if (!isAdmin) {
     return NextResponse.json({ error: authError }, { status: 401 });
   }
-  
+
   const { id } = await params;
   const supabase = await createClient();
   const body = await request.json();
-  
-  const { data, error } = await supabase
-    .from("categories")
+
+  const { data, error } = await (supabase
+    .from("categories" as any) as any)
     .update({
       name: body.name,
       description: body.description,
@@ -50,11 +50,11 @@ export async function PUT(
     .eq("id", id)
     .select()
     .single();
-  
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-  
+
   return NextResponse.json(data);
 }
 
@@ -64,22 +64,22 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { isAdmin, error: authError } = await requireAdmin();
-  
+
   if (!isAdmin) {
     return NextResponse.json({ error: authError }, { status: 401 });
   }
-  
+
   const { id } = await params;
   const supabase = await createClient();
-  
-  const { error } = await supabase
-    .from("categories")
+
+  const { error } = await (supabase
+    .from("categories" as any) as any)
     .delete()
     .eq("id", id);
-  
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-  
+
   return NextResponse.json({ success: true });
 }

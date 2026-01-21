@@ -5,32 +5,32 @@ import { requireAdmin } from "@/lib/admin-auth";
 // GET - List all content types
 export async function GET() {
   const supabase = await createClient();
-  
-  const { data, error } = await supabase
-    .from("content_types")
+
+  const { data, error } = await (supabase
+    .from("content_types" as any) as any)
     .select("*")
     .order("order_index", { ascending: true });
-  
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-  
+
   return NextResponse.json(data);
 }
 
 // POST - Create content type (admin only)
 export async function POST(request: NextRequest) {
   const { isAdmin, error: authError } = await requireAdmin();
-  
+
   if (!isAdmin) {
     return NextResponse.json({ error: authError }, { status: 401 });
   }
-  
+
   const supabase = await createClient();
   const body = await request.json();
-  
-  const { data, error } = await supabase
-    .from("content_types")
+
+  const { data, error } = await (supabase
+    .from("content_types" as any) as any)
     .insert({
       code: body.code,
       name: body.name,
@@ -40,10 +40,10 @@ export async function POST(request: NextRequest) {
     } as any)
     .select()
     .single();
-  
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-  
+
   return NextResponse.json(data, { status: 201 });
 }
