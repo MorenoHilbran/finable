@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { login } from "../actions";
 import Squares from "@/components/Squares";
 
-export default function LoginPage() {
+function LoginContent() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
@@ -15,9 +15,9 @@ export default function LoginPage() {
   async function handleSubmit(formData: FormData) {
     setIsLoading(true);
     setError(null);
-    
+
     const result = await login(formData);
-    
+
     if (result?.error) {
       setError(result.error);
       setIsLoading(false);
@@ -211,5 +211,17 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-green"></div>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }
