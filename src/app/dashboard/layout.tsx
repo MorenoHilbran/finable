@@ -17,8 +17,8 @@ export default async function DashboardLayout({
   }
 
   // Get profile from public.users
-  const { data: profile } = await supabase
-    .from("users")
+  const { data: profile } = await (supabase
+    .from("users" as any) as any)
     .select("full_name")
     .eq("auth_id", user.id)
     .single();
