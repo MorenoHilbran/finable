@@ -27,7 +27,7 @@ Penyandang disabilitas merupakan kelompok yang masih menghadapi hambatan akses i
 | Tunarungu | Captionable Content, Visual-first Learning UI |
 | Disabilitas Daksa | Full Keyboard Navigation, Large Click Area |
 | Disabilitas Kognitif Ringan | Plain Language Content, Micro-Learning |
-
+| Semua Kalangan |
 ---
 
 ## ⭐ Fitur Utama Finable (MVP)
